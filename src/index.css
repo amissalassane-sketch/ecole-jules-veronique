@@ -1,0 +1,185 @@
+@import "tailwindcss";
+
+/* ── Custom breakpoint: xs (480px) for very small phones ── */
+@custom-variant xs (@media (min-width: 30rem));
+
+/* ============================================
+   DESIGN TOKENS — Edit once, propagates everywhere
+   ============================================ */
+
+@theme {
+  /* ── Color palette ── */
+  --color-primary-50: #f0f7f9;
+  --color-primary-100: #d9eef3;
+  --color-primary-200: #b3dde7;
+  --color-primary-300: #80c5d6;
+  --color-primary-400: #4da6bd;
+  --color-primary-500: #1A6B7F;
+  --color-primary-600: #0F4C5C;
+  --color-primary-700: #0D3B4C;
+  --color-primary-800: #0A2E3D;
+  --color-primary-900: #072230;
+  --color-primary-950: #041520;
+
+  --color-accent-50: #fdf8f0;
+  --color-accent-100: #f9edd9;
+  --color-accent-200: #f2d9b3;
+  --color-accent-300: #e9bf80;
+  --color-accent-400: #d99e4d;
+  --color-accent-500: #C8963E;
+  --color-accent-600: #a87a30;
+  --color-accent-700: #8a6328;
+  --color-accent-800: #6d4e20;
+  --color-accent-900: #57401b;
+  --color-accent-950: #2f210c;
+
+  --color-surface: #FAFAF8;
+  --color-surface-alt: #F5F4F0;
+  --color-surface-dark: #0D3B4C;
+
+  --color-neutral-50: #fafafa;
+  --color-neutral-100: #f5f5f5;
+  --color-neutral-200: #e5e5e5;
+  --color-neutral-300: #d4d4d4;
+  --color-neutral-400: #a3a3a3;
+  --color-neutral-500: #737373;
+  --color-neutral-600: #525252;
+  --color-neutral-700: #404040;
+  --color-neutral-800: #262626;
+  --color-neutral-900: #171717;
+  --color-neutral-950: #0a0a0a;
+
+  /* ── Typography ── */
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+
+  /* ── Spacing scale (extended) ── */
+  --spacing-section: clamp(3rem, 8vw, 9rem);
+  --spacing-section-sm: clamp(2.5rem, 5vw, 5rem);
+
+  /* ── Radii ── */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
+  --radius-2xl: 1.5rem;
+  --radius-3xl: 2rem;
+}
+
+/* ============================================
+   BASE LAYER — Mobile-first foundation
+   ============================================ */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-tap-highlight-color: transparent;
+    /* Prevent font scaling on orientation change */
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    font-family: var(--font-body);
+    background-color: var(--color-surface);
+    color: #1a1a1a;
+    /* Prevent overscroll bounce on some browsers */
+    overscroll-behavior-y: none;
+  }
+
+  ::selection {
+    background-color: var(--color-primary-600);
+    color: white;
+  }
+
+  /* ── Fluid heading scale ── */
+  h1 {
+    font-size: clamp(2rem, 5vw, 5rem);
+  }
+
+  h2 {
+    font-size: clamp(1.5rem, 3.5vw, 3.75rem);
+  }
+
+  /* ── Reduced motion ── */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* ============================================
+   COMPONENTS LAYER — Reusable primitives
+   ============================================ */
+
+@layer components {
+  .container-page {
+    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* ── Safe-area bottom spacing ── */
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  .pb-safe {
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* ── Touch-friendly minimum hit area ── */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* ============================================
+   UTILITIES LAYER
+   ============================================ */
+
+@layer utilities {
+  .clip-reveal {
+    clip-path: inset(0 0 0 0);
+  }
+
+  .mask-fade-bottom {
+    mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  }
+
+  /* DVH fallback for dynamic viewport */
+  .min-h-screen-dynamic {
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
+  .h-screen-dynamic {
+    height: 100vh;
+    height: 100dvh;
+  }
+
+  /* Prevent horizontal scroll */
+  .no-overflow-x {
+    overflow-x: hidden;
+  }
+
+  /* Hide scrollbars for horizontal-scroll containers */
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+}

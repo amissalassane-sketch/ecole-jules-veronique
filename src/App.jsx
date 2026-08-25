@@ -4,6 +4,9 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { LanguageProvider } from './context/LanguageContext'
 import HomePage from './pages/HomePage'
 import RegistrationPage from './pages/RegistrationPage'
+import AdminLoginPage from './pages/admin/AdminLoginPage'
+import AdminDashboardPage from './pages/admin/AdminDashboardPage'
+import AdminApplicationPage from './pages/admin/AdminApplicationPage'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -20,6 +23,9 @@ function AnimatedRoutes() {
           <Route path="/" element={<HomePage />} />
           <Route path="/registration" element={<RegistrationPage />} />
           <Route path="/confirmation" element={<RegistrationPage />} />
+          <Route path="/admin/login" element={<AdminLoginPage />} />
+          <Route path="/admin" element={<AdminDashboardPage />} />
+          <Route path="/admin/applications/:id" element={<AdminApplicationPage />} />
         </Routes>
       </motion.div>
     </AnimatePresence>

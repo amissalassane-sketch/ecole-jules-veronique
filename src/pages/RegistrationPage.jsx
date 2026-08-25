@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowLeft, ArrowRight, Check, Pencil, CreditCard, MapPin, Phone, MessageCircle, Clock, Building2 } from 'lucide-react'
 import Navbar from '../components/layout/Navbar'
@@ -6,12 +6,14 @@ import Footer from '../components/layout/Footer'
 import Button from '../components/ui/Button'
 import Stepper from '../components/registration/Stepper'
 import FormField from '../components/registration/FormField'
+import DocumentUpload from '../components/registration/DocumentUpload'
 import { programs } from '../data/programs'
 import { pricing } from '../data/pricing'
 import { school } from '../data/school'
 import { waLinkFor } from '../utils/contact'
 import { useT } from '../hooks/useT'
 import { isPaymentAvailable } from '../services/payment/paymentService'
+import { createApplicationDraft, submitApplication } from '../services/applications/applicationService'
 
 const gradeOptions=programs.flatMap((p)=>p.grades.map((g)=>({value:g,label:g+'\u2014 '+p.name})))
 const programOptions=programs.map((p)=>({value:p.id,label:p.name+' ('+p.ages+')'}))
@@ -22,19 +24,35 @@ const[choice,setChoice]=useState(null) // 'online' | 'school' | null
 const[editingStep,setEditingStep]=useState(null)
 const[formData,setFormData]=useState({parentFirstName:'',parentLastName:'',parentPhone:'',parentEmail:'',parentAddress:'',childFirstName:'',childLastName:'',childDob:'',childGrade:'',childPreviousSchool:'',selectedProgram:'',includeCafeteria:false,includeTransport:false})
 const[errors,setErrors]=useState({})
+const[documents,setDocuments]=useState({birth_certificate:[],student_photo:[],previous_report_card:[]})
+const[applicationId,setApplicationId]=useState(null)
+const[submissionError,setSubmissionError]=useState('')
+const[submitting,setSubmitting]=useState(false)
+const draftPromiseRef=useRef(null)
 const upd=useCallback((e)=>{const{name,value,type,checked}=e.target;setFormData(p=>({...p,[name]:type==='checkbox'?checked:value}));if(errors[name])setErrors(p=>({...p,[name]:''}))},[errors])
-const validateStep=useCallback(()=>{const e={};if(step===0){if(!formData.parentFirstName.trim())e.parentFirstName=t.required;if(!formData.parentLastName.trim())e.parentLastName=t.required;if(!formData.parentPhone.trim())e.parentPhone=t.required;if(!formData.parentEmail.trim())e.parentEmail=t.required;else if(!/\S+@\S+\.\S+/.test(formData.parentEmail))e.parentEmail=t.invalidEmail}if(step===1){if(!formData.childFirstName.trim())e.childFirstName=t.required;if(!formData.childLastName.trim())e.childLastName=t.required;if(!formData.childDob)e.childDob=t.required;if(!formData.childGrade)e.childGrade=t.selectGrade}if(step===2){if(!formData.selectedProgram)e.selectedProgram=t.selectProgram}setErrors(e);return Object.keys(e).length===0},[step,formData,t])
-const nextStep=useCallback(()=>{if(validateStep())setStep(s=>Math.min(s+1,5))},[validateStep])
+const validateStep=useCallback(()=>{const e={};if(step===0){if(!formData.parentFirstName.trim())e.parentFirstName=t.required;if(!formData.parentLastName.trim())e.parentLastName=t.required;if(!formData.parentPhone.trim())e.parentPhone=t.required;if(!formData.parentEmail.trim())e.parentEmail=t.required;else if(!/\S+@\S+\.\S+/.test(formData.parentEmail))e.parentEmail=t.invalidEmail}if(step===1){if(!formData.childFirstName.trim())e.childFirstName=t.required;if(!formData.childLastName.trim())e.childLastName=t.required;if(!formData.childDob)e.childDob=t.required;if(!formData.childGrade)e.childGrade=t.selectGrade}if(step===2){if(!formData.selectedProgram)e.selectedProgram=t.selectProgram}
+if(step===3){for(const kind of ['birth_certificate','student_photo','previous_report_card']){if(!(documents[kind]||[]).some(document=>document.status==='uploaded'))e.documents=t.documentRequired}}setErrors(e);return Object.keys(e).length===0},[step,formData,documents,t])
+const nextStep=useCallback(()=>{if(validateStep())setStep(s=>Math.min(s+1,6))},[validateStep])
 const prevStep=useCallback(()=>{setChoice(null);setStep(s=>Math.max(s-1,0))},[])
 const goToEditStep=useCallback((ts)=>{setEditingStep(ts);setStep(ts)},[])
-const returnToReview=useCallback(()=>{if(editingStep!==null){setStep(3);setEditingStep(null)}},[editingStep])
+const returnToReview=useCallback(()=>{if(editingStep!==null){setStep(4);setEditingStep(null)}},[editingStep])
 const spd=programs.find(p=>p.id===formData.selectedProgram)
 const sprc=pricing.tuition.find(t=>t.program===spd?.name)
-const totalSteps=6
-const handleChoice=(c)=>{setChoice(c);setStep(5)}
-const appRef=useMemo(()=>'REG-'+String(Date.now()).slice(-6),[])
+const totalSteps=7
+const ensureDraft=useCallback(async()=>{
+  if(applicationId) return applicationId
+  if(!draftPromiseRef.current) draftPromiseRef.current=createApplicationDraft(formData,school.schoolYear).then((id)=>{setApplicationId(id);return id}).catch((error)=>{draftPromiseRef.current=null;throw error})
+  return draftPromiseRef.current
+},[applicationId,formData])
+const handleChoice=async(c)=>{
+  if(c!=='school' || submitting) return
+  setSubmissionError(''); setSubmitting(true)
+  try { const id=await ensureDraft(); await submitApplication(id,formData,school.schoolYear); setApplicationId(id); setChoice(c); setStep(6) }
+  catch { setSubmissionError(t.submissionFailed) }
+  finally { setSubmitting(false) }
+}
 const waHelpLink=waLinkFor('help')
-const stepperLabels=t.stepLabels||['Parent','Child','Program','Review','Finalize','Done']
+const stepperLabels=t.stepLabels||['Parent','Child','Program','Documents','Review','Finalize','Done']
 const paymentReady=isPaymentAvailable()
 
 const waContextMsg=useMemo(()=>{const tmpl=t.waMsgPreReg||'Hello';return tmpl.replace('[PARENT_NAME]',formData.parentFirstName+' '+formData.parentLastName).replace('[CHILD_NAME]',formData.childFirstName+' '+formData.childLastName).replace('[GRADE]',formData.childGrade).replace('[PROGRAM]',spd?.name||'').replace('[NOM_PARENT]',formData.parentFirstName+' '+formData.parentLastName).replace('[NOM_ENFANT]',formData.childFirstName+' '+formData.childLastName).replace('[CLASSE]',formData.childGrade).replace('[PROGRAMME]',spd?.name||'')},[formData,spd,t.waMsgPreReg])
@@ -43,16 +61,17 @@ const waPreReg='https://wa.me/'+(school.whatsapp||'').replace(/[^0-9]/g,'')+'?te
 return(<><Navbar/><main className="pt-24 sm:pt-28 pb-20 min-h-screen-dynamic bg-surface"><div className="container-page max-w-2xl">
 <div className="mb-5 sm:mb-8"><h1 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-neutral-900 mb-2">{t.title}</h1><p className="text-neutral-500 text-xs sm:text-sm">{t.subtitle}</p></div>
 <div className="mb-4 sm:mb-6"><Stepper currentStep={step} labels={stepperLabels}/></div>
-<div className="flex items-center justify-between mb-3 sm:mb-5"><p className="text-[10px] font-semibold text-neutral-400 uppercase tracking-[0.15em]">{t.stepOf.replace('{current}',step+1).replace('{total}',totalSteps)}</p>{step<5&&(<a href={waHelpLink} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-[10px] sm:text-xs font-medium text-emerald-600 hover:text-emerald-700 transition-colors"><MessageCircle size={13}/>{t.needHelp}</a>)}</div>
+<div className="flex items-center justify-between mb-3 sm:mb-5"><p className="text-[10px] font-semibold text-neutral-400 uppercase tracking-[0.15em]">{t.stepOf.replace('{current}',step+1).replace('{total}',totalSteps)}</p>{step<6&&(<a href={waHelpLink} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-[10px] sm:text-xs font-medium text-emerald-600 hover:text-emerald-700 transition-colors"><MessageCircle size={13}/>{t.needHelp}</a>)}</div>
 <div className="bg-white rounded-2xl border border-neutral-200 p-5 sm:p-6 md:p-8 mb-6 shadow-sm"><AnimatePresence mode="wait"><motion.div key={step+choice||''} initial={{opacity:0,x:16}} animate={{opacity:1,x:0}} exit={{opacity:0,x:-16}} transition={{duration:0.25}}>
 {step===0&&<SP t={t} fd={formData} up={upd} err={errors} sc={school}/>}
 {step===1&&<SC t={t} fd={formData} up={upd} err={errors} go={gradeOptions}/>}
 {step===2&&<SPR t={t} fd={formData} up={upd} err={errors} po={programOptions} spd={spd} sprc={sprc}/>}
-{step===3&&<SR t={t} fd={formData} gts={goToEditStep} spd={spd} sprc={sprc} school={school}/>}
-{step===4&&<SChoice t={t} sprc={sprc} school={school} paymentReady={paymentReady} onChoice={handleChoice}/>}
-{step===5&&<SFinal t={t} fd={formData} appRef={appRef} spd={spd} school={school} waPreReg={waPreReg} choice={choice}/>}
+{step===3&&<DocumentUpload t={t} applicationId={applicationId} onNeedDraft={ensureDraft} documents={documents} setDocuments={setDocuments}/>}
+{step===4&&<SR t={t} fd={formData} gts={goToEditStep} spd={spd} sprc={sprc} school={school}/>}
+{step===5&&<SChoice t={t} sprc={sprc} school={school} paymentReady={paymentReady} onChoice={handleChoice} submitting={submitting} submissionError={submissionError}/>}
+{step===6&&<SFinal t={t} fd={formData} appRef={applicationId} spd={spd} school={school} waPreReg={waPreReg} choice={choice}/>}
 </motion.div></AnimatePresence></div>
-{step<5&&(<div className="flex justify-between items-center"><Button variant="ghost" size="md" onClick={editingStep!==null?returnToReview:prevStep} disabled={step===0&&editingStep===null} className="text-sm"><ArrowLeft size={15}/>{editingStep!==null?t.backToReview:t.back}</Button><Button variant="primary" size="lg" onClick={editingStep!==null?returnToReview:nextStep} className="text-sm">{editingStep!==null?t.done:t.continue}<ArrowRight size={15}/></Button></div>)}
+{step<6&&(<div className="flex justify-between items-center"><Button variant="ghost" size="md" onClick={editingStep!==null?returnToReview:prevStep} disabled={step===0&&editingStep===null} className="text-sm"><ArrowLeft size={15}/>{editingStep!==null?t.backToReview:t.back}</Button><Button variant="primary" size="lg" onClick={editingStep!==null?returnToReview:nextStep} className="text-sm">{editingStep!==null?t.done:t.continue}<ArrowRight size={15}/></Button></div>)}
 </div></main><Footer/></>)
 }
 
@@ -68,7 +87,7 @@ function SR({t,fd,gts,spd,sprc,school}){return(<div className="space-y-4 sm:spac
 {spd&&<div className="p-4 sm:p-5 rounded-xl bg-primary-50/60 border border-primary-100"><div className="flex items-center justify-between mb-3"><h3 className="text-[10px] font-semibold text-primary-500 uppercase tracking-[0.12em]">{t.reviewProgram}</h3><button onClick={()=>gts(2)} className="text-[11px] font-medium text-primary-600 hover:text-primary-700 flex items-center gap-1 touch-target rounded-lg px-2 py-1"><Pencil size={11}/>{t.reviewEdit}</button></div><div className="mb-3"><p className="font-semibold text-neutral-900 text-sm">{spd.name}</p><p className="text-neutral-500 text-xs">{spd.ages} &bull; {school.schoolYear}</p></div>{sprc&&<div className="pt-3 border-t border-primary-100/60 flex justify-between items-center"><span className="text-xs sm:text-sm text-neutral-500">{t.programPeriod}</span><span className="font-display text-lg font-bold text-neutral-900">{sprc.amount}</span></div>}<p className="text-[10px] text-blue-600 font-medium mt-3">{t.reviewFinalNote}</p></div>}</div>)}
 
 // ── STEP 4: Choose how to finalize ──
-function SChoice({t,sprc,school,paymentReady,onChoice}){
+function SChoice({t,sprc,school,paymentReady,onChoice,submitting,submissionError}){
   return(<div className="space-y-5">
     <h2 className="font-display text-xl sm:text-2xl font-bold text-neutral-900 mb-1">{t.choiceTitle}</h2>
     <p className="text-neutral-500 text-xs sm:text-sm mb-1">{t.choiceSubtitle}</p>
@@ -88,12 +107,12 @@ function SChoice({t,sprc,school,paymentReady,onChoice}){
     </button>
 
     {/* Option B: Finalize at School */}
-    <button onClick={()=>onChoice('school')} className="w-full text-left p-5 sm:p-6 rounded-2xl border-2 border-neutral-200 hover:border-primary-300 bg-white hover:shadow-md transition-all duration-300 group cursor-pointer">
+    <button onClick={()=>onChoice('school')} disabled={submitting} className="w-full text-left p-5 sm:p-6 rounded-2xl border-2 border-neutral-200 hover:border-primary-300 bg-white hover:shadow-md transition-all duration-300 group cursor-pointer">
       <div className="flex items-start gap-4">
         <div className="w-12 h-12 rounded-xl bg-primary-50 text-primary-600 flex items-center justify-center shrink-0 group-hover:bg-primary-100 transition-colors"><Building2 size={22}/></div>
         <div className="min-w-0 flex-1">
           <h3 className="font-display text-lg font-bold text-neutral-900 mb-1">{t.schoolFinalizeTitle}</h3>
-          <p className="text-neutral-500 text-sm mb-3">{t.schoolFinalizeDesc}</p>
+          <p className="text-neutral-500 text-sm mb-3">{t.schoolFinalizeDesc}</p>{submissionError&&<p role="alert" className="text-xs text-red-600 mb-2">{submissionError}</p>}
           <div className="flex flex-wrap gap-3 text-xs text-neutral-500">
             <span className="inline-flex items-center gap-1"><MapPin size={12}/>{school.address}</span>
             <span className="inline-flex items-center gap-1"><Phone size={12}/>{school.phone}</span>

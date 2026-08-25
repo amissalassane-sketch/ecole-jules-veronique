@@ -10,6 +10,7 @@ import Methodology from '../components/sections/Methodology'
 import Bilingual from '../components/sections/Bilingual'
 import StudentLife from '../components/sections/StudentLife'
 import Facilities from '../components/sections/Facilities'
+import DigitalVision from '../components/sections/DigitalVision'
 import ContactStrip from '../components/sections/ContactStrip'
 import Pricing from '../components/sections/Pricing'
 import RegistrationProcess from '../components/sections/RegistrationProcess'
@@ -42,6 +43,9 @@ export default function HomePage() {
         {/* STAGE 4 — Projection */}
         <StudentLife />
         <Facilities />
+
+        {/* Forward-looking, clearly marked as a future/prospective project — never operational */}
+        <DigitalVision />
 
         {/* Contact-first touchpoint — for parents who want to talk before deciding */}
         <ContactStrip />

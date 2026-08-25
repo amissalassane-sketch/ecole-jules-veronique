@@ -1,9 +1,9 @@
 // School data — all placeholders. Replace with real data when available.
 
 export const school = {
-  name: '[SCHOOL NAME]',
+  name: 'École Bilingue Jules & Véronique',
   tagline: '[TAGLINE — Excellence in Bilingual Education]',
-  shortName: '[SCHOOL]',
+  shortName: 'Jules & Véronique',
   foundingYear: '[YEAR]',
   
   // Location — Benin context

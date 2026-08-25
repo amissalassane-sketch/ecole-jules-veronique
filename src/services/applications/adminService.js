@@ -11,7 +11,17 @@ export async function signInAdmin(email, password) {
   if (adminError || !data?.length) { await supabase.auth.signOut(); throw new Error('ADMIN_NOT_AUTHORIZED') }
 }
 export async function signOutAdmin() { if (supabase) await supabase.auth.signOut() }
-export async function getAdminSession() { requireClient(); const { data } = await supabase.auth.getSession(); return data.session }
+export async function getAdminSession() {
+  requireClient()
+  const { data: { session }, error } = await supabase.auth.getSession()
+  if (error || !session) return null
+  // RLS permits this query only for the current Auth UUID. A regular authenticated
+  // or anonymous applicant receives no row and cannot enter administrative routes.
+  const { data: membership, error: membershipError } = await supabase
+    .from('admin_users').select('user_id').eq('user_id', session.user.id).maybeSingle()
+  if (membershipError || !membership) return null
+  return session
+}
 export async function listApplications() {
   requireClient()
   const { data, error } = await supabase.from('applications').select('id,created_at,status,parent_first_name,parent_last_name,child_first_name,child_last_name,requested_program,requested_grade').order('created_at',{ascending:false})

@@ -1,6 +1,6 @@
 # EBJV Supabase setup
 
-This repository contains a **foundation**, not a configured Supabase project. Apply `migrations/20260825_admissions_foundation.sql` in the Supabase SQL editor or with the Supabase CLI before enabling the public registration form.
+This repository contains a **foundation**, not a configured Supabase project. Apply every SQL file in `migrations/` in filename order in the Supabase SQL editor or with the Supabase CLI before enabling the public registration form.
 
 ## Required external configuration
 
@@ -20,4 +20,4 @@ This repository contains a **foundation**, not a configured Supabase project. Ap
 
 ## F-003
 
-The TDR and annex require a unique matricule in a predefined format but do not define that format. No matricule generator is included. Obtain written school approval for the format before adding a database-side generator.
+The TDR and annex require a unique matricule in a predefined format but do not define that format. No matricule generator is included. **Implementation blocked pending school-approved matricule format.** Obtain written school approval for the format before adding a database-side generator.

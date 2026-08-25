@@ -10,6 +10,11 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+# Local environment files may contain Supabase project configuration.
+# Keep .env.example versioned, never commit actual environment files.
+.env
+.env.local
+.env.*.local
 *.local
 
 # Editor directories and files

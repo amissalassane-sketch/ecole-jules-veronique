@@ -49,7 +49,7 @@ return(<><Navbar/><main className="pt-24 sm:pt-28 pb-20 min-h-screen-dynamic bg-
 {step===1&&<SC t={t} fd={formData} up={upd} err={errors} go={gradeOptions}/>}
 {step===2&&<SPR t={t} fd={formData} up={upd} err={errors} po={programOptions} spd={spd} sprc={sprc}/>}
 {step===3&&<SR t={t} fd={formData} gts={goToEditStep} spd={spd} sprc={sprc} school={school}/>}
-{step===4&&<SChoice t={t} fd={formData} spd={spd} sprc={sprc} school={school} paymentReady={paymentReady} onChoice={handleChoice}/>}
+{step===4&&<SChoice t={t} sprc={sprc} school={school} paymentReady={paymentReady} onChoice={handleChoice}/>}
 {step===5&&<SFinal t={t} fd={formData} appRef={appRef} spd={spd} school={school} waPreReg={waPreReg} choice={choice}/>}
 </motion.div></AnimatePresence></div>
 {step<5&&(<div className="flex justify-between items-center"><Button variant="ghost" size="md" onClick={editingStep!==null?returnToReview:prevStep} disabled={step===0&&editingStep===null} className="text-sm"><ArrowLeft size={15}/>{editingStep!==null?t.backToReview:t.back}</Button><Button variant="primary" size="lg" onClick={editingStep!==null?returnToReview:nextStep} className="text-sm">{editingStep!==null?t.done:t.continue}<ArrowRight size={15}/></Button></div>)}
@@ -68,13 +68,13 @@ function SR({t,fd,gts,spd,sprc,school}){return(<div className="space-y-4 sm:spac
 {spd&&<div className="p-4 sm:p-5 rounded-xl bg-primary-50/60 border border-primary-100"><div className="flex items-center justify-between mb-3"><h3 className="text-[10px] font-semibold text-primary-500 uppercase tracking-[0.12em]">{t.reviewProgram}</h3><button onClick={()=>gts(2)} className="text-[11px] font-medium text-primary-600 hover:text-primary-700 flex items-center gap-1 touch-target rounded-lg px-2 py-1"><Pencil size={11}/>{t.reviewEdit}</button></div><div className="mb-3"><p className="font-semibold text-neutral-900 text-sm">{spd.name}</p><p className="text-neutral-500 text-xs">{spd.ages} &bull; {school.schoolYear}</p></div>{sprc&&<div className="pt-3 border-t border-primary-100/60 flex justify-between items-center"><span className="text-xs sm:text-sm text-neutral-500">{t.programPeriod}</span><span className="font-display text-lg font-bold text-neutral-900">{sprc.amount}</span></div>}<p className="text-[10px] text-blue-600 font-medium mt-3">{t.reviewFinalNote}</p></div>}</div>)}
 
 // ── STEP 4: Choose how to finalize ──
-function SChoice({t,fd,spd,sprc,school,paymentReady,onChoice}){
+function SChoice({t,sprc,school,paymentReady,onChoice}){
   return(<div className="space-y-5">
     <h2 className="font-display text-xl sm:text-2xl font-bold text-neutral-900 mb-1">{t.choiceTitle}</h2>
     <p className="text-neutral-500 text-xs sm:text-sm mb-1">{t.choiceSubtitle}</p>
 
     {/* Option A: Pay Online */}
-    <button onClick={()=>onChoice('online')} className="w-full text-left p-5 sm:p-6 rounded-2xl border-2 border-neutral-200 hover:border-accent-400 bg-white hover:shadow-md transition-all duration-300 group cursor-pointer">
+    <button onClick={()=>paymentReady&&onChoice('online')} disabled={!paymentReady} aria-disabled={!paymentReady} className={'w-full text-left p-5 sm:p-6 rounded-2xl border-2 border-neutral-200 bg-white transition-all duration-300 group '+(paymentReady?'hover:border-accent-400 hover:shadow-md cursor-pointer':'opacity-70 cursor-not-allowed')}>
       <div className="flex items-start gap-4">
         <div className="w-12 h-12 rounded-xl bg-accent-100 text-accent-600 flex items-center justify-center shrink-0 group-hover:bg-accent-200 transition-colors"><CreditCard size={22}/></div>
         <div className="min-w-0 flex-1">
@@ -109,8 +109,6 @@ function SChoice({t,fd,spd,sprc,school,paymentReady,onChoice}){
 // ── STEP 5: Confirmation ──
 function SFinal({t,fd,appRef,spd,school,waPreReg,choice}){
   const isOnline=choice==='online'
-  const mq=school.address.replace(/\[|\]/g,'').replace(/\s+/g,'+')
-  const mu='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(mq)
   return(<div className="space-y-5 text-center">
 <motion.div initial={{scale:0}} animate={{scale:1}} transition={{type:'spring',damping:12,stiffness:150}} className="w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6" style={{backgroundColor:isOnline?'#fef3c7':'#d1fae5'}}><Check size={30} style={{color:isOnline?'#d97706':'#059669'}}/></motion.div>
 <h2 className="font-display text-xl sm:text-2xl md:text-3xl font-bold text-neutral-900 mb-2">{isOnline?t.payOnlineConfirmTitle:t.schoolConfirmTitle}</h2>

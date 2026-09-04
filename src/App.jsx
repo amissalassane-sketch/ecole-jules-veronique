@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { LanguageProvider } from './context/LanguageContext'
 import HomePage from './pages/HomePage'
 import RegistrationPage from './pages/RegistrationPage'
+import GridOverlay from './components/dev/GridOverlay'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -34,6 +35,7 @@ export default function App() {
       <BrowserRouter basename={import.meta.env.BASE_URL}>
         <ScrollToTop />
         <AnimatedRoutes />
+        {import.meta.env.DEV && <GridOverlay />}
       </BrowserRouter>
     </LanguageProvider>
   )

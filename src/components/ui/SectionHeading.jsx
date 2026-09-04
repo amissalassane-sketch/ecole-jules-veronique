@@ -25,7 +25,7 @@ export default function SectionHeading({
       {label && (
         <span
           className={cn(
-            'inline-block text-[10px] sm:text-xs font-semibold tracking-[0.2em] uppercase mb-3 sm:mb-4 px-3 py-1.5 rounded-full',
+            'inline-block text-[11px] sm:text-xs font-semibold tracking-[0.2em] uppercase mb-3 sm:mb-4 px-3 py-1.5 rounded-full',
             light
               ? 'bg-white/10 text-white/80'
               : 'bg-primary-50 text-primary-600'

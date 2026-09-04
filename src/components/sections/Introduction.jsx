@@ -31,7 +31,7 @@ export default function Introduction() {
                   <div className="w-16 h-16 md:w-20 md:h-20 mx-auto mb-3 rounded-full bg-primary-100 flex items-center justify-center">
                     <span className="font-display text-2xl md:text-3xl text-primary-300">&spades;</span>
                   </div>
-                  <span className="text-[10px] md:text-xs font-medium tracking-[0.2em] uppercase text-primary-400">
+                  <span className="text-[11px] md:text-xs font-medium tracking-[0.2em] uppercase text-primary-400">
                     {t.intro.schoolPhoto}
                   </span>
                 </div>

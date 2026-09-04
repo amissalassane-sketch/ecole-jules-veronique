@@ -18,6 +18,7 @@ const navLinks = [
   { label: 'Student Life', href: '#student-life', key: 'studentLife' },
   { label: 'Tuition', href: '#pricing', key: 'tuition' },
   { label: 'FAQ', href: '#faq', key: 'faq' },
+  { label: 'Contact', href: '#contact', key: 'contact' },
 ]
 
 export default function Navbar() {

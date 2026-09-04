@@ -63,7 +63,7 @@ export default function Programs() {
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center" style={{ color: program.color }}>
                       <BookOpen size={40} className="mx-auto mb-2 opacity-25" />
-                      <span className="text-[10px] font-medium tracking-[0.15em] uppercase opacity-35">
+                      <span className="text-[11px] font-medium tracking-[0.15em] uppercase opacity-35">
                         {t.programs.programPhoto}
                       </span>
                     </div>
@@ -94,7 +94,7 @@ export default function Programs() {
 
                 {/* Subjects */}
                 <div className="mb-6 md:mb-8">
-                  <p className="text-[10px] font-semibold text-neutral-400 uppercase tracking-[0.15em] mb-2.5">{t.programs.subjects}</p>
+                  <p className="text-[11px] font-semibold text-neutral-400 uppercase tracking-[0.15em] mb-2.5">{t.programs.subjects}</p>
                   <div className="flex flex-wrap gap-1.5">
                     {program.subjects.map((s) => (
                       <span
@@ -125,7 +125,7 @@ function Detail({ icon: Icon, label, value }) {
     <div className="flex items-start gap-2.5">
       <Icon size={16} className="text-primary-500 mt-0.5 shrink-0" />
       <div className="min-w-0">
-        <p className="text-[10px] font-semibold text-neutral-400 uppercase tracking-wide mb-0.5">{label}</p>
+        <p className="text-[11px] font-semibold text-neutral-400 uppercase tracking-wide mb-0.5">{label}</p>
         <p className="text-xs sm:text-sm text-neutral-700 break-words">{value}</p>
       </div>
     </div>

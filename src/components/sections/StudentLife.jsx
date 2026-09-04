@@ -65,7 +65,7 @@ export default function StudentLife() {
                 <div className="absolute inset-0 bg-gradient-to-br from-primary-100 to-surface-alt flex items-center justify-center">
                   <div className="text-center text-primary-250/50">
                     <div className="w-8 h-8 mx-auto mb-1 rounded-full bg-primary-100/30" />
-                    <span className="text-[9px] font-medium tracking-[0.12em] uppercase text-primary-300/40">
+                    <span className="text-[11px] font-medium tracking-[0.12em] uppercase text-primary-300/40">
                       [Photo]
                     </span>
                   </div>

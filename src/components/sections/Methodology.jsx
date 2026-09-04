@@ -31,7 +31,7 @@ export default function Methodology() {
                 <div className="shrink-0"><div className={`w-11 h-11 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-2xl bg-gradient-to-br ${grads[i]} flex items-center justify-center shadow-md`}><Ico size={18} className="text-white sm:size-[20px]"/></div></div>
                 <div className="min-w-0 pt-0.5">
                   <div className="flex items-baseline gap-2.5 mb-1.5">
-                    <span className="text-[10px] font-bold text-primary-400 tracking-[0.12em] shrink-0">{nums[i]}</span>
+                    <span className="text-[11px] font-bold text-primary-400 tracking-[0.12em] shrink-0">{nums[i]}</span>
                     <h3 className="font-display text-xl sm:text-2xl md:text-3xl font-bold text-neutral-900">{t.methodology['step'+(i+1)+'Title']}</h3>
                   </div>
                   <p className="text-neutral-600 leading-relaxed text-sm sm:text-base">{t.methodology['step'+(i+1)+'Desc']}</p>

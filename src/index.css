@@ -70,6 +70,39 @@
    BASE LAYER — Mobile-first foundation
    ============================================ */
 
+/* ============================================
+   GRID TOKENS — mobile-first, overridden at each breakpoint
+   ============================================ */
+
+:root {
+  --grid-columns: 4;
+  --grid-margin: 1rem;      /* 16px */
+  --grid-gutter: 1rem;      /* 16px */
+  --grid-max-width: 100%;
+}
+
+/* Tablet — 8 columns.
+   The margin ramps FLUIDLY from 32px @1024px to 96px @1440px. A hard
+   32px -> 96px step at a single breakpoint would make the content width
+   visibly jump backwards when the window crosses it. The clamp() floor
+   keeps it at 32px for 768-1024px. */
+@media (min-width: 768px) {
+  :root {
+    --grid-columns: 8;
+    --grid-margin: clamp(2rem, calc(2rem + (100vw - 64rem) * 0.15385), 6rem);
+    --grid-gutter: 1.25rem; /* 20px */
+  }
+}
+
+/* Desktop — 12 columns, 1440px design frame.
+   At >=1440px: 1440 - (2 x 96) = 1248px of content. */
+@media (min-width: 1280px) {
+  :root {
+    --grid-columns: 12;
+    --grid-max-width: 90rem; /* 1440px */
+  }
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -80,12 +113,73 @@
     -webkit-text-size-adjust: 100%;
   }
 
+  /* Kill horizontal scroll globally. Several sections use large blurred
+     decorative circles positioned off-canvas; without this the page scrolls
+     sideways on phones. Applied to html AND body so iOS Safari honours it. */
+  html,
+  body {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
   body {
     font-family: var(--font-body);
     background-color: var(--color-surface);
     color: #1a1a1a;
     /* Prevent overscroll bounce on some browsers */
     overscroll-behavior-y: none;
+  }
+
+  /* Media must never exceed its container. */
+  img,
+  svg,
+  video,
+  canvas,
+  iframe {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Long unbroken strings (emails, URLs, phone numbers) must wrap rather than
+     force the viewport wider on a 360px screen. */
+  h1, h2, h3, h4, h5, h6, p, a, li, span {
+    overflow-wrap: break-word;
+  }
+
+  /* iOS Safari auto-zooms any focused input whose font-size is under 16px.
+     That zoom is not reversible by the user and breaks the layout, so force
+     16px on mobile and only shrink on pointer-precise viewports. */
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+
+  @media (min-width: 768px) {
+    input,
+    select,
+    textarea {
+      font-size: 0.875rem;
+    }
+  }
+
+  /* ── Fixed mobile CTA bar clearance ──
+     Reserved for the whole route, NOT toggled while scrolling. Toggling this
+     mid-scroll would resize the document and make the page jump. */
+  body.has-mobile-cta {
+    padding-bottom: calc(4rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  @media (min-width: 1024px) {
+    body.has-mobile-cta {
+      padding-bottom: 0;
+    }
+  }
+
+  /* Anchor targets must clear the fixed header. */
+  section[id],
+  :target {
+    scroll-margin-top: 5rem;
   }
 
   ::selection {
@@ -120,8 +214,28 @@
    ============================================ */
 
 @layer components {
+  /* ============================================
+     RESPONSIVE GRID SYSTEM
+     Mobile  (≥360px) :  4 columns · 16px margin · 16px gutter
+     Tablet  (≥768px) :  8 columns · 32px margin · 20px gutter
+     Desktop (≥1280px): 12 columns · 96px margin · 20px gutter
+     Max content width: 1248px (= 1440 − 2 × 96 margin)
+     ============================================ */
+
   .container-page {
-    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+    width: 100%;
+    margin-inline: auto;
+    max-width: var(--grid-max-width);
+    /* Honour landscape notches so content never sits under a camera cutout. */
+    padding-inline: calc(var(--grid-margin) + env(safe-area-inset-left, 0px));
+    padding-inline-end: calc(var(--grid-margin) + env(safe-area-inset-right, 0px));
+  }
+
+  /* 12/8/4 column grid. Children opt in with .col-span-* below. */
+  .grid-page {
+    display: grid;
+    grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
+    gap: var(--grid-gutter);
   }
 
   .text-balance {
@@ -141,6 +255,41 @@
   .touch-target {
     min-height: 44px;
     min-width: 44px;
+  }
+
+  /* ── Grid column spans ──
+     Values are clamped to the column count available at each breakpoint, so a
+     "col-span-6" safely becomes full-width on mobile (4 cols) instead of
+     overflowing the track. */
+  .col-full {
+    grid-column: 1 / -1;
+  }
+
+  .col-span-half {
+    grid-column: span var(--grid-columns) / span var(--grid-columns);
+  }
+
+  @media (min-width: 768px) {
+    .col-span-half {
+      grid-column: span calc(var(--grid-columns) / 2) / span calc(var(--grid-columns) / 2);
+    }
+  }
+
+  /* Third-width: full on mobile, half on tablet, a third on desktop. */
+  .col-span-third {
+    grid-column: span var(--grid-columns) / span var(--grid-columns);
+  }
+
+  @media (min-width: 768px) {
+    .col-span-third {
+      grid-column: span calc(var(--grid-columns) / 2) / span calc(var(--grid-columns) / 2);
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .col-span-third {
+      grid-column: span 4 / span 4;
+    }
   }
 }
 

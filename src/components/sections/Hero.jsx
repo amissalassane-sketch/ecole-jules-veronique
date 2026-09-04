@@ -22,7 +22,7 @@ export default function Hero() {
         />
       </div>
 
-      <div className="container-page relative z-10 w-full pt-24 pb-20 md:pt-32 md:pb-24">
+      <div className="container-page relative z-10 w-full pt-24 pb-28 md:pt-32 md:pb-24">
         <div className="max-w-3xl mx-auto md:mx-0 lg:max-w-4xl">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -86,7 +86,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.7 }}
-            className="mb-12 md:mb-16"
+            className="mb-8 md:mb-16"
           >
             <a
               href="#school"
@@ -121,7 +121,7 @@ export default function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: [0, 1, 0.6, 1] }}
         transition={{ delay: 1.5, duration: 2, repeat: Infinity }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 md:hidden"
+        className="absolute bottom-4 left-1/2 -translate-x-1/2 md:hidden"
         aria-hidden="true"
       >
         <ArrowDown size={20} className="text-white/30" />

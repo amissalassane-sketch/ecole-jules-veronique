@@ -49,7 +49,7 @@ export default function Statistics() {
             <StatItem key={i} value={stat.value} label={stat.label} delay={i * 0.1} />
           ))}
         </div>
-        <p className="text-center text-white/25 text-[10px] mt-8 max-w-sm mx-auto">
+        <p className="text-center text-white/25 text-[11px] mt-8 max-w-sm mx-auto">
           {t.stats.placeholderNote}
         </p>
       </div>

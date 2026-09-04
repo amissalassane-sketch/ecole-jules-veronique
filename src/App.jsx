@@ -4,10 +4,13 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { LanguageProvider } from './context/LanguageContext'
 import HomePage from './pages/HomePage'
 import RegistrationPage from './pages/RegistrationPage'
+import GridOverlay from './components/dev/GridOverlay'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
-  useEffect(() => { window.scrollTo(0, 0) }, [pathname])
+  // 'instant' overrides html{scroll-behavior:smooth}, which would otherwise
+  // animate a long scroll back to the top on every route change.
+  useEffect(() => { window.scrollTo({ top: 0, left: 0, behavior: 'instant' }) }, [pathname])
   return null
 }
 
@@ -32,6 +35,7 @@ export default function App() {
       <BrowserRouter basename={import.meta.env.BASE_URL}>
         <ScrollToTop />
         <AnimatedRoutes />
+        {import.meta.env.DEV && <GridOverlay />}
       </BrowserRouter>
     </LanguageProvider>
   )

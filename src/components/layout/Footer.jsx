@@ -73,7 +73,7 @@ export default function Footer() {
             <div className="flex items-center justify-between mb-4">
               <h4 className="font-semibold text-white text-xs tracking-[0.15em] uppercase">{t.footer.contactHeading}</h4>
               <div className="flex items-center gap-2">
-                <span className="text-white/30 text-[10px] uppercase tracking-wider font-medium">{t.footer.language}</span>
+                <span className="text-white/30 text-[11px] uppercase tracking-wider font-medium">{t.footer.language}</span>
                 <LanguageSwitcher dark />
               </div>
             </div>
@@ -106,7 +106,7 @@ export default function Footer() {
 
           {/* Contact — 2-col grid */}
           <div>
-            <h4 className="font-semibold text-white mb-2.5 text-[10px] tracking-[0.15em] uppercase">{t.footer.contactHeading}</h4>
+            <h4 className="font-semibold text-white mb-2.5 text-[11px] tracking-[0.15em] uppercase">{t.footer.contactHeading}</h4>
             <div className="grid grid-cols-1 xs:grid-cols-2 gap-x-4 gap-y-2">
               {contactInfo.map((item, i) => (
                 <div key={i} className="flex items-start gap-2 min-w-0">
@@ -123,8 +123,8 @@ export default function Footer() {
 
           {/* Navigation — combined 2-col grid */}
           <div>
-            <h4 className="font-semibold text-white mb-2.5 text-[10px] tracking-[0.15em] uppercase">{t.footer.explore}</h4>
-            <div className="grid grid-cols-2 gap-x-4 gap-y-1">
+            <h4 className="font-semibold text-white mb-2.5 text-[11px] tracking-[0.15em] uppercase">{t.footer.explore}</h4>
+            <div className="grid grid-cols-1 xs:grid-cols-2 gap-x-4 gap-y-1">
               {exploreLinks.map((link) => (
                 <a key={link.key} href={link.href} className="text-white/35 hover:text-white text-sm transition-colors duration-300 py-1.5 touch-target rounded">{t.nav[link.key] || t.footer[link.key]}</a>
               ))}
@@ -144,7 +144,7 @@ export default function Footer() {
           {/* Language + Social */}
           <div className="flex items-center justify-between pt-1">
             <div className="flex items-center gap-2">
-              <span className="text-white/20 text-[10px] uppercase tracking-wider font-medium">{t.footer.language}</span>
+              <span className="text-white/20 text-[11px] uppercase tracking-wider font-medium">{t.footer.language}</span>
               <LanguageSwitcher dark />
             </div>
             <div className="flex items-center gap-2">
@@ -156,7 +156,7 @@ export default function Footer() {
 
       {/* ── Bottom Bar ── */}
       <div className="border-t border-white/10">
-        <div className="container-page py-4 sm:py-5 flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-3 text-[10px] sm:text-xs text-white/20"
+        <div className="container-page py-4 sm:py-5 flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-3 text-[11px] sm:text-xs text-white/20"
           style={{ paddingBottom: 'calc(1rem + env(safe-area-inset-bottom, 0px))' }}>
           <p>&copy; {year} {school.name}. {t.footer.allRights}</p>
           <div className="flex items-center gap-4 sm:gap-5">

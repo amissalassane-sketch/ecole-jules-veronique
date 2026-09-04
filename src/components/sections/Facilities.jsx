@@ -65,7 +65,7 @@ export default function Facilities() {
                   <h3 className="font-semibold text-white text-xs sm:text-sm md:text-base leading-tight">
                     {facility.name}
                   </h3>
-                  <p className="text-white/60 text-[10px] sm:text-xs mt-0.5 md:mt-1 line-clamp-2 hidden md:block md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
+                  <p className="text-white/60 text-[11px] sm:text-xs mt-0.5 md:mt-1 line-clamp-2 hidden md:block md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
                     {facility.description}
                   </p>
                 </div>

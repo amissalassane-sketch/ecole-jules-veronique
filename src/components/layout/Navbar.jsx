@@ -9,6 +9,9 @@ import { school } from '../../data/school'
 import { waLink } from '../../utils/contact'
 import { useT } from '../../hooks/useT'
 
+/* Minimum scroll movement (px) before the bottom bar reacts — kills flicker. */
+const SCROLL_JITTER = 8
+
 const navLinks = [
   { label: 'School', href: '#school', key: 'school' },
   { label: 'Programs', href: '#programs', key: 'programs' },
@@ -27,26 +30,77 @@ export default function Navbar() {
   const isRegistration = location.pathname === '/registration'
 
   useEffect(() => {
-    let lastScrollY = 0
-    const onScroll = () => {
+    let lastY = window.scrollY
+    let ticking = false
+
+    const update = () => {
+      ticking = false
       const y = window.scrollY
+      const delta = y - lastY
+
       setScrolled(y > 50)
-      if (y > 300 && y > lastScrollY) {
-        setShowBottomBar(false)
-      } else {
-        setShowBottomBar(true)
-      }
-      lastScrollY = y
+
+      // Ignore micro-scrolls (trackpad jitter, momentum tail, rubber-banding)
+      // so the bar can never flicker on a 1px movement.
+      if (Math.abs(delta) < SCROLL_JITTER) return
+
+      const doc = document.documentElement
+      const nearBottom = y + window.innerHeight >= doc.scrollHeight - 140
+
+      // Hide only while actively scrolling DOWN, past the hero, and not at the
+      // very end of the page (the final CTA already lives there).
+      setShowBottomBar(!(y > 320 && delta > 0 && !nearBottom))
+      lastY = y
     }
+
+    const onScroll = () => {
+      if (ticking) return
+      ticking = true
+      window.requestAnimationFrame(update)
+    }
+
     window.addEventListener('scroll', onScroll, { passive: true })
+    update()
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  // Reserve room for the fixed mobile CTA bar ONCE PER ROUTE — never during
+  // scroll. Showing/hiding the bar must not reflow the document, otherwise the
+  // scroll position jumps and re-triggers this effect in a loop.
+  useEffect(() => {
+    document.body.classList.toggle('has-mobile-cta', !isRegistration)
+    return () => document.body.classList.remove('has-mobile-cta')
+  }, [isRegistration])
+
   useEffect(() => { setMobileOpen(false) }, [location])
 
+  // Scroll lock that PRESERVES the scroll position. Setting only
+  // overflow:hidden lets iOS Safari snap the page back to the top when the
+  // drawer closes.
   useEffect(() => {
-    document.body.style.overflow = mobileOpen ? 'hidden' : ''
-    return () => { document.body.style.overflow = '' }
+    if (!mobileOpen) return
+
+    const y = window.scrollY
+    const { body } = document
+    const prev = {
+      position: body.style.position,
+      top: body.style.top,
+      width: body.style.width,
+      overflowY: body.style.overflowY,
+    }
+
+    body.style.position = 'fixed'
+    body.style.top = `-${y}px`
+    body.style.width = '100%'
+    body.style.overflowY = 'scroll' // keep the scrollbar gutter → no layout shift
+
+    return () => {
+      body.style.position = prev.position
+      body.style.top = prev.top
+      body.style.width = prev.width
+      body.style.overflowY = prev.overflowY
+      window.scrollTo({ top: y, left: 0, behavior: 'instant' })
+    }
   }, [mobileOpen])
 
   const handleKeyDown = useCallback((e) => {
@@ -242,7 +296,7 @@ export default function Navbar() {
 
       {!isRegistration && (
         <AnimatePresence>
-          {showBottomBar && (
+          {showBottomBar && !mobileOpen && (
             <motion.div
               initial={{ y: 100 }}
               animate={{ y: 0 }}
@@ -277,9 +331,6 @@ export default function Navbar() {
         </AnimatePresence>
       )}
 
-      {!isRegistration && showBottomBar && (
-        <div className="lg:hidden h-16" aria-hidden="true" />
-      )}
     </>
   )
 }

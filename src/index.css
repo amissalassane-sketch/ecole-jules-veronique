@@ -88,6 +88,25 @@
     overscroll-behavior-y: none;
   }
 
+  /* ── Fixed mobile CTA bar clearance ──
+     Reserved for the whole route, NOT toggled while scrolling. Toggling this
+     mid-scroll would resize the document and make the page jump. */
+  body.has-mobile-cta {
+    padding-bottom: calc(4rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  @media (min-width: 1024px) {
+    body.has-mobile-cta {
+      padding-bottom: 0;
+    }
+  }
+
+  /* Anchor targets must clear the fixed header. */
+  section[id],
+  :target {
+    scroll-margin-top: 5rem;
+  }
+
   ::selection {
     background-color: var(--color-primary-600);
     color: white;

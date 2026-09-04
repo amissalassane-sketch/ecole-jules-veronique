@@ -7,7 +7,9 @@ import RegistrationPage from './pages/RegistrationPage'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
-  useEffect(() => { window.scrollTo(0, 0) }, [pathname])
+  // 'instant' overrides html{scroll-behavior:smooth}, which would otherwise
+  // animate a long scroll back to the top on every route change.
+  useEffect(() => { window.scrollTo({ top: 0, left: 0, behavior: 'instant' }) }, [pathname])
   return null
 }
 

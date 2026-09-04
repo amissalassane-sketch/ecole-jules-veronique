@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
 import Hero from '../components/sections/Hero'
@@ -19,9 +18,7 @@ import FAQ from '../components/sections/FAQ'
 import FinalCTA from '../components/sections/FinalCTA'
 
 export default function HomePage() {
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
+  // Route-level scroll reset is handled once by <ScrollToTop /> in App.jsx.
 
   return (
     <>

@@ -126,7 +126,7 @@ export default function Navbar() {
         className={cn(
           'fixed top-0 left-0 right-0 z-50 transition-all duration-500',
           isDarkBg
-            ? 'bg-transparent py-3'
+            ? 'bg-white/95 backdrop-blur-xl border-b border-neutral-200/40 shadow-sm py-2 lg:bg-transparent lg:backdrop-blur-none lg:border-transparent lg:shadow-none lg:py-3'
             : 'bg-white/90 backdrop-blur-xl border-b border-neutral-200/40 shadow-sm py-2'
         )}
       >
@@ -138,7 +138,7 @@ export default function Navbar() {
           >
             <div className={cn(
               'w-8 h-8 md:w-9 md:h-9 rounded-lg transition-all duration-500 flex items-center justify-center',
-              isDarkBg ? 'bg-white/20 backdrop-blur' : 'bg-primary-600'
+              isDarkBg ? 'bg-primary-600 lg:bg-white/20 lg:backdrop-blur' : 'bg-primary-600'
             )}>
               <span className="font-display font-bold text-base md:text-lg text-white">
                 {school.shortName.charAt(0)}
@@ -146,7 +146,7 @@ export default function Navbar() {
             </div>
             <span className={cn(
               'font-display font-bold text-base md:text-lg transition-colors duration-500 hidden sm:block',
-              isDarkBg ? 'text-white' : 'text-neutral-900'
+              isDarkBg ? 'text-neutral-900 lg:text-white' : 'text-neutral-900'
             )}>
               {school.shortName}
             </span>
@@ -208,13 +208,10 @@ export default function Navbar() {
 
           {/* Mobile: LanguageSwitcher + hamburger grouped on the right */}
           <div className="lg:hidden flex items-center gap-1">
-            <LanguageSwitcher dark={isDarkBg} compact />
+            <LanguageSwitcher dark={false} compact />
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className={cn(
-                'p-2.5 rounded-xl transition-colors cursor-pointer touch-target',
-                isDarkBg ? 'text-white hover:bg-white/10' : 'text-neutral-700 hover:bg-neutral-100'
-              )}
+              className="p-2.5 rounded-xl transition-colors cursor-pointer touch-target bg-primary-600 text-white border border-primary-700 shadow-sm hover:bg-primary-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-2"
               aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={mobileOpen}
             >

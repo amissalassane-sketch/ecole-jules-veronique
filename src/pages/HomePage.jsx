@@ -3,6 +3,7 @@ import Footer from '../components/layout/Footer'
 import Hero from '../components/sections/Hero'
 import Introduction from '../components/sections/Introduction'
 import WhyChoose from '../components/sections/WhyChoose'
+import TeamProfile from '../components/sections/TeamProfile'
 import Statistics from '../components/sections/Statistics'
 import Programs from '../components/sections/Programs'
 import Methodology from '../components/sections/Methodology'
@@ -30,6 +31,7 @@ export default function HomePage() {
         {/* STAGE 2 — Understanding */}
         <Introduction />
         <WhyChoose />
+        <TeamProfile />
         <Statistics />
 
         {/* STAGE 3 — Trust & Explore */}

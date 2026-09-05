@@ -1,8 +1,8 @@
 import { createContext, useContext, useState, useCallback, useEffect } from 'react'
 
 const LanguageContext = createContext(null)
-const STORAGE_KEY = 'school-language'
-const DEFAULT_LANGUAGE = 'en'
+const STORAGE_KEY = 'school-language-v2'
+const DEFAULT_LANGUAGE = 'fr'
 
 export function LanguageProvider({ children }) {
   const [language, setLanguageState] = useState(() => {

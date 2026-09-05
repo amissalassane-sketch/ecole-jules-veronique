@@ -40,10 +40,19 @@ export default function Hero() {
             </span>
           </motion.div>
 
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.25 }}
+            className="text-accent-300 text-xs sm:text-sm font-semibold uppercase tracking-[0.16em] mb-4"
+          >
+            {school.name}
+          </motion.p>
+
           <motion.h1
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.3 }}
+            transition={{ duration: 0.7, delay: 0.35 }}
             className="font-display font-bold text-white leading-[1.08] text-balance mb-4 md:mb-6"
             style={{ fontSize: 'clamp(1.75rem, 5vw + 0.5rem, 5.5rem)' }}
           >

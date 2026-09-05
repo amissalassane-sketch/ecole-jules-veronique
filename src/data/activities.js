@@ -1,48 +1,35 @@
-// Student life & activities — placeholders.
+// Activities confirmed by level in the information supplied by the school.
 
 export const activities = {
-  sports: [
-    '[Football]',
-    '[Basketball]',
-    '[Swimming]',
-    '[Athletics]',
-    '[Dance]',
-  ],
-  arts: [
-    '[Visual Arts]',
-    '[Music]',
-    '[Theater]',
-    '[Choir]',
-  ],
-  clubs: [
-    '[Debate Club]',
-    '[Science Club]',
-    '[Coding Club]',
-    '[Eco Club]',
-    '[Reading Club]',
-    '[Language Club]',
-  ],
-  events: [
-    '[Cultural Day]',
-    '[Sports Day]',
-    '[Science Fair]',
-    '[Art Exhibition]',
-    '[End-of-Year Show]',
-    '[Open House]',
-  ],
-  trips: [
-    '[Museum visits]',
-    '[Nature excursions]',
-    '[Cultural sites]',
-    '[Educational tours]',
-  ],
+  younger: {
+    label: 'CI, CP et CE1',
+    labelEn: 'Grade 1, Grade 2 & Grade 3',
+    items: ['Dessin et coloriage', 'Chant et danse', 'Peinture'],
+    itemsEn: ['Drawing and colouring', 'Singing and dancing', 'Painting'],
+  },
+  older: {
+    label: 'CE2, CM1 et CM2',
+    labelEn: 'Grade 4, Grade 5 & Grade 6',
+    items: [
+      'Danse et chorégraphie',
+      'Théâtre',
+      'Quiz de culture générale',
+      'Concours de connaissances',
+      'Lecture et conte',
+      'Activités sportives',
+      'Jeux de société',
+    ],
+    itemsEn: [
+      'Dance and choreography',
+      'Drama',
+      'General knowledge quizzes',
+      'Knowledge competitions',
+      'Reading and storytelling',
+      'Sports activities',
+      'Board games',
+    ],
+  },
 }
 
-export const activityImages = [
-  { src: '/images/activity-1.jpg', alt: '[Students during a sports activity]', category: 'Sports' },
-  { src: '/images/activity-2.jpg', alt: '[Art workshop in session]', category: 'Arts' },
-  { src: '/images/activity-3.jpg', alt: '[Students collaborating on a project]', category: 'Academics' },
-  { src: '/images/activity-4.jpg', alt: '[Music class performance]', category: 'Arts' },
-  { src: '/images/activity-5.jpg', alt: '[Outdoor learning activity]', category: 'Academics' },
-  { src: '/images/activity-6.jpg', alt: '[Cultural day celebration]', category: 'Events' },
-]
+// Real photographs are still awaited from the school; do not render invented images.
+export const activityImages = []

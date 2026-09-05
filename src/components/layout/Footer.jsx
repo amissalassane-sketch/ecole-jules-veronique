@@ -20,8 +20,8 @@ export default function Footer() {
 
   const admissionsLinks = [
     { key: 'howToApply', href: '#registration-process' },
-    { key: 'bookVisitLink', href: '#' },
-    { key: 'schoolCalendar', href: '#' },
+    { key: 'bookVisitLink', href: '#contact' },
+    { key: 'schoolCalendar', href: '#programs' },
   ]
 
   const contactInfo = [
@@ -35,7 +35,7 @@ export default function Footer() {
   const socialLinks = [
     { icon: Globe, href: school.socialMedia.facebook, label: 'Facebook' },
     { icon: ExternalLink, href: school.socialMedia.instagram, label: 'Instagram' },
-  ]
+  ].filter((social) => social.href)
 
   return (
     <footer className="bg-primary-950 text-white">

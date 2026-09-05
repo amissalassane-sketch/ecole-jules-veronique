@@ -1,43 +1,80 @@
-// Programs data — placeholders. Replace with real program information.
+// Academic offer confirmed by the school administration.
+// Ages and exact class-age mapping were not supplied, so they remain explicit.
 
 export const programs = [
   {
-    id: 'early-childhood',
-    name: 'Early Childhood',
-    ages: '[3–5 years]',
-    grades: ['Pre-K', 'K1', 'K2'],
-    description: '[A nurturing environment where young children develop foundational skills through play, exploration, and guided discovery in two languages.]',
-    subjects: ['[Language & Literacy]', '[Mathematics Discovery]', '[Motor Skills]', '[Arts & Creativity]', '[Music & Movement]', '[Social Development]'],
-    languages: ['[LANGUAGE 1]', '[LANGUAGE 2]'],
-    schedule: '[Monday–Friday, 8:00–14:00]',
-    objectives: '[Develop curiosity, social skills, motor coordination, and early bilingual awareness through immersive activities.]',
-    image: '/images/programs-early.jpg',
+    id: 'creche-garderie',
+    name: 'Crèche & Garderie',
+    nameEn: 'Nursery & Daycare',
+    ages: 'Âges à confirmer',
+    grades: ['Crèche', 'Garderie'],
+    description:
+      'Un accueil adapté aux tout-petits dans un cadre bilingue et bienveillant. Les modalités précises sont communiquées par l’administration.',
+    descriptionEn:
+      'A caring setting for young children within a bilingual environment. The administration can provide the detailed arrangements.',
+    subjects: ['Éveil et activités adaptées à l’âge'],
+    subjectsEn: ['Age-appropriate discovery activities'],
+    languages: ['Français', 'English'],
+    schedule: 'Lundi–vendredi, 8h00–16h00',
+    objectives: 'Accompagner les premiers apprentissages et l’éveil de l’enfant.',
+    objectivesEn: 'Support early learning and each child’s development.',
+    image: null,
     color: '#1A6B7F',
   },
   {
-    id: 'primary',
-    name: 'Primary School',
-    ages: '[6–11 years]',
-    grades: ['Grade 1', 'Grade 2', 'Grade 3', 'Grade 4', 'Grade 5'],
-    description: '[A structured bilingual curriculum that builds strong academic foundations while encouraging critical thinking, collaboration, and creativity.]',
-    subjects: ['[French]', '[English]', '[Mathematics]', '[Science]', '[History & Geography]', '[Arts]', '[Physical Education]', '[Technology]'],
-    languages: ['[LANGUAGE 1]', '[LANGUAGE 2]'],
-    schedule: '[Monday–Friday, 8:00–15:30]',
-    objectives: '[Build strong literacy and numeracy in two languages, develop analytical skills, and foster a love for learning through interdisciplinary projects.]',
-    image: '/images/programs-primary.jpg',
+    id: 'maternelle',
+    name: 'Maternelle',
+    nameEn: 'Kindergarten',
+    ages: 'Âges à confirmer',
+    grades: ['Niveau 1', 'Niveau 2'],
+    description:
+      'Un enseignement bilingue dès la maternelle pour développer la curiosité, l’autonomie et les premières compétences scolaires.',
+    descriptionEn:
+      'Bilingual education from kindergarten, supporting curiosity, independence, and early academic skills.',
+    subjects: ['Toutes les matières en français et en anglais'],
+    subjectsEn: ['All subjects in French and English'],
+    languages: ['Français', 'English'],
+    schedule: 'Lundi–vendredi, 8h00–16h00',
+    objectives: 'Poser les bases des apprentissages dans les deux langues.',
+    objectivesEn: 'Build strong foundations for learning in both languages.',
+    image: null,
     color: '#C8963E',
   },
   {
-    id: 'middle-school',
-    name: 'Middle School',
-    ages: '[12–15 years]',
-    grades: ['Grade 6', 'Grade 7', 'Grade 8', 'Grade 9'],
-    description: '[A rigorous bilingual program that prepares students for academic excellence while developing independence, leadership, and global awareness.]',
-    subjects: ['[French Literature]', '[English Literature]', '[Advanced Mathematics]', '[Sciences]', '[History & Geography]', '[Technology & Coding]', '[Arts]', '[Physical Education]', '[Civics]'],
-    languages: ['[LANGUAGE 1]', '[LANGUAGE 2]'],
-    schedule: '[Monday–Friday, 8:00–16:00]',
-    objectives: '[Prepare students for higher education with strong bilingual proficiency, critical thinking, research skills, and personal responsibility.]',
-    image: '/images/programs-middle.jpg',
+    id: 'primaire',
+    name: 'Primaire',
+    nameEn: 'Primary School',
+    ages: 'Âges à confirmer',
+    grades: ['CI', 'CP', 'CE1', 'CE2', 'CM1', 'CM2'],
+    description:
+      'Un parcours primaire bilingue couvrant le CI au CM2, selon les systèmes éducatifs béninois et britannique.',
+    descriptionEn:
+      'A bilingual primary pathway from Grade 1 to Grade 6, drawing on Beninese and British education systems.',
+    subjects: ['Toutes les matières en français et en anglais'],
+    subjectsEn: ['All subjects in French and English'],
+    languages: ['Français', 'English'],
+    schedule: 'Lundi–vendredi, 8h00–16h00',
+    objectives:
+      'Préparer les apprenants aux examens béninois et aux parcours internationaux annoncés par l’école.',
+    objectivesEn:
+      'Prepare learners for Beninese examinations and the international pathways announced by the school.',
+    image: null,
     color: '#0D3B4C',
   },
 ]
+
+export function getProgramName(program, language = 'fr') {
+  return language === 'en' ? program.nameEn : program.name
+}
+
+export function getProgramDescription(program, language = 'fr') {
+  return language === 'en' ? program.descriptionEn : program.description
+}
+
+export function getProgramObjectives(program, language = 'fr') {
+  return language === 'en' ? program.objectivesEn : program.objectives
+}
+
+export function getProgramSubjects(program, language = 'fr') {
+  return language === 'en' ? program.subjectsEn : program.subjects
+}

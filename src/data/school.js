@@ -1,54 +1,79 @@
-// School data — all placeholders. Replace with real data when available.
+// Confirmed school information supplied by the school administration.
+// Keep operationally unconfirmed fields explicit instead of inventing values.
 
 export const school = {
-  name: 'École Bilingue Jules & Véronique',
-  tagline: '[TAGLINE — Excellence in Bilingual Education]',
+  name: 'École bilingue Jules & Véronique',
   shortName: 'Jules & Véronique',
-  foundingYear: '[YEAR]',
-  
-  // Location — Benin context
-  address: '[ADDRESS — Street, City, Benin]',
-  city: '[CITY]',
-  region: '[REGION]',
-  country: 'Benin',
+  tagline: 'Éveiller le potentiel, inspirer l’excellence.',
+  foundingYear: '2025–2026',
+  schoolYear: '2026–2027',
+
+  description:
+    'L’École Maternelle et Primaire Bilingue Jules et Véronique accueille les enfants de la maternelle au CM2. Elle propose une éducation bilingue français-anglais fondée sur l’excellence, la discipline et les valeurs, sous le patronage de Saint Augustin.',
+
+  address: 'Ouêdo, en face de la Cité nouvelle, BP 387 Abomey-Calavi, Atlantique, Bénin',
+  city: 'Ouêdo',
+  region: 'Atlantique',
+  country: 'Bénin',
   countryCode: '+229',
-  
-  // Primary contact channels
-  phone: '[PHONE]',
-  whatsapp: '[WHATSAPP]',       // Benin: typically +229 XX XX XX XX
-  email: '[EMAIL]',
-  
-  // Admissions contact (can be same or different)
-  admissionsPhone: '[ADMISSIONS PHONE]',
-  admissionsWhatsapp: '[ADMISSIONS WHATSAPP]',
-  admissionsEmail: '[ADMISSIONS EMAIL]',
-  
-  socialMedia: {
-    facebook: '#',
-    instagram: '#',
-    linkedin: '#',
-    youtube: '#',
-  },
-  
+
+  phone: '+229 01 92 86 37 60',
+  whatsapp: '+229 01 56 97 99 24',
+  email: 'contactecolejv@gmail.com',
+
   openingHours: {
-    weekdays: '[HOURS — e.g., Monday–Friday, 7:30–17:00]',
-    saturday: '[HOURS — e.g., Saturday, 9:00–12:00]',
-    sunday: 'Closed',
+    label: '7h00–18h30',
+    weekdays: '7h00–18h30',
   },
-  
-  schoolYear: '[2026–2027]',
-  currentYear: '[2026]',
-  
-  languages: ['[LANGUAGE 1]', '[LANGUAGE 2]'],
-  
-  // Accreditation / recognition (placeholder)
-  accreditation: '[ACCREDITATION / MINISTRY RECOGNITION — placeholder]',
-  
-  heroImage: '/images/school/hero.jpg',
-  logo: '/images/branding/logo.svg',
-  
+  classHours: '8h00–16h00, du lundi au vendredi',
+
+  languages: ['Français', 'English'],
+  languageBalance: '50 % français / 50 % anglais',
+  levels: ['Crèche & Garderie', 'Maternelle : Niveaux 1 et 2', 'Primaire : CI au CM2'],
+  educationSystems: ['Système béninois', 'Système britannique'],
+  diplomas: {
+    national: ['CEP', 'BEPC', 'BAC'],
+    international: ['Common Entrance', 'Junior WAEC', 'Senior WAEC'],
+  },
+
+  services: {
+    cafeteria: true,
+    transport: false,
+    security: true,
+    computerLab: 'in-progress',
+    multisportField: 'in-progress',
+  },
+
+  admissions: {
+    testRequired: true,
+    paymentMethods: ['Paiement à la banque'],
+    futurePaymentMethods: ['Mobile money', 'Carte bancaire'],
+  },
+
+  // The school reports that official recognition is in progress.
+  accreditation: 'Agréments et reconnaissances officielles : en cours',
+  accreditationEn: 'Official approvals and recognition: in progress',
+  teacherAuthorization:
+    'Les enseignants disposent des autorisations d’enseigner délivrées par le ministère en charge des enseignements maternel et primaire.',
+  teacherAuthorizationEn:
+    'Teachers hold teaching authorisations issued by the ministry responsible for kindergarten and primary education.',
+  leadershipAuthorization:
+    'Les directions de la maternelle et du primaire disposent des autorisations de diriger délivrées par le ministère des enseignements maternel et primaire.',
+  leadershipAuthorizationEn:
+    'The kindergarten and primary heads hold leadership authorisations issued by the ministry responsible for kindergarten and primary education.',
+  founder: null,
+
+  socialMedia: {
+    facebook: '',
+    instagram: '',
+  },
+
+  // No logo or photography was supplied with the information sheet yet.
+  heroImage: null,
+  logo: null,
+
   legalInfo: {
-    registrationNumber: '[REGISTRATION NUMBER]',
+    registrationNumber: null,
     privacyPolicy: '#',
     termsOfService: '#',
   },

@@ -52,7 +52,7 @@ export default function FinalCTA() {
         </div>
 
         <p className="text-white/30 text-xs sm:text-sm mt-6 md:mt-8 max-w-xs mx-auto">
-          {t.finalCta.contact.replace('[PHONE]', school.phone)}
+          {t.finalCta.contact.replace('[PHONE]', school.phone).replace('[WHATSAPP]', school.whatsapp)}
         </p>
       </motion.div>
     </section>

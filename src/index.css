@@ -115,19 +115,30 @@
 
   /* Kill horizontal scroll globally. Several sections use large blurred
      decorative circles positioned off-canvas; without this the page scrolls
-     sideways on phones. Applied to html AND body so iOS Safari honours it. */
+     sideways on phones.
+
+     WHY `clip` AND NOT `hidden` (P0 scroll bug, fixed 2026-09):
+     `overflow-x: hidden` on BOTH html and body stopped body's overflow from
+     propagating to the viewport, which silently turned <body> into its own
+     scroll container (computed `overflow: hidden auto`). Combined with the
+     former `overscroll-behavior-y: none` on body, every wheel / touch scroll
+     that started over the page was consumed by <body> (which cannot scroll,
+     its content fits) and was forbidden from chaining up to the viewport.
+     Keyboard + scrollTo() still worked because they target
+     document.scrollingElement directly — hence "the site no longer scrolls".
+     `overflow-x: clip` clips paint without creating a scroll container, so
+     the viewport stays the one and only scroller. */
   html,
   body {
     max-width: 100%;
-    overflow-x: hidden;
+    overflow-x: clip;
   }
 
   body {
     font-family: var(--font-body);
     background-color: var(--color-surface);
     color: #1a1a1a;
-    /* Prevent overscroll bounce on some browsers */
-    overscroll-behavior-y: none;
+    /* NOTE: do NOT put `overscroll-behavior` on body — see comment above. */
   }
 
   /* Media must never exceed its container. */

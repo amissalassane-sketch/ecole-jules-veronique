@@ -417,7 +417,10 @@ function ProgramStep({ t, formData, errors, program, language, editing = false, 
             </div>
             <div>
               <dt className="text-caption text-text-3">{tp.schedule}</dt>
-              <dd className="text-text-1">{program.schedule}</dd>
+              {/* Phase 3.6 (§8/§9): in EN the day names are translated (the fact
+                  stays in programs.js); the time format convention is pending
+                  school validation and stays site-consistent meanwhile. */}
+              <dd className="text-text-1">{language === 'en' ? tp.scheduleEn || program.schedule : program.schedule}</dd>
             </div>
           </dl>
           <p className="mt-4 text-caption text-text-3">{t.reviewFinalNote}</p>
@@ -514,7 +517,12 @@ function ContactStep({ t, school }) {
       <ul className="space-y-2 border-t border-border pt-5 text-body-sm text-text-2">
         <li className="flex items-start gap-3">
           <MessageCircle size={16} strokeWidth={1.75} className="mt-1 shrink-0 text-text-3" aria-hidden="true" />
-          <a href={waLinkFor('admissions')} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center text-text-1 underline-offset-4 hover:underline tabular-nums">{school.whatsapp}</a>
+          {/* Phase 3.6 (§13): the channel name is visible so this row can never
+              be read as the phone row — the link then shows the real number. */}
+          <span className="flex flex-wrap items-center gap-x-2">
+            <span className="text-text-3">WhatsApp</span>
+            <a href={waLinkFor('admissions')} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center text-text-1 underline-offset-4 hover:underline tabular-nums">{school.whatsapp}</a>
+          </span>
         </li>
         <li className="flex items-start gap-3">
           <Phone size={16} strokeWidth={1.75} className="mt-1 shrink-0 text-text-3" aria-hidden="true" />

@@ -10,6 +10,7 @@ import Tabs, { TabPanel } from '../ui/Tabs'
 import MediaPlaceholder from '../ui/MediaPlaceholder'
 import ScrollReveal from '../animations/ScrollReveal'
 import { useMediaQuery } from '../../hooks/useMediaQuery'
+import { school } from '../../data/school'
 import { programs, getProgramDescription, getProgramObjectives, getProgramSubjects, getProgramName } from '../../data/programs'
 import { useT } from '../../hooks/useT'
 import { useLanguage } from '../../context/LanguageContext'
@@ -103,7 +104,8 @@ function ProgramCard({ program, language, t, withMedia = false, as }) {
         <MediaPlaceholder ratio="3/2" label={t.programs.programPhoto} className="lg:col-span-4 lg:self-start" />
       )}
       <div className={withMedia ? 'mt-6 lg:mt-0 lg:col-span-8' : undefined}>
-        <Badge variant="available">{t.programs.availability}</Badge>
+        {/* Phase 3.6: single source of truth for the year — school.schoolYear. */}
+        <Badge variant="available">{t.programs.availability.replace('{year}', school.schoolYear)}</Badge>
         <h3 className="mt-3 font-display font-semibold text-h3 text-text-1 text-balance">{name}</h3>
         <p className="mt-3 text-body text-text-2 max-w-[60ch] text-pretty">{getProgramDescription(program, language)}</p>
 

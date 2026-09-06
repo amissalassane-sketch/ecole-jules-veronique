@@ -27,10 +27,11 @@ export default function FinalCTA() {
             id="final-cta-title"
             className="mt-4 font-display font-semibold text-h2 text-text-inverse text-balance mx-auto max-w-[24ch]"
           >
-            {t.finalCta.title}
+            {/* Phase 3.6: year injected from school.schoolYear (was hard-coded). */}
+            {t.finalCta.title.replace('{year}', school.schoolYear)}
           </h2>
           <p className="mt-5 text-lead text-text-inverse-2 text-pretty mx-auto max-w-[36rem]">
-            {t.finalCta.subtitle.replace('[SCHOOL YEAR]', school.schoolYear)}
+            {t.finalCta.subtitle.replace('{year}', school.schoolYear)}
           </p>
           <div className="mt-8 md:mt-10 flex flex-col sm:flex-row sm:justify-center gap-3">
             <Button variant="primaryOnInk" size="lg" to="/registration" className="w-full sm:w-auto whitespace-nowrap">

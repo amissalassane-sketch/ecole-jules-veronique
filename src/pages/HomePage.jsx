@@ -6,8 +6,7 @@ import Commitments from '../components/sections/Commitments'
 import Programs from '../components/sections/Programs'
 import Methodology from '../components/sections/Methodology'
 import Bilingual from '../components/sections/Bilingual'
-import StudentLife from '../components/sections/StudentLife'
-import Facilities from '../components/sections/Facilities'
+import SchoolLife from '../components/sections/SchoolLife'
 import DigitalVision from '../components/sections/DigitalVision'
 import ContactStrip from '../components/sections/ContactStrip'
 import Pricing from '../components/sections/Pricing'
@@ -37,8 +36,8 @@ export default function HomePage() {
         <Bilingual />
 
         {/* STAGE 4 — Projection */}
-        <StudentLife />
-        <Facilities />
+        {/* Vie scolaire & cadre (S2+S4) — merges the former StudentLife + Facilities (DS V2 §17, row 6) */}
+        <SchoolLife />
 
         {/* Forward-looking, clearly marked as a future/prospective project — never operational */}
         <DigitalVision />

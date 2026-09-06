@@ -11,3 +11,19 @@ node scripts/qa/responsive-audit.mjs   # 320→1600 : overflow X, tailles de pol
 ```
 
 Adapter les deux premières lignes (import / launch) selon le binaire disponible.
+
+## Scripts V2 (`scripts/qa/v2/`)
+
+Outillage utilisé depuis la Phase 2.7 (réinstallable en quelques secondes après une réinitialisation du bac à sable) :
+
+```bash
+mkdir -p /tmp/pw && cd /tmp/pw && npm init -y && npm i puppeteer-core @sparticuz/chromium
+# Décompresser les libs AL2023 embarquées si le système n'a pas les dépendances Chromium :
+node -e "const z=require('zlib'),fs=require('fs');fs.writeFileSync('/tmp/al2023.tar',z.brotliDecompressSync(fs.readFileSync('node_modules/@sparticuz/chromium/bin/al2023.tar.br')))" && mkdir -p /tmp/al2023 && tar -xf /tmp/al2023.tar -C /tmp/al2023
+export LD_LIBRARY_PATH=/tmp/al2023/lib:/tmp
+R=<chemin du dépôt>/scripts/qa/v2
+node $R/section.mjs '#student-life' life   # audit d'une section : 10 largeurs FR + 390/1440 EN, captures dans /tmp/shots
+node $R/scroll.mjs                          # scroll P0
+node $R/navhero.mjs                         # Navbar + Hero
+node $R/anchors.mjs                         # ancres, /registration, FR→EN
+```

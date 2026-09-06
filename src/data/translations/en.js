@@ -56,35 +56,42 @@ const en = {
     factsNote: 'Enrolment and other figures will be published once validated by the school.',
     addressLabel: 'Address:',
   },
-  whyChoose: {
-    label: 'Why choose us',
+  commitments: {
+    label: 'Our commitments',
     title: 'An education designed for the future.',
-    subtitle: 'The commitments shared by the school to support learners and their families.',
-    bilingualTitle: 'Daily bilingual education from kindergarten',
-    bilingualDesc: 'Every class receives lessons in French and English each day, with an announced balance of 50% in each language.',
-    lang1: 'French',
-    lang2: 'English',
-    dailyImmersion: '50% / 50%',
-    personalizedTitle: 'Personalised support',
-    personalizedDesc: 'Each class has a French teacher and an English teacher to support learners throughout the school day.',
-    modernTitle: 'Two education systems',
-    modernDesc: 'The offer draws on the Beninese and British education systems to open several pathways for learners.',
-    safeTitle: 'A secure environment',
-    safeDesc: 'The school has a guardhouse, a security service, and a clean environment that supports learning.',
-    globalTitle: 'National and international pathways',
-    globalDesc: 'The school prepares learners for Beninese examinations and announced international pathways, including Common Entrance and WAEC.',
-  },
-  team: {
-    label: 'Team and support',
-    title: 'Authorised professionals supporting learners.',
-    subtitle: 'Information shared by the school about its teaching and administrative team.',
-    teachersTitle: 'Two teachers per class',
-    teachersDesc: 'Each class is supported by one French teacher and one English teacher.',
-    teacherAuthorisationTitle: 'Teaching authorisations',
-    teacherAuthorisationDesc: 'Teachers hold authorisations issued by the ministry responsible for kindergarten and primary education.',
-    leadershipTitle: 'Authorised leadership',
-    leadershipDesc: 'The kindergarten and primary heads hold leadership authorisations issued by the relevant ministry.',
-    recognition: 'Official approvals and recognition: in progress.',
+    items: [
+      {
+        title: 'Daily bilingual education from kindergarten',
+        desc: 'Every class receives lessons in French and English each day, with an announced balance of 50% in each language.',
+      },
+      {
+        title: 'Two teachers per class',
+        desc: 'Each class has a French teacher and an English teacher to support learners throughout the school day.',
+      },
+      {
+        title: 'Two education systems',
+        desc: 'The offer draws on the Beninese and British education systems to open several pathways for learners.',
+      },
+      {
+        title: 'A secure environment',
+        desc: 'The school has a guardhouse, a security service, and a clean environment that supports learning.',
+      },
+      {
+        title: 'National and international pathways',
+        desc: 'The school prepares learners for Beninese examinations and announced international pathways, including Common Entrance and WAEC.',
+      },
+    ],
+    staffTitle: 'An authorised team',
+    staff: [
+      {
+        title: 'Teaching authorisations',
+        desc: 'Teachers hold authorisations issued by the ministry responsible for kindergarten and primary education.',
+      },
+      {
+        title: 'Authorised leadership',
+        desc: 'The kindergarten and primary heads hold leadership authorisations issued by the relevant ministry.',
+      },
+    ],
   },
   programs: {
     label: 'Academic programs',

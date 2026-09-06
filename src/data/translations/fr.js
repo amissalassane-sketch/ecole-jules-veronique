@@ -56,35 +56,42 @@ const fr = {
     factsNote: 'Les effectifs et autres chiffres seront publiés après validation par l’école.',
     addressLabel: 'Adresse :',
   },
-  whyChoose: {
-    label: 'Pourquoi nous choisir',
+  commitments: {
+    label: 'Nos engagements',
     title: 'Une éducation qui prépare l’avenir.',
-    subtitle: 'Les engagements communiqués par l’école pour accompagner les apprenants et leurs familles.',
-    bilingualTitle: 'Un bilinguisme quotidien dès la maternelle',
-    bilingualDesc: 'Chaque jour, les cours sont dispensés en français et en anglais dans toutes les classes, avec une répartition annoncée de 50 % dans chaque langue.',
-    lang1: 'Français',
-    lang2: 'English',
-    dailyImmersion: '50 % / 50 %',
-    personalizedTitle: 'Un suivi personnalisé',
-    personalizedDesc: 'Chaque classe bénéficie d’un enseignant de français et d’un enseignant d’anglais pour accompagner les apprentissages.',
-    modernTitle: 'Deux programmes éducatifs',
-    modernDesc: 'L’offre s’appuie sur le système béninois et le système britannique afin d’ouvrir plusieurs parcours aux apprenants.',
-    safeTitle: 'Un cadre sécurisé',
-    safeDesc: 'L’école dispose d’une guérite, d’un service de sécurité et d’un environnement propre et propice à l’apprentissage.',
-    globalTitle: 'Des perspectives nationales et internationales',
-    globalDesc: 'L’école prépare les apprenants aux examens béninois et aux parcours internationaux annoncés, notamment Common Entrance et WAEC.',
-  },
-  team: {
-    label: 'Équipe et encadrement',
-    title: 'Des professionnels autorisés pour accompagner les apprenants.',
-    subtitle: 'Les informations communiquées par l’école sur son équipe pédagogique et administrative.',
-    teachersTitle: 'Deux enseignants par classe',
-    teachersDesc: 'Chaque classe est accompagnée par un enseignant de français et un enseignant d’anglais.',
-    teacherAuthorisationTitle: 'Autorisations d’enseigner',
-    teacherAuthorisationDesc: 'Les enseignants disposent des autorisations délivrées par le ministère en charge des enseignements maternel et primaire.',
-    leadershipTitle: 'Direction autorisée',
-    leadershipDesc: 'Les directions de la maternelle et du primaire disposent des autorisations de diriger délivrées par le ministère compétent.',
-    recognition: 'Agréments et reconnaissances officielles : en cours.',
+    items: [
+      {
+        title: 'Un bilinguisme quotidien dès la maternelle',
+        desc: 'Chaque jour, les cours sont dispensés en français et en anglais dans toutes les classes, avec une répartition annoncée de 50\u202f% dans chaque langue.',
+      },
+      {
+        title: 'Deux enseignants par classe',
+        desc: 'Chaque classe bénéficie d’un enseignant de français et d’un enseignant d’anglais pour accompagner les apprentissages.',
+      },
+      {
+        title: 'Deux programmes éducatifs',
+        desc: 'L’offre s’appuie sur le système béninois et le système britannique afin d’ouvrir plusieurs parcours aux apprenants.',
+      },
+      {
+        title: 'Un cadre sécurisé',
+        desc: 'L’école dispose d’une guérite, d’un service de sécurité et d’un environnement propre et propice à l’apprentissage.',
+      },
+      {
+        title: 'Des perspectives nationales et internationales',
+        desc: 'L’école prépare les apprenants aux examens béninois et aux parcours internationaux annoncés, notamment Common Entrance et WAEC.',
+      },
+    ],
+    staffTitle: 'Un encadrement autorisé',
+    staff: [
+      {
+        title: 'Autorisations d’enseigner',
+        desc: 'Les enseignants disposent des autorisations délivrées par le ministère en charge des enseignements maternel et primaire.',
+      },
+      {
+        title: 'Direction autorisée',
+        desc: 'Les directions de la maternelle et du primaire disposent des autorisations de diriger délivrées par le ministère compétent.',
+      },
+    ],
   },
   programs: {
     label: 'Programmes scolaires',

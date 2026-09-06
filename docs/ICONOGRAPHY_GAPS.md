@@ -40,5 +40,6 @@ Règles appliquées : trait **1.75** partout (règle CSS globale `svg.lucide { s
 
 - 2.1 : règle CSS trait 1.75 ✔ · document créé ✔
 - 2.3 (L'école) : section réduite à **3 icônes Lucide** — `Image` 32 (MediaPlaceholder), `MapPin` 20 (adresse), `ShieldCheck` 20 (Notice agréments). Supprimées : `Shield`, `School`, `CalendarDays`, `Languages`, `Scale` (icônes devant chaque « stat », interdites §12 « numéro + icône côte à côte »). ZIP Phosphor (`design/assets/phosphor-icons.zip`) inspecté : aucun logo de marque requis dans cette section → aucun asset Phosphor utilisé, conformément à l'arbitrage validé.
+- 2.4 (Engagements) : **2 icônes Lucide** — `GraduationCap` 20 et `ShieldCheck` 20 dans `IconTile` sm, uniquement sur les 2 Card/Default « encadrement autorisé ». Liste 01–05 sans icône (numéro Playfair gold-deep). Supprimées : `Globe`, `Heart`, `Lightbulb`, `Shield`, `Target`, `UsersRound`, `Languages` 14 px (tuiles colorées rose/ambre/émeraude/violet). Aucun asset Phosphor requis (pas de logo de marque).
 - 2.2 → 2.11 : normalisation des tailles et `aria-hidden` section par section, remplacement des liens sociaux par des liens texte (Footer, 2.11).
 - 2.12 : suppression de `public/icons.svg`.

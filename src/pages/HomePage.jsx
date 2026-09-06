@@ -2,8 +2,7 @@ import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
 import Hero from '../components/sections/Hero'
 import Introduction from '../components/sections/Introduction'
-import WhyChoose from '../components/sections/WhyChoose'
-import TeamProfile from '../components/sections/TeamProfile'
+import Commitments from '../components/sections/Commitments'
 import Programs from '../components/sections/Programs'
 import Methodology from '../components/sections/Methodology'
 import Bilingual from '../components/sections/Bilingual'
@@ -29,8 +28,8 @@ export default function HomePage() {
         {/* STAGE 2 — Understanding */}
         {/* L'école (S2 Editorial Split) — merges the former Introduction + Statistics (DS V2 §17, row 2) */}
         <Introduction />
-        <WhyChoose />
-        <TeamProfile />
+        {/* Nos engagements (S3 Editorial List) — merges the former WhyChoose + TeamProfile (DS V2 §17, row 3) */}
+        <Commitments />
 
         {/* STAGE 3 — Trust & Explore */}
         <Programs />

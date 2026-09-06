@@ -20,7 +20,7 @@ export default function Programs() {
         <SectionHeading label={t.programs.label} title={t.programs.title} subtitle={t.programs.subtitle} />
 
         <div className="mb-8 md:mb-12" role="tablist" aria-label={t.programs.label}>
-          <div className="flex gap-2 overflow-x-auto pb-2 -mx-1 px-1 md:justify-center md:overflow-visible md:pb-0 scrollbar-none">
+          <div className="flex gap-2 overflow-x-auto pb-2 -mx-1 px-1 lg:justify-center lg:overflow-visible lg:pb-0 scrollbar-none">
             {programs.map((item, i) => {
               const name = getProgramName(item, language)
               return (

@@ -1,0 +1,220 @@
+/* ==========================================================================
+   EBJV DESIGN TOKENS V2
+   Source of truth: docs/EBJV_DESIGN_SYSTEM_ART_DIRECTION_V2.md (§04–§07, §11, §14, §20)
+   Imported first by src/index.css. Tailwind 4 `@theme` → every token becomes a
+   CSS variable on :root AND a utility (bg-paper, text-h2, rounded-md, …).
+
+   RULE: no visual value may exist in the codebase outside this file.
+   ========================================================================== */
+
+@theme {
+  /* ------------------------------------------------------------------
+     RESET of Tailwind default + V1 namespaces we do not want to leak.
+     (The V1 compat aliases at the bottom re-declare ONLY what is still
+     referenced by legacy sections; they are removed in Phase 2.12.)
+     ------------------------------------------------------------------ */
+  --color-primary-*: initial;
+  --color-accent-*: initial;
+  --color-neutral-*: initial;
+  --color-emerald-*: initial;
+  --color-amber-*: initial;
+  --color-rose-*: initial;
+  --color-violet-*: initial;
+  --color-red-*: initial;
+  --color-blue-*: initial;
+  --color-surface-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* ------------------------------------------------------------------
+     COLOR · brand  (§04)
+     ------------------------------------------------------------------ */
+  --color-primary: #0F4C5C;        /* Teal EBJV — the school's voice */
+  --color-primary-dark: #0A3542;   /* hover / active */
+  --color-primary-light: #E3EFF2;  /* tinted surface: chips, info, icon tiles */
+  --color-ink: #081F29;            /* dark section background */
+  --color-ink-2: #0C2A36;          /* surface ON ink (replaces white/5) */
+  --color-gold: #B8862E;           /* accent: hairlines, numerals ≥ 24px */
+  --color-gold-light: #D9B36A;     /* accent ON ink; CTA-on-ink bg (text = ink) */
+  --color-gold-deep: #7F5B1C;      /* accent text ON light (5.84:1 on paper) */
+
+  /* COLOR · neutrals (warm, ink-tinted) */
+  --color-paper: #FAF9F6;          /* page background */
+  --color-linen: #F2F0EA;          /* alternate light section / calm block */
+  --color-white: #FFFFFF;          /* elevated surface: cards, inputs, solid header */
+  --color-border: #E2DED5;
+  --color-border-strong: #B9B2A4;  /* inputs, hover */
+  --color-border-inverse: rgb(255 255 255 / 0.14);
+  --color-text-1: #111C24;
+  --color-text-2: #44515B;
+  --color-text-3: #5A666F;         /* muted — minimum on light (≥ 5.17:1) */
+  --color-text-inverse: #FFFFFF;
+  --color-text-inverse-2: #BFC5C7;
+  --color-text-inverse-3: #97A1A5; /* muted — minimum on ink (≥ 5.68:1) */
+
+  /* COLOR · semantic (always text + bg paired) */
+  --color-success: #1F7A4D;  --color-success-light: #E6F2EC;
+  --color-warning: #7A520C;  --color-warning-light: #FBF3E1;
+  --color-error:   #B42318;  --color-error-light:   #FBEAE8;
+  --color-info:    #0F4C5C;  --color-info-bg:    #E3EFF2;
+
+  /* ------------------------------------------------------------------
+     TYPE  (§05)  — `text-h2` etc. carry size + line-height + tracking
+     ------------------------------------------------------------------ */
+  --font-display: "Playfair Display", "Iowan Old Style", Georgia, serif;
+  --font-body: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --text-display: clamp(2.125rem, 1.45rem + 3.5vw, 4rem); /* §05/§15: 34 @320 · 37 @390 · 50 @768 · 64 @1280+ */
+  --text-display--line-height: 1.08;
+  --text-display--letter-spacing: -0.015em;
+  --text-h1: clamp(2rem, 1.4rem + 2.5vw, 3rem);
+  --text-h1--line-height: 1.12;
+  --text-h1--letter-spacing: -0.01em;
+  --text-h2: clamp(1.75rem, 1.35rem + 1.7vw, 2.5rem);
+  --text-h2--line-height: 1.15;
+  --text-h2--letter-spacing: -0.01em;
+  --text-h3: clamp(1.375rem, 1.2rem + 0.75vw, 1.75rem);
+  --text-h3--line-height: 1.25;
+  --text-h4: 1.25rem;
+  --text-h4--line-height: 1.35;
+  --text-lead: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
+  --text-lead--line-height: 1.6;
+  --text-body: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem);
+  --text-body--line-height: 1.65;
+  --text-body-sm: 0.9375rem;
+  --text-body-sm--line-height: 1.6;
+  --text-caption: 0.8125rem;
+  --text-caption--line-height: 1.5;
+  --text-eyebrow: 0.8125rem;
+  --text-eyebrow--line-height: 1.2;
+  --text-eyebrow--letter-spacing: 0.08em;
+  --text-stat: clamp(2.5rem, 1.8rem + 2.9vw, 3.5rem);
+  --text-stat--line-height: 1;
+  --text-stat--letter-spacing: -0.02em;
+  --text-quote: clamp(1.5rem, 1.2rem + 1.2vw, 2.25rem);
+  --text-quote--line-height: 1.3;
+
+  /* Floor enforcement on Tailwind's own scale (legacy `text-xs` / `text-sm`
+     become 13px / 15px everywhere — nothing functional below 13px). */
+  --text-xs: 0.8125rem;   --text-xs--line-height: 1.5;
+  --text-sm: 0.9375rem;   --text-sm--line-height: 1.6;
+
+  /* ------------------------------------------------------------------
+     SPACING  (§06) — extends Tailwind's 4px scale with section rhythms
+     ------------------------------------------------------------------ */
+  --spacing-section: clamp(4rem, 3rem + 4vw, 6rem);            /* 64 → 96 */
+  --spacing-section-compact: clamp(2.5rem, 2rem + 2vw, 4rem);  /* 40 → 64 */
+  --spacing-section-air: clamp(5rem, 3.5rem + 5vw, 8rem);      /* 80 → 128 */
+  --spacing-section-head: clamp(2.5rem, 2rem + 2vw, 4rem);     /* heading → content */
+
+  /* ------------------------------------------------------------------
+     RADIUS  (§11)
+     ------------------------------------------------------------------ */
+  --radius-xs: 4px;    /* chips, badges, table cells */
+  --radius-sm: 8px;    /* buttons, inputs, icon tiles, tabs */
+  --radius-md: 12px;   /* cards, accordion, notice */
+  --radius-lg: 16px;   /* images, media, mobile panel */
+  --radius-pill: 9999px;
+
+  /* ------------------------------------------------------------------
+     SHADOW  (§11) — only for things that FLOAT (header, menu, modal)
+     ------------------------------------------------------------------ */
+  --shadow-subtle: 0 1px 2px rgb(8 31 41 / 0.06), 0 1px 3px rgb(8 31 41 / 0.04);
+  --shadow-medium: 0 4px 12px rgb(8 31 41 / 0.08), 0 2px 4px rgb(8 31 41 / 0.04);
+  --shadow-strong: 0 16px 40px rgb(8 31 41 / 0.16);
+
+  /* ------------------------------------------------------------------
+     CONTAINER  (§07)
+     ------------------------------------------------------------------ */
+  --container-page: 80rem;      /* 1280 content */
+  --container-prose: 52.5rem;   /* 840  ≈ 8 cols */
+  --container-narrow: 38.75rem; /* 620  ≈ 6 cols */
+
+  /* ------------------------------------------------------------------
+     MOTION  (§14)
+     ------------------------------------------------------------------ */
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --duration-panel: 280ms;
+  --duration-reveal: 400ms;
+
+  /* ==================================================================
+     V1 → V2 COMPAT ALIASES  — REMOVE IN PHASE 2.12
+     Legacy sections still reference the V1 scales. Each alias maps onto
+     a V2 token so the whole site renders in V2 colours today without
+     touching section files. No alias introduces a new colour.
+     ================================================================== */
+  --color-primary-50:  var(--color-primary-light);
+  --color-primary-100: var(--color-primary-light);
+  --color-primary-200: var(--color-text-inverse-2);
+  --color-primary-300: var(--color-text-inverse-2);
+  --color-primary-400: var(--color-primary);
+  --color-primary-500: var(--color-primary);
+  --color-primary-600: var(--color-primary);
+  --color-primary-700: var(--color-primary-dark);
+  --color-primary-800: var(--color-primary-dark);
+  --color-primary-900: var(--color-ink-2);
+  --color-primary-950: var(--color-ink);
+
+  --color-accent-50:  var(--color-warning-light);
+  --color-accent-100: var(--color-warning-light);
+  --color-accent-200: var(--color-gold-light);
+  --color-accent-300: var(--color-gold-light);
+  --color-accent-400: var(--color-gold);
+  --color-accent-500: var(--color-gold);
+  --color-accent-600: var(--color-gold-deep);
+  --color-accent-700: var(--color-gold-deep);
+
+  --color-neutral-50:  var(--color-paper);
+  --color-neutral-100: var(--color-linen);
+  --color-neutral-200: var(--color-border);
+  --color-neutral-300: var(--color-border-strong);
+  --color-neutral-400: var(--color-text-3);
+  --color-neutral-500: var(--color-text-3);
+  --color-neutral-600: var(--color-text-2);
+  --color-neutral-700: var(--color-text-2);
+  --color-neutral-800: var(--color-text-1);
+  --color-neutral-900: var(--color-text-1);
+  --color-neutral-950: var(--color-ink);
+
+  --color-surface: var(--color-paper);
+  --color-surface-alt: var(--color-linen);
+  --color-surface-dark: var(--color-ink);
+
+  --color-emerald-50:  var(--color-success-light);
+  --color-emerald-100: var(--color-success-light);
+  --color-emerald-400: var(--color-success);
+  --color-emerald-500: var(--color-success);
+  --color-emerald-600: var(--color-success);
+  --color-emerald-700: var(--color-success);
+  --color-amber-50:  var(--color-warning-light);
+  --color-amber-100: var(--color-warning-light);
+  --color-amber-200: var(--color-warning-light);
+  --color-amber-400: var(--color-warning);
+  --color-amber-600: var(--color-warning);
+  --color-amber-700: var(--color-warning);
+  --color-amber-800: var(--color-warning);
+  --color-amber-900: var(--color-warning);
+  --color-red-300: var(--color-error);
+  --color-red-400: var(--color-error);
+  --color-red-500: var(--color-error);
+  --color-blue-600: var(--color-info);
+  --color-rose-50:    var(--color-primary-light);
+  --color-rose-500:   var(--color-primary);
+  --color-violet-50:  var(--color-primary-light);
+  --color-violet-400: var(--color-primary);
+  --color-violet-600: var(--color-primary);
+
+  /* legacy radii are clamped to the V2 maximum (16px) */
+  --radius-xl:  var(--radius-lg);
+  --radius-2xl: var(--radius-lg);
+  --radius-3xl: var(--radius-lg);
+  /* legacy shadows map to the 3 V2 levels */
+  --shadow-sm:  var(--shadow-subtle);
+  --shadow-md:  var(--shadow-medium);
+  --shadow-lg:  var(--shadow-strong);
+  --shadow-xl:  var(--shadow-strong);
+  --shadow-2xl: var(--shadow-strong);
+}

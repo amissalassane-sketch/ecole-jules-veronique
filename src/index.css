@@ -3,6 +3,10 @@
 
 /* ── Custom breakpoint: xs (480px) for very small phones ── */
 @custom-variant xs (@media (min-width: 30rem));
+/* Range variant 1024–1279 px. Custom variants are emitted before the core
+   `sm…xl` breakpoints, so `xs:inline` would lose against `lg:hidden` — this
+   dedicated range keeps that ordering problem out of the markup. */
+@custom-variant lg-only (@media (min-width: 64rem) and (max-width: 79.999rem));
 
 /* ============================================================
    EBJV — GLOBAL STYLES V2
@@ -23,8 +27,13 @@
   --grid-margin: 1rem;
   --grid-gutter: 1rem;
   --grid-max-width: 100%;
-  /* Fixed header height — used by scroll-margin. Navbar V2 (Phase 2.2) sets 72/60. */
-  --header-h: 4.5rem;
+  /* Fixed header height (§18): 60px mobile · 72px desktop — used by scroll-margin
+     and by the Hero top padding. Keep in sync with Navbar.jsx. */
+  --header-h: 3.75rem;
+}
+
+@media (min-width: 1024px) {
+  :root { --header-h: 4.5rem; }
 }
 
 @media (min-width: 30rem) {

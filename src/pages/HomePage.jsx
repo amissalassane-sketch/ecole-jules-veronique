@@ -14,7 +14,6 @@ import DigitalVision from '../components/sections/DigitalVision'
 import ContactStrip from '../components/sections/ContactStrip'
 import Pricing from '../components/sections/Pricing'
 import RegistrationProcess from '../components/sections/RegistrationProcess'
-import Testimonials from '../components/sections/Testimonials'
 import FAQ from '../components/sections/FAQ'
 import FinalCTA from '../components/sections/FinalCTA'
 
@@ -52,7 +51,7 @@ export default function HomePage() {
         {/* STAGE 5 — Decision */}
         <Pricing />
         <RegistrationProcess />
-        <Testimonials />
+        {/* Testimonials: kept out of the Home until ≥ 2 verified testimonials exist (DS V2 §24). Component preserved. */}
         <FAQ />
 
         {/* STAGE 6 — Action */}

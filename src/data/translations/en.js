@@ -102,9 +102,7 @@ const en = {
     grades: 'Classes',
     objectives: 'Objective',
     subjects: 'Learning',
-    enrollIn: 'Request information about',
     programPhoto: 'Program photo coming soon',
-    estimatedTuition: 'Fees provided by the administration',
     systems: 'Education systems',
     systemsValue: 'Beninese and British',
     diplomasTitle: 'Announced pathways and examinations',
@@ -113,7 +111,6 @@ const en = {
     diplomaNote: 'The process of creating secondary school is currently underway.',
     availability: 'Levels open for 2026–2027',
     requestInfo: 'Request information',
-    secondaryNote: 'The process of creating secondary school is currently underway.',
   },
   methodology: {
     label: 'Admission and support pathway',

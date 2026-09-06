@@ -102,9 +102,7 @@ const fr = {
     grades: 'Classes',
     objectives: 'Objectif',
     subjects: 'Enseignement',
-    enrollIn: 'Demander des informations pour',
     programPhoto: 'Photo du programme à venir',
-    estimatedTuition: 'Frais communiqués par l’administration',
     systems: 'Systèmes éducatifs',
     systemsValue: 'Béninois et britannique',
     diplomasTitle: 'Parcours et examens annoncés',
@@ -113,7 +111,6 @@ const fr = {
     diplomaNote: 'La procédure de création du secondaire est en cours.',
     availability: 'Niveaux ouverts pour 2026–2027',
     requestInfo: 'Demander des informations',
-    secondaryNote: 'La procédure de création du secondaire est en cours.',
   },
   methodology: {
     label: 'Le parcours d’admission et de suivi',

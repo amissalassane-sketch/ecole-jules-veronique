@@ -4,13 +4,11 @@ import Hero from '../components/sections/Hero'
 import Introduction from '../components/sections/Introduction'
 import Commitments from '../components/sections/Commitments'
 import Programs from '../components/sections/Programs'
-import Methodology from '../components/sections/Methodology'
 import Bilingual from '../components/sections/Bilingual'
 import SchoolLife from '../components/sections/SchoolLife'
 import DigitalVision from '../components/sections/DigitalVision'
 import ContactStrip from '../components/sections/ContactStrip'
-import Pricing from '../components/sections/Pricing'
-import RegistrationProcess from '../components/sections/RegistrationProcess'
+import Admission from '../components/sections/Admission'
 import FAQ from '../components/sections/FAQ'
 import FinalCTA from '../components/sections/FinalCTA'
 
@@ -32,7 +30,6 @@ export default function HomePage() {
 
         {/* STAGE 3 — Trust & Explore */}
         <Programs />
-        <Methodology />
         <Bilingual />
 
         {/* STAGE 4 — Projection */}
@@ -46,8 +43,8 @@ export default function HomePage() {
         <ContactStrip />
 
         {/* STAGE 5 — Decision */}
-        <Pricing />
-        <RegistrationProcess />
+        {/* Admission (S7 Process Split) — merges the former Methodology + RegistrationProcess + Pricing (DS V2 §24, row 7); anchors #registration-process + #pricing kept */}
+        <Admission />
         {/* Testimonials: kept out of the Home until ≥ 2 verified testimonials exist (DS V2 §24). Component preserved. */}
         <FAQ />
 

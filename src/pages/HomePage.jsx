@@ -2,20 +2,13 @@ import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
 import Hero from '../components/sections/Hero'
 import Introduction from '../components/sections/Introduction'
-import WhyChoose from '../components/sections/WhyChoose'
-import TeamProfile from '../components/sections/TeamProfile'
-import Statistics from '../components/sections/Statistics'
+import Commitments from '../components/sections/Commitments'
 import Programs from '../components/sections/Programs'
-import Methodology from '../components/sections/Methodology'
 import Bilingual from '../components/sections/Bilingual'
-import StudentLife from '../components/sections/StudentLife'
-import Facilities from '../components/sections/Facilities'
-import DigitalVision from '../components/sections/DigitalVision'
-import ContactStrip from '../components/sections/ContactStrip'
-import Pricing from '../components/sections/Pricing'
-import RegistrationProcess from '../components/sections/RegistrationProcess'
-import Testimonials from '../components/sections/Testimonials'
+import SchoolLife from '../components/sections/SchoolLife'
+import Admission from '../components/sections/Admission'
 import FAQ from '../components/sections/FAQ'
+import Contact from '../components/sections/Contact'
 import FinalCTA from '../components/sections/FinalCTA'
 
 export default function HomePage() {
@@ -29,31 +22,26 @@ export default function HomePage() {
         <Hero />
 
         {/* STAGE 2 — Understanding */}
+        {/* L'école (S2 Editorial Split) — merges the former Introduction + Statistics (DS V2 §17, row 2) */}
         <Introduction />
-        <WhyChoose />
-        <TeamProfile />
-        <Statistics />
+        {/* Nos engagements (S3 Editorial List) — merges the former WhyChoose + TeamProfile (DS V2 §17, row 3) */}
+        <Commitments />
 
         {/* STAGE 3 — Trust & Explore */}
         <Programs />
-        <Methodology />
         <Bilingual />
 
         {/* STAGE 4 — Projection */}
-        <StudentLife />
-        <Facilities />
-
-        {/* Forward-looking, clearly marked as a future/prospective project — never operational */}
-        <DigitalVision />
-
-        {/* Contact-first touchpoint — for parents who want to talk before deciding */}
-        <ContactStrip />
+        {/* Vie scolaire & cadre (S2+S4) — merges the former StudentLife + Facilities (DS V2 §17, row 6) */}
+        <SchoolLife />
 
         {/* STAGE 5 — Decision */}
-        <Pricing />
-        <RegistrationProcess />
-        <Testimonials />
+        {/* Admission (S7 Process Split) — merges the former Methodology + RegistrationProcess + Pricing (DS V2 §24, row 7); anchors #registration-process + #pricing kept */}
+        <Admission />
+        {/* Testimonials: kept out of the Home until ≥ 2 verified testimonials exist (DS V2 §24). Component preserved. */}
+        {/* FAQ (S8) — absorbs DigitalVision as one entry; Contact (S9) owns #contact (DS V2 §24 rows 8–9) */}
         <FAQ />
+        <Contact />
 
         {/* STAGE 6 — Action */}
         <FinalCTA />

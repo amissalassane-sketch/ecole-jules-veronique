@@ -1,147 +1,140 @@
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Clock, BookOpen, Languages, Target, ChevronRight, Layers3 } from 'lucide-react'
-import SectionHeading from '../ui/SectionHeading'
+import { motion } from 'framer-motion'
+import { ArrowRight, BookOpen, Clock, FileText, Languages, Target } from 'lucide-react'
+import Section from '../layout/Section'
+import Eyebrow from '../ui/Eyebrow'
+import Badge from '../ui/Badge'
 import Button from '../ui/Button'
+import Card, { NoticeCard } from '../ui/Card'
+import Tabs, { TabPanel } from '../ui/Tabs'
+import MediaPlaceholder from '../ui/MediaPlaceholder'
+import ScrollReveal from '../animations/ScrollReveal'
+import { useMediaQuery } from '../../hooks/useMediaQuery'
 import { programs, getProgramDescription, getProgramObjectives, getProgramSubjects, getProgramName } from '../../data/programs'
 import { useT } from '../../hooks/useT'
 import { useLanguage } from '../../context/LanguageContext'
 
+/**
+ * Programmes — DS V2 §08 type S5 "Program Showcase" (blueprint §17 row 4).
+ *
+ *  linen · Eyebrow → H2 → lead
+ *  ≥ lg : Tabs (underline) → one Card/Program 4/8 (MediaPlaceholder 3:2 ‖ content)
+ *  < lg : no tabs — the 3 Card/Program stacked (nothing hidden behind a swipe)
+ *  then ONE Notice info « Parcours et examens » (secondary note said once).
+ *
+ * Card/Program: 3px primary left rule · Badge « Niveaux ouverts » · H3 Playfair
+ * · Body · meta <dl> (icon 16 + caption) · classes as chips radius xs · Text link.
+ * No colour per programme, no age pills, no shadow. Data: src/data/programs.js.
+ */
+const EASE_IN_OUT = [0.4, 0, 0.2, 1]
+
 export default function Programs() {
   const t = useT()
   const { language } = useLanguage()
-  const [activeProgram, setActiveProgram] = useState(0)
-  const program = programs[activeProgram]
-  const programName = getProgramName(program, language)
+  const isDesktop = useMediaQuery('(min-width: 64rem)')
+  const [activeId, setActiveId] = useState(programs[0].id)
+  const active = programs.find((p) => p.id === activeId) || programs[0]
+
+  const tabItems = programs.map((p) => ({ id: p.id, label: getProgramName(p, language) }))
 
   return (
-    <section id="programs" className="py-section bg-surface">
-      <div className="container-page">
-        <SectionHeading label={t.programs.label} title={t.programs.title} subtitle={t.programs.subtitle} />
-
-        <div className="mb-8 md:mb-12" role="tablist" aria-label={t.programs.label}>
-          <div className="flex gap-2 overflow-x-auto pb-2 -mx-1 px-1 md:justify-center md:overflow-visible md:pb-0 scrollbar-none">
-            {programs.map((item, i) => {
-              const name = getProgramName(item, language)
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => setActiveProgram(i)}
-                  role="tab"
-                  aria-selected={activeProgram === i}
-                  className={`shrink-0 px-5 py-3 rounded-full text-sm font-semibold transition-all duration-300 cursor-pointer whitespace-nowrap ${
-                    activeProgram === i
-                      ? 'bg-primary-600 text-white shadow-md'
-                      : 'bg-white text-neutral-600 hover:bg-primary-50 hover:text-primary-600 border border-neutral-200'
-                  }`}
-                >
-                  {name}
-                  <span className="ml-1.5 opacity-70 font-normal text-xs">{item.ages}</span>
-                </button>
-              )
-            })}
-          </div>
+    <Section id="programs" tone="linen" aria-labelledby="programs-title">
+      <ScrollReveal>
+        <div className="max-w-[44rem]">
+          <Eyebrow>{t.programs.label}</Eyebrow>
+          <h2 id="programs-title" className="mt-3 lg:mt-4 font-display font-semibold text-h2 text-text-1 text-balance max-w-[22ch]">
+            {t.programs.title}
+          </h2>
+          <p className="mt-4 lg:mt-5 text-lead text-text-2 max-w-[60ch] text-pretty">{t.programs.subtitle}</p>
         </div>
+      </ScrollReveal>
 
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={program.id + language}
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.35 }}
-          >
-            <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 xl:gap-16">
-              <div className="lg:col-span-2">
-                <div
-                  className="aspect-[4/3] sm:aspect-[16/10] lg:aspect-[4/5] rounded-2xl overflow-hidden relative"
-                  style={{ backgroundColor: program.color + '15' }}
-                >
-                  <div className="absolute inset-0 flex items-center justify-center p-8">
-                    <div className="text-center" style={{ color: program.color }}>
-                      <BookOpen size={40} className="mx-auto mb-3 opacity-30" />
-                      <span className="block text-[11px] font-semibold tracking-[0.15em] uppercase opacity-60">
-                        {t.programs.programPhoto}
-                      </span>
-                      <span className="block text-xs opacity-50 mt-2">{programName}</span>
-                    </div>
-                  </div>
-                  <div className="absolute top-4 left-4 px-3 py-1.5 rounded-full bg-white/90 backdrop-blur text-xs font-semibold shadow-sm">
-                    {program.ages}
-                  </div>
-                </div>
-              </div>
+      <ScrollReveal delay={0.08} className="mt-10 md:mt-12 lg:mt-16">
+        {isDesktop ? (
+          <>
+            <Tabs items={tabItems} value={active.id} onChange={setActiveId} label={t.programs.label} />
+            <TabPanel id={active.id} className="mt-8 rounded-md">
+              <motion.div
+                key={active.id}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.28, ease: EASE_IN_OUT }}
+              >
+                <ProgramCard program={active} language={language} t={t} withMedia />
+              </motion.div>
+            </TabPanel>
+          </>
+        ) : (
+          <ul className="flex flex-col gap-4 md:gap-5">
+            {programs.map((p) => (
+              <ProgramCard key={p.id} as="li" program={p} language={language} t={t} />
+            ))}
+          </ul>
+        )}
+      </ScrollReveal>
 
-              <div className="lg:col-span-3">
-                <div className="flex flex-wrap items-center gap-2 mb-3">
-                  <span className="px-3 py-1 rounded-full bg-primary-50 text-primary-700 text-xs font-semibold">
-                    {t.programs.availability}
-                  </span>
-                </div>
-                <h3 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-neutral-900 mb-3">
-                  {programName}
-                </h3>
-                <p className="text-neutral-600 leading-relaxed text-sm sm:text-base md:text-lg mb-6 md:mb-8 max-w-xl">
-                  {getProgramDescription(program, language)}
-                </p>
-
-                <div className="grid grid-cols-1 xs:grid-cols-2 gap-4 mb-6 md:mb-8">
-                  <Detail icon={Languages} label={t.programs.languages} value={program.languages.join(' • ')} />
-                  <Detail icon={Clock} label={t.programs.schedule} value={program.schedule} />
-                  <Detail icon={BookOpen} label={t.programs.grades} value={program.grades.join(', ')} />
-                  <Detail icon={Target} label={t.programs.objectives} value={getProgramObjectives(program, language)} />
-                </div>
-
-                <div className="mb-6 md:mb-8">
-                  <p className="text-[11px] font-semibold text-neutral-400 uppercase tracking-[0.15em] mb-2.5">{t.programs.subjects}</p>
-                  <div className="flex flex-wrap gap-1.5">
-                    {getProgramSubjects(program, language).map((subject) => (
-                      <span key={subject} className="px-3 py-1.5 rounded-lg bg-white border border-neutral-200 text-xs text-neutral-700">
-                        {subject}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap gap-3 mb-5">
-                  <span className="inline-flex items-center gap-2 text-xs text-neutral-500">
-                    <Layers3 size={14} className="text-primary-500" />
-                    {t.programs.systems}: {t.programs.systemsValue}
-                  </span>
-                </div>
-
-                <div className="rounded-xl bg-primary-50/70 border border-primary-100 p-4 mb-6">
-                  <p className="text-[11px] font-semibold text-primary-700 uppercase tracking-[0.12em] mb-2">{t.programs.diplomasTitle}</p>
-                  <p className="text-xs sm:text-sm text-neutral-700">{t.programs.nationalDiplomas}</p>
-                  <p className="text-xs sm:text-sm text-neutral-700 mt-1">{t.programs.internationalDiplomas}</p>
-                  <p className="text-[11px] text-primary-700 mt-2">{t.programs.diplomaNote}</p>
-                </div>
-
-                <Button variant="primary" size="md" to="/registration" className="text-sm">
-                  {t.programs.requestInfo}
-                  <ChevronRight size={15} />
-                </Button>
-              </div>
-            </div>
-          </motion.div>
-        </AnimatePresence>
-
-        <p className="text-center text-neutral-500 text-xs mt-10 max-w-2xl mx-auto">
-          {t.programs.secondaryNote}
-        </p>
-      </div>
-    </section>
+      {/* One transparency notice for pathways / examinations (§17: once per subject) */}
+      <ScrollReveal delay={0.08} className="mt-8 md:mt-10">
+        <NoticeCard tone="info" icon={FileText} title={t.programs.diplomasTitle} role="note" className="max-w-[60rem]">
+          <ul className="space-y-1">
+            <li>{t.programs.nationalDiplomas}</li>
+            <li>{t.programs.internationalDiplomas}</li>
+            <li>{`${t.programs.systems}${language === 'en' ? ': ' : '\u202f: '}${t.programs.systemsValue}`}</li>
+          </ul>
+          <p className="mt-2 text-caption text-text-3">{t.programs.diplomaNote}</p>
+        </NoticeCard>
+      </ScrollReveal>
+    </Section>
   )
 }
 
-function Detail({ icon: Icon, label, value }) {
+function ProgramCard({ program, language, t, withMedia = false, as }) {
+  const name = getProgramName(program, language)
+  const meta = [
+    { icon: Languages, label: t.programs.languages, value: program.languages.join(' · ') },
+    { icon: Clock, label: t.programs.schedule, value: program.schedule },
+    { icon: BookOpen, label: t.programs.subjects, value: getProgramSubjects(program, language).join(', ') },
+    { icon: Target, label: t.programs.objectives, value: getProgramObjectives(program, language) },
+  ]
+
   return (
-    <div className="flex items-start gap-2.5">
-      <Icon size={16} className="text-primary-500 mt-0.5 shrink-0" />
-      <div className="min-w-0">
-        <p className="text-[11px] font-semibold text-neutral-400 uppercase tracking-wide mb-0.5">{label}</p>
-        <p className="text-xs sm:text-sm text-neutral-700 break-words">{value}</p>
+    <Card as={as} type="program" className={withMedia ? 'lg:grid lg:grid-cols-12 lg:gap-x-8 lg:p-8' : undefined}>
+      {withMedia && (
+        <MediaPlaceholder ratio="3/2" label={t.programs.programPhoto} className="lg:col-span-4 lg:self-start" />
+      )}
+      <div className={withMedia ? 'mt-6 lg:mt-0 lg:col-span-8' : undefined}>
+        <Badge variant="available">{t.programs.availability}</Badge>
+        <h3 className="mt-3 font-display font-semibold text-h3 text-text-1 text-balance">{name}</h3>
+        <p className="mt-3 text-body text-text-2 max-w-[60ch] text-pretty">{getProgramDescription(program, language)}</p>
+
+        <dl className="mt-6 grid gap-x-6 gap-y-4 sm:grid-cols-2">
+          {meta.map(({ icon: Icon, label, value }) => (
+            <div key={label} className="flex items-start gap-3 min-w-0">
+              <Icon size={16} strokeWidth={1.75} className="mt-[3px] shrink-0 text-primary" aria-hidden="true" />
+              <div className="min-w-0">
+                <dt className="text-caption text-text-3">{label}</dt>
+                <dd className="mt-0.5 text-body-sm text-text-1 text-pretty">{value}</dd>
+              </div>
+            </div>
+          ))}
+        </dl>
+
+        <div className="mt-6">
+          <p className="text-caption text-text-3">{t.programs.grades}</p>
+          <ul className="mt-2 flex flex-wrap gap-2" aria-label={`${t.programs.grades} — ${name}`}>
+            {program.grades.map((g) => (
+              <li key={g} className="rounded-xs bg-primary-light px-2 py-0.5 text-caption font-medium text-primary">
+                {g}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <Button variant="text" size="md" to="/registration" className="mt-4 -ml-1">
+          {t.programs.requestInfo}
+          <ArrowRight size={16} strokeWidth={2} aria-hidden="true" />
+        </Button>
       </div>
-    </div>
+    </Card>
   )
 }

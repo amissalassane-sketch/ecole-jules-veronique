@@ -1,107 +1,71 @@
 @import "tailwindcss";
+@import "./styles/tokens.css";
 
 /* ── Custom breakpoint: xs (480px) for very small phones ── */
 @custom-variant xs (@media (min-width: 30rem));
+/* Range variant 1024–1279 px. Custom variants are emitted before the core
+   `sm…xl` breakpoints, so `xs:inline` would lose against `lg:hidden` — this
+   dedicated range keeps that ordering problem out of the markup. */
+@custom-variant lg-only (@media (min-width: 64rem) and (max-width: 79.999rem));
+
+/* ============================================================
+   EBJV — GLOBAL STYLES V2
+   Tokens live in src/styles/tokens.css (single source of visual truth).
+   This file only contains: grid variables, base resets, layout primitives,
+   reveal animation, and a few utilities.
+   ============================================================ */
 
 /* ============================================
-   DESIGN TOKENS — Edit once, propagates everywhere
-   ============================================ */
-
-@theme {
-  /* ── Color palette ── */
-  --color-primary-50: #f0f7f9;
-  --color-primary-100: #d9eef3;
-  --color-primary-200: #b3dde7;
-  --color-primary-300: #80c5d6;
-  --color-primary-400: #4da6bd;
-  --color-primary-500: #1A6B7F;
-  --color-primary-600: #0F4C5C;
-  --color-primary-700: #0D3B4C;
-  --color-primary-800: #0A2E3D;
-  --color-primary-900: #072230;
-  --color-primary-950: #041520;
-
-  --color-accent-50: #fdf8f0;
-  --color-accent-100: #f9edd9;
-  --color-accent-200: #f2d9b3;
-  --color-accent-300: #e9bf80;
-  --color-accent-400: #d99e4d;
-  --color-accent-500: #C8963E;
-  --color-accent-600: #a87a30;
-  --color-accent-700: #8a6328;
-  --color-accent-800: #6d4e20;
-  --color-accent-900: #57401b;
-  --color-accent-950: #2f210c;
-
-  --color-surface: #FAFAF8;
-  --color-surface-alt: #F5F4F0;
-  --color-surface-dark: #0D3B4C;
-
-  --color-neutral-50: #fafafa;
-  --color-neutral-100: #f5f5f5;
-  --color-neutral-200: #e5e5e5;
-  --color-neutral-300: #d4d4d4;
-  --color-neutral-400: #a3a3a3;
-  --color-neutral-500: #737373;
-  --color-neutral-600: #525252;
-  --color-neutral-700: #404040;
-  --color-neutral-800: #262626;
-  --color-neutral-900: #171717;
-  --color-neutral-950: #0a0a0a;
-
-  /* ── Typography ── */
-  --font-display: 'Playfair Display', Georgia, serif;
-  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
-
-  /* ── Spacing scale (extended) ── */
-  --spacing-section: clamp(3rem, 8vw, 9rem);
-  --spacing-section-sm: clamp(2.5rem, 5vw, 5rem);
-
-  /* ── Radii ── */
-  --radius-sm: 0.5rem;
-  --radius-md: 0.75rem;
-  --radius-lg: 1rem;
-  --radius-xl: 1.25rem;
-  --radius-2xl: 1.5rem;
-  --radius-3xl: 2rem;
-}
-
-/* ============================================
-   BASE LAYER — Mobile-first foundation
-   ============================================ */
-
-/* ============================================
-   GRID TOKENS — mobile-first, overridden at each breakpoint
+   GRID TOKENS — mobile-first (§07)
+   Mobile  : 4 col · 16px margin (20px ≥ 480) · 16px gutter
+   Tablet  : 8 col · 32→80px fluid margin · 20px gutter
+   Desktop : 12 col · 80px margin · 24px gutter · 1280px content (1440 frame)
    ============================================ */
 
 :root {
   --grid-columns: 4;
-  --grid-margin: 1rem;      /* 16px */
-  --grid-gutter: 1rem;      /* 16px */
+  --grid-margin: 1rem;
+  --grid-gutter: 1rem;
   --grid-max-width: 100%;
+  /* Fixed header height (§18): 60px mobile · 72px desktop — used by scroll-margin
+     and by the Hero top padding. Keep in sync with Navbar.jsx. */
+  --header-h: 3.75rem;
 }
 
-/* Tablet — 8 columns.
-   The margin ramps FLUIDLY from 32px @1024px to 96px @1440px. A hard
-   32px -> 96px step at a single breakpoint would make the content width
-   visibly jump backwards when the window crosses it. The clamp() floor
-   keeps it at 32px for 768-1024px. */
+@media (min-width: 1024px) {
+  :root { --header-h: 4.5rem; }
+}
+
+@media (min-width: 30rem) {
+  :root { --grid-margin: 1.25rem; }
+}
+
+/* Tablet — margin ramps fluidly 32px @768 → 80px @1440 so content width
+   never jumps backwards when crossing a breakpoint. */
 @media (min-width: 768px) {
   :root {
     --grid-columns: 8;
-    --grid-margin: clamp(2rem, calc(2rem + (100vw - 64rem) * 0.15385), 6rem);
-    --grid-gutter: 1.25rem; /* 20px */
+    --grid-margin: clamp(2rem, calc(2rem + (100vw - 48rem) * 0.0714), 5rem);
+    --grid-gutter: 1.25rem;
   }
 }
 
-/* Desktop — 12 columns, 1440px design frame.
-   At >=1440px: 1440 - (2 x 96) = 1248px of content. */
 @media (min-width: 1280px) {
   :root {
     --grid-columns: 12;
-    --grid-max-width: 90rem; /* 1440px */
+    --grid-gutter: 1.5rem;
+    /* 1280 content + 2 × 80 margin = 1440 frame */
+    --grid-max-width: calc(var(--container-page) + 2 * var(--grid-margin));
   }
 }
+
+@media (min-width: 1440px) {
+  :root { --grid-margin: 5rem; }
+}
+
+/* ============================================
+   BASE LAYER
+   ============================================ */
 
 @layer base {
   html {
@@ -109,98 +73,112 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     -webkit-tap-highlight-color: transparent;
-    /* Prevent font scaling on orientation change */
     -webkit-text-size-adjust: 100%;
   }
 
   /* Kill horizontal scroll globally. Several sections use large blurred
      decorative circles positioned off-canvas; without this the page scrolls
-     sideways on phones. Applied to html AND body so iOS Safari honours it. */
+     sideways on phones.
+
+     WHY `clip` AND NOT `hidden` (P0 scroll bug, fixed 2026-09):
+     `overflow-x: hidden` on BOTH html and body stopped body's overflow from
+     propagating to the viewport, which silently turned <body> into its own
+     scroll container (computed `overflow: hidden auto`). Combined with the
+     former `overscroll-behavior-y: none` on body, every wheel / touch scroll
+     that started over the page was consumed by <body> (which cannot scroll,
+     its content fits) and was forbidden from chaining up to the viewport.
+     Keyboard + scrollTo() still worked because they target
+     document.scrollingElement directly — hence "the site no longer scrolls".
+     `overflow-x: clip` clips paint without creating a scroll container, so
+     the viewport stays the one and only scroller. */
   html,
   body {
     max-width: 100%;
-    overflow-x: hidden;
+    overflow-x: clip;
   }
 
   body {
     font-family: var(--font-body);
-    background-color: var(--color-surface);
-    color: #1a1a1a;
-    /* Prevent overscroll bounce on some browsers */
-    overscroll-behavior-y: none;
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    background-color: var(--color-paper);
+    color: var(--color-text-1);
+    font-feature-settings: "kern", "liga";
+    /* NOTE: do NOT put `overscroll-behavior` on body — see comment above. */
   }
 
   /* Media must never exceed its container. */
-  img,
-  svg,
-  video,
-  canvas,
-  iframe {
+  img, svg, video, canvas, iframe {
     max-width: 100%;
     height: auto;
   }
 
-  /* Long unbroken strings (emails, URLs, phone numbers) must wrap rather than
-     force the viewport wider on a 360px screen. */
-  h1, h2, h3, h4, h5, h6, p, a, li, span {
+  /* Long unbroken strings (emails, URLs, phone numbers) must wrap. */
+  h1, h2, h3, h4, h5, h6, p, a, li, span, td, th, dd, dt {
     overflow-wrap: break-word;
   }
 
-  /* iOS Safari auto-zooms any focused input whose font-size is under 16px.
-     That zoom is not reversible by the user and breaks the layout, so force
-     16px on mobile and only shrink on pointer-precise viewports. */
-  input,
-  select,
-  textarea {
+  /* Headings: editorial serif, V2 scale (§05). Sections may override with
+     text-display / text-h3 utilities; these are the sane defaults. */
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    text-wrap: balance;
+  }
+  h1 { font-size: var(--text-h1); line-height: var(--text-h1--line-height); letter-spacing: var(--text-h1--letter-spacing); font-weight: 700; }
+  h2 { font-size: var(--text-h2); line-height: var(--text-h2--line-height); letter-spacing: var(--text-h2--letter-spacing); }
+  h3 { font-size: var(--text-h3); line-height: var(--text-h3--line-height); }
+  h4 { font-family: var(--font-body); font-weight: 600; font-size: var(--text-h4); line-height: var(--text-h4--line-height); }
+
+  p { text-wrap: pretty; }
+
+  /* Lucide icons — §12: stroke 1.75 everywhere. A CSS rule always beats the
+     SVG presentation attribute, so this is the single point of control. */
+  svg.lucide { stroke-width: 1.75; }
+
+  /* Tabular figures wherever numbers align (times, prices, phone numbers). */
+  table, time, .tabular { font-variant-numeric: tabular-nums; }
+
+  /* iOS Safari auto-zooms any focused input whose font-size is under 16px. */
+  input, select, textarea {
     font-size: 16px;
+    font-family: inherit;
   }
 
-  @media (min-width: 768px) {
-    input,
-    select,
-    textarea {
-      font-size: 0.875rem;
-    }
+  /* ── Global focus ring (§16) — never removed, only recoloured on ink ── */
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: var(--radius-xs);
+  }
+  .on-ink :focus-visible,
+  [data-tone="ink"] :focus-visible {
+    outline-color: var(--color-gold-light);
   }
 
   /* ── Fixed mobile CTA bar clearance ──
-     Reserved for the whole route, NOT toggled while scrolling. Toggling this
-     mid-scroll would resize the document and make the page jump. */
+     Reserved for the whole route, NOT toggled while scrolling. */
   body.has-mobile-cta {
     padding-bottom: calc(4rem + env(safe-area-inset-bottom, 0px));
   }
-
   @media (min-width: 1024px) {
-    body.has-mobile-cta {
-      padding-bottom: 0;
-    }
+    body.has-mobile-cta { padding-bottom: 0; }
   }
 
   /* Anchor targets must clear the fixed header. */
   section[id],
-  :target {
-    scroll-margin-top: 5rem;
+  [id]:target {
+    scroll-margin-top: calc(var(--header-h) + 1rem);
   }
 
   ::selection {
-    background-color: var(--color-primary-600);
-    color: white;
+    background-color: var(--color-primary);
+    color: var(--color-text-inverse);
   }
 
-  /* ── Fluid heading scale ── */
-  h1 {
-    font-size: clamp(2rem, 5vw, 5rem);
-  }
-
-  h2 {
-    font-size: clamp(1.5rem, 3.5vw, 3.75rem);
-  }
-
-  /* ── Reduced motion ── */
+  /* ── Reduced motion: kill durations + disable reveal offsets ── */
   @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
+    *, *::before, *::after {
       animation-duration: 0.01ms !important;
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
@@ -210,86 +188,85 @@
 }
 
 /* ============================================
-   COMPONENTS LAYER — Reusable primitives
+   COMPONENTS LAYER — layout primitives
    ============================================ */
 
 @layer components {
-  /* ============================================
-     RESPONSIVE GRID SYSTEM
-     Mobile  (≥360px) :  4 columns · 16px margin · 16px gutter
-     Tablet  (≥768px) :  8 columns · 32px margin · 20px gutter
-     Desktop (≥1280px): 12 columns · 96px margin · 20px gutter
-     Max content width: 1248px (= 1440 − 2 × 96 margin)
-     ============================================ */
-
+  /* Page container: full grid width, fluid margins, safe-area aware. */
   .container-page {
     width: 100%;
     margin-inline: auto;
     max-width: var(--grid-max-width);
-    /* Honour landscape notches so content never sits under a camera cutout. */
-    padding-inline: calc(var(--grid-margin) + env(safe-area-inset-left, 0px));
-    padding-inline-end: calc(var(--grid-margin) + env(safe-area-inset-right, 0px));
+    padding-inline: calc(var(--grid-margin) + env(safe-area-inset-left, 0px))
+                    calc(var(--grid-margin) + env(safe-area-inset-right, 0px));
   }
 
+  /* Prose (≈ 8 cols) and narrow (≈ 6 cols) containers — centred inside the page. */
+  .container-prose {
+    width: 100%;
+    margin-inline: auto;
+    max-width: calc(var(--container-prose) + 2 * var(--grid-margin));
+    padding-inline: var(--grid-margin);
+  }
+  .container-narrow {
+    width: 100%;
+    margin-inline: auto;
+    max-width: calc(var(--container-narrow) + 2 * var(--grid-margin));
+    padding-inline: var(--grid-margin);
+  }
   /* 12/8/4 column grid. Children opt in with .col-span-* below. */
   .grid-page {
     display: grid;
     grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
     gap: var(--grid-gutter);
   }
-
-  .text-balance {
-    text-wrap: balance;
-  }
-
-  /* ── Safe-area bottom spacing ── */
-  .safe-bottom {
-    padding-bottom: env(safe-area-inset-bottom, 0px);
-  }
-
-  .pb-safe {
-    padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
-  }
-
-  /* ── Touch-friendly minimum hit area ── */
-  .touch-target {
-    min-height: 44px;
-    min-width: 44px;
-  }
-
-  /* ── Grid column spans ──
-     Values are clamped to the column count available at each breakpoint, so a
-     "col-span-6" safely becomes full-width on mobile (4 cols) instead of
-     overflowing the track. */
-  .col-full {
-    grid-column: 1 / -1;
-  }
-
-  .col-span-half {
-    grid-column: span var(--grid-columns) / span var(--grid-columns);
-  }
-
+  .col-full { grid-column: 1 / -1; }
+  .col-span-half,
+  .col-span-third { grid-column: span var(--grid-columns) / span var(--grid-columns); }
   @media (min-width: 768px) {
-    .col-span-half {
-      grid-column: span calc(var(--grid-columns) / 2) / span calc(var(--grid-columns) / 2);
-    }
+    .col-span-half,
+    .col-span-third { grid-column: span calc(var(--grid-columns) / 2) / span calc(var(--grid-columns) / 2); }
   }
-
-  /* Third-width: full on mobile, half on tablet, a third on desktop. */
-  .col-span-third {
-    grid-column: span var(--grid-columns) / span var(--grid-columns);
-  }
-
-  @media (min-width: 768px) {
-    .col-span-third {
-      grid-column: span calc(var(--grid-columns) / 2) / span calc(var(--grid-columns) / 2);
-    }
-  }
-
   @media (min-width: 1280px) {
-    .col-span-third {
-      grid-column: span 4 / span 4;
-    }
+    .col-span-third { grid-column: span 4 / span 4; }
+  }
+
+  /* Eyebrow hairline (used by <Eyebrow />): 24px gold rule before the label. */
+  .eyebrow-rule::before {
+    content: "";
+    display: inline-block;
+    width: 1.5rem;
+    height: 1px;
+    margin-right: 0.75rem;
+    vertical-align: middle;
+    background-color: currentColor;
+    opacity: 0.8;
+  }
+
+  /* Touch-friendly minimum hit area (§16). */
+  .touch-target { min-height: 44px; min-width: 44px; }
+
+  /* Safe-area helpers */
+  .pb-safe { padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px)); }
+
+  /* ── Scroll reveal (§14): CSS-only, driven by useScrollReveal / <Reveal>.
+     opacity + 12px rise, 400ms, once. Reduced motion → opacity only. ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(12px);
+    transition:
+      opacity var(--duration-reveal) var(--ease-out),
+      transform var(--duration-reveal) var(--ease-out);
+    transition-delay: var(--reveal-delay, 0ms);
+    will-change: opacity, transform;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+    will-change: auto;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { transform: none; }
   }
 }
 
@@ -298,37 +275,11 @@
    ============================================ */
 
 @layer utilities {
-  .clip-reveal {
-    clip-path: inset(0 0 0 0);
-  }
+  .text-balance { text-wrap: balance; }
 
-  .mask-fade-bottom {
-    mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
-  }
-
-  /* DVH fallback for dynamic viewport */
-  .min-h-screen-dynamic {
-    min-height: 100vh;
-    min-height: 100dvh;
-  }
-
-  .h-screen-dynamic {
-    height: 100vh;
-    height: 100dvh;
-  }
-
-  /* Prevent horizontal scroll */
-  .no-overflow-x {
-    overflow-x: hidden;
-  }
+  /* DVH fallbacks for dynamic viewport */
+  .min-h-screen-dynamic { min-height: 100vh; min-height: 100dvh; }
+  .h-screen-dynamic { height: 100vh; height: 100dvh; }
 
   /* Hide scrollbars for horizontal-scroll containers */
-  .scrollbar-none {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-  .scrollbar-none::-webkit-scrollbar {
-    display: none;
-  }
 }

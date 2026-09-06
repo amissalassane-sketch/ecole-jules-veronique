@@ -4,7 +4,6 @@ import Hero from '../components/sections/Hero'
 import Introduction from '../components/sections/Introduction'
 import WhyChoose from '../components/sections/WhyChoose'
 import TeamProfile from '../components/sections/TeamProfile'
-import Statistics from '../components/sections/Statistics'
 import Programs from '../components/sections/Programs'
 import Methodology from '../components/sections/Methodology'
 import Bilingual from '../components/sections/Bilingual'
@@ -28,10 +27,10 @@ export default function HomePage() {
         <Hero />
 
         {/* STAGE 2 — Understanding */}
+        {/* L'école (S2 Editorial Split) — merges the former Introduction + Statistics (DS V2 §17, row 2) */}
         <Introduction />
         <WhyChoose />
         <TeamProfile />
-        <Statistics />
 
         {/* STAGE 3 — Trust & Explore */}
         <Programs />

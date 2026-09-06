@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowLeft, ArrowRight, Check, MapPin, Phone, MessageCircle, Clock, Banknote, ExternalLink } from 'lucide-react'
 import Navbar from '../components/layout/Navbar'
@@ -21,6 +21,18 @@ import { useLanguage } from '../context/LanguageContext'
  * and routes are unchanged. paper page · narrow container · H1 > H2 step
  * (styled H3) · ONE Card/Default panel · inputs 48 · errors as Notice-style
  * messages · Primary / Text actions · V2 tokens only (no legacy V1 colours or radii).
+ *
+ * Phase 3.2 — geometry & visual hierarchy only (no copy, no business logic):
+ *  · P0-04 deterministic arrival: every step change scrolls the step anchor
+ *    (stepper) to a fixed offset under the fixed header — never mid-card, never
+ *    in the footer (measured arrivals were 754/727/554/894/731 px at 390×844).
+ *  · P0-01 first invalid field receives focus + is centred in the viewport;
+ *    inline error messages and validation rules untouched.
+ *  · Fold budget @390: compact route header (H1 → H3 scale, muted) so the step
+ *    title (H2 scale) becomes the dominant operational element (§05 tokens only).
+ *  · Step 6: action block moved directly under the status block (CTA in fold).
+ *  · Step 5: nav action demoted to Secondary so the card holds the one Primary.
+ *  · Step 4: program group rows sit side-by-side ≥ sm for instant comparison.
  */
 export default function RegistrationPage() {
   const t = useT().registration
@@ -42,6 +54,30 @@ export default function RegistrationPage() {
     selectedProgram: '',
   })
   const [errors, setErrors] = useState({})
+
+  /* Phase 3.2 (P0-04) — deterministic arrival on step change. The anchor is the
+     stepper wrapper: its document position never depends on the animating card
+     content, so scrolling to it at commit time is stable (no late jump). The
+     previous behaviour kept the browser's scroll offset, landing the parent
+     mid-card or inside the footer (measured: 754/727/554/894/731 px @390×844). */
+  const stepAnchorRef = useRef(null)
+  const firstRenderRef = useRef(true)
+  useEffect(() => {
+    if (firstRenderRef.current) {
+      firstRenderRef.current = false
+      return
+    }
+    const anchor = stepAnchorRef.current
+    if (!anchor) return
+    const headerH = document.querySelector('header')?.getBoundingClientRect().height || 0
+    const top = anchor.getBoundingClientRect().top + window.scrollY - (headerH + 12)
+    const y = Math.max(top, 0)
+    try {
+      window.scrollTo({ top: y, behavior: 'instant' })
+    } catch {
+      window.scrollTo(0, y)
+    }
+  }, [step, editingStep])
 
   const gradeOptions = useMemo(
     () => programs.flatMap((program) => program.grades.map((grade) => ({
@@ -78,11 +114,28 @@ export default function RegistrationPage() {
     }
     if (step === 2 && !formData.selectedProgram) nextErrors.selectedProgram = t.selectProgram
     setErrors(nextErrors)
-    return Object.keys(nextErrors).length === 0
+    return nextErrors
   }, [step, formData, t])
 
   const nextStep = useCallback(() => {
-    if (validateStep()) setStep((current) => Math.min(current + 1, 5))
+    const nextErrors = validateStep()
+    if (Object.keys(nextErrors).length > 0) {
+      /* Phase 3.2 (P0-01): a rejected submit moves focus + viewport to the first
+         invalid control (DOM order = visual order). Messages, rules and wording
+         are untouched; the field is centred so its inline error stays visible. */
+      requestAnimationFrame(() => {
+        const first = document.querySelector('main [aria-invalid="true"]')
+        if (!first) return
+        first.focus({ preventScroll: true })
+        try {
+          first.scrollIntoView({ block: 'center', behavior: 'instant' })
+        } catch {
+          first.scrollIntoView(true)
+        }
+      })
+      return
+    }
+    setStep((current) => Math.min(current + 1, 5))
   }, [validateStep])
 
   const previousStep = useCallback(() => {
@@ -130,21 +183,27 @@ export default function RegistrationPage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen-dynamic bg-paper pt-[calc(var(--header-h)+2.5rem)] md:pt-[calc(var(--header-h)+3.5rem)] pb-16 md:pb-24">
+      <main className="min-h-screen-dynamic bg-paper pt-[calc(var(--header-h)+1.5rem)] md:pt-[calc(var(--header-h)+3.5rem)] pb-16 md:pb-24">
         <div className="container-narrow">
-          {/* ── Page header ── */}
-          <header className="pb-8">
-            <h1 className="font-display font-bold text-h1 text-text-1 text-balance">{t.title}</h1>
-            <p className="mt-3 text-lead text-text-2 text-pretty max-w-[60ch]">{t.subtitle}</p>
+          {/* ── Page header ── Phase 3.2: the route H1 introduces the journey at
+              H3 scale / muted (it repeated identically on all 6 screens and
+              out-ranked the operational step title); the step H2 now carries
+              the H2 scale. Tokens only — no copy, no palette change. */}
+          <header className="pb-5 md:pb-6">
+            <h1 className="font-display font-semibold text-h3 text-text-2 text-balance">{t.title}</h1>
+            <p className="mt-2 text-body-sm md:text-lead text-text-2 text-pretty max-w-[60ch]">{t.subtitle}</p>
           </header>
 
-          <Stepper currentStep={step} labels={stepperLabels} />
-          <div className="mt-4 mb-6 flex items-center justify-between gap-4">
+          {/* Scroll anchor for the deterministic arrival (P0-04). */}
+          <div ref={stepAnchorRef}>
+            <Stepper currentStep={step} labels={stepperLabels} />
+          </div>
+          <div className="mt-3 mb-4 md:mb-6 flex min-h-11 items-center justify-between gap-4">
             <p className="text-eyebrow font-semibold uppercase text-text-3">
               {t.stepOf.replace('{current}', step + 1).replace('{total}', totalSteps)}
             </p>
             {step < 5 && (
-              <Button variant="text" size="md" href={waHelpLink} target="_blank" rel="noopener noreferrer" className="-mr-1">
+              <Button variant="text" size="md" href={waHelpLink} target="_blank" rel="noopener noreferrer" className="-mr-1 h-11">
                 <MessageCircle size={16} strokeWidth={2} aria-hidden="true" />
                 {t.needHelp}
               </Button>
@@ -183,7 +242,16 @@ export default function RegistrationPage() {
                 <ArrowLeft size={16} strokeWidth={2} aria-hidden="true" />
                 {editingStep !== null ? t.backToReview : t.back}
               </Button>
-              <Button variant="primary" size="lg" onClick={editingStep !== null ? returnToReview : nextStep} className="w-full xs:w-auto">
+              {/* Phase 3.2 (§7): on the contact step the card already holds the
+                  single Primary action; the nav action is demoted to Secondary
+                  so the screen no longer shows two competing primaries. Button,
+                  label and behaviour are unchanged — hierarchy only. */}
+              <Button
+                variant={editingStep === null && step === 4 ? 'secondary' : 'primary'}
+                size="lg"
+                onClick={editingStep !== null ? returnToReview : nextStep}
+                className="w-full xs:w-auto"
+              >
                 {editingStep !== null ? t.done : t.continue}
                 <ArrowRight size={16} strokeWidth={2} aria-hidden="true" />
               </Button>
@@ -196,11 +264,12 @@ export default function RegistrationPage() {
   )
 }
 
-/* Step heading: h2 in the page outline, H3 display size (DS « H1 > H3 étape »). */
+/* Step heading: h2 in the page outline. Phase 3.2: H2 scale (was H3) so the
+   current step title is the dominant operational element of the screen. */
 function StepHeading({ title, subtitle }) {
   return (
     <div>
-      <h2 className="font-display font-semibold text-h3 text-text-1 text-balance">{title}</h2>
+      <h2 className="font-display font-semibold text-h2 text-text-1 text-balance">{title}</h2>
       {subtitle && <p className="mt-2 text-body-sm text-text-2 text-pretty">{subtitle}</p>}
     </div>
   )
@@ -281,8 +350,13 @@ function ReviewStep({ t, formData, onEdit, program, language, school }) {
         </ReviewGroup>
         {program && (
           <ReviewGroup title={t.reviewProgram} onEdit={() => onEdit(2)} editLabel={t.reviewEdit}>
-            <ReviewRow label={t.finalProgramLabel} value={getProgramName(program, language)} />
-            <ReviewRow label={t.finalYearLabel} value={`${formData.childGrade} · ${school.schoolYear}`} />
+            {/* Phase 3.2 (§8): program and class·year sit side by side from sm
+                so the two halves of the pedagogical choice compare at a glance.
+                Values and labels untouched; no coherence rule introduced here. */}
+            <div className="grid gap-x-6 gap-y-1.5 sm:grid-cols-2">
+              <ReviewRow label={t.finalProgramLabel} value={getProgramName(program, language)} />
+              <ReviewRow label={t.finalYearLabel} value={`${formData.childGrade} · ${school.schoolYear}`} />
+            </div>
           </ReviewGroup>
         )}
       </div>
@@ -337,13 +411,16 @@ function ContactStep({ t, school, onContact }) {
           </li>
         </ul>
       </div>
-      <NoticeCard tone="info" icon={Banknote} title={t.bankPaymentTitle} role="note">
-        {t.bankPaymentDesc}
-      </NoticeCard>
+      {/* Phase 3.2 (§7): the single Primary action now directly follows the
+          contact coordinates it acts on; the bank-payment notice closes the
+          step as context. Order only — no text, no behaviour changed. */}
       <Button variant="primary" size="lg" onClick={onContact} className="w-full xs:w-auto">
         {t.contactAdmissions}
         <ArrowRight size={16} strokeWidth={2} aria-hidden="true" />
       </Button>
+      <NoticeCard tone="info" icon={Banknote} title={t.bankPaymentTitle} role="note">
+        {t.bankPaymentDesc}
+      </NoticeCard>
     </div>
   )
 }
@@ -360,11 +437,11 @@ function FinalStep({ t, formData, appRef, program, language, school, waPreReg })
   ]
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 md:space-y-8">
       <div className="flex items-start gap-4">
         <IconTile icon={Check} size="md" />
         <div>
-          <h2 className="font-display font-semibold text-h3 text-text-1 text-balance">{t.schoolConfirmTitle}</h2>
+          <h2 className="font-display font-semibold text-h2 text-text-1 text-balance">{t.schoolConfirmTitle}</h2>
           <p className="mt-2 text-body-sm text-text-2 text-pretty">
             {t.schoolConfirmDesc} <strong className="font-semibold text-text-1">{formData.childFirstName} {formData.childLastName}</strong>.
           </p>
@@ -380,6 +457,24 @@ function FinalStep({ t, formData, appRef, program, language, school, waPreReg })
         <DetailRow label={t.finalDateLabel} value={date} />
         <DetailRow label={t.finalStatusLabel} value={<Badge variant="planned">{t.statusPreReg}</Badge>} />
       </dl>
+
+      {/* Phase 3.2 (§6): the main action now follows the status block directly so
+          it lands in the first viewport (measured 1614 px from document top
+          before, ~2 folds below the arrival point at 390×844). Texts, targets and
+          behaviour untouched; the payment notice and the 01–04 list follow it. */}
+      <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+        <Button variant="primary" size="lg" href={waPreReg} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
+          <MessageCircle size={20} strokeWidth={1.75} aria-hidden="true" />
+          {t.finalCtaSecondary}
+        </Button>
+        <Button variant="secondary" size="lg" href={mapLink} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
+          {t.finalCtaPrimary}
+          <ExternalLink size={16} strokeWidth={2} aria-hidden="true" />
+        </Button>
+        <Button variant="text" size="md" to="/" className="self-start sm:self-auto sm:ml-auto -ml-1 sm:-ml-0">
+          {t.finalCtaHome}
+        </Button>
+      </div>
 
       <NoticeCard tone="info" icon={Banknote} title={t.finalNextTitle} role="note">
         {t.finalPaymentNote}
@@ -399,19 +494,6 @@ function FinalStep({ t, formData, appRef, program, language, school, waPreReg })
         ))}
       </ol>
 
-      <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-        <Button variant="primary" size="lg" href={waPreReg} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
-          <MessageCircle size={20} strokeWidth={1.75} aria-hidden="true" />
-          {t.finalCtaSecondary}
-        </Button>
-        <Button variant="secondary" size="lg" href={mapLink} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
-          {t.finalCtaPrimary}
-          <ExternalLink size={16} strokeWidth={2} aria-hidden="true" />
-        </Button>
-        <Button variant="text" size="md" to="/" className="self-start sm:self-auto sm:ml-auto -ml-1 sm:-ml-0">
-          {t.finalCtaHome}
-        </Button>
-      </div>
     </div>
   )
 }

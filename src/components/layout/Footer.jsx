@@ -54,8 +54,12 @@ export default function Footer() {
 
   return (
     <footer className="bg-ink text-text-inverse on-ink border-t border-gold-light" data-tone="ink">
-      <div className="container-page py-section">
-        <div className="grid grid-cols-2 gap-x-(--grid-gutter) gap-y-10 lg:grid-cols-12">
+      {/* Phase 3.2 (§9): mobile-only vertical tightening with existing DS tokens
+          (py-section-compact = 40→64, gap-y-8). Structure, links and content are
+          untouched; desktop rhythm (py-section) is preserved. Measured 1076 px
+          tall at 390×844 before, directly under the form CTA row. */}
+      <div className="container-page py-section-compact md:py-section">
+        <div className="grid grid-cols-2 gap-x-(--grid-gutter) gap-y-8 lg:gap-y-10 lg:grid-cols-12">
           {/* ── Brand · 4 col ── */}
           <div className="col-span-2 lg:col-span-4 lg:pr-8">
             <Link

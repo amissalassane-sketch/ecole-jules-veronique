@@ -4,7 +4,10 @@ import { cn } from '../../utils/cn'
 /**
  * Stepper — registration progress (re-skin on V2 tokens, same API).
  *
- *  < 640 : current label (Inter 600 15) + « n/total » caption + 2 px primary rail.
+ *  < 640 : current label (Inter 600 15) + 2 px primary rail. Phase 3.3: the
+ *          « n/total » fraction was dropped here — the « Étape n sur 6 » caption
+ *          immediately below already carried it (visual duplicate); screen
+ *          readers keep the fraction via aria-valuetext.
  *  ≥ 640 : numbered 32 px discs — done = primary + Check 16, current = primary
  *          with 2 px primary-light ring, upcoming = linen/text-3 — connected by
  *          1 px hairlines; labels caption 13. No emerald, no rounded-full pills
@@ -27,10 +30,7 @@ export default function Stepper({ currentStep, labels }) {
     >
       {/* ── Mobile: label + rail ── */}
       <div className="sm:hidden">
-        <div className="flex items-baseline justify-between gap-3 mb-2">
-          <span className="text-[15px] font-semibold text-text-1 truncate">{steps[current]}</span>
-          <span className="text-caption text-text-3 shrink-0 tabular-nums">{current + 1}/{total}</span>
-        </div>
+        <span className="mb-2 block truncate text-[15px] font-semibold text-text-1">{steps[current]}</span>
         <div className="h-0.5 w-full bg-border overflow-hidden">
           <div
             className="h-full bg-primary transition-[width] duration-(--duration-panel) ease-out"

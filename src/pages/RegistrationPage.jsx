@@ -157,6 +157,11 @@ export default function RegistrationPage() {
 
   const program = programs.find((item) => item.id === formData.selectedProgram)
   const totalSteps = 6
+  /* Phase 3.3 (§10): while editing a review group the journey indicator keeps
+     showing the review position (Étape 4 sur 6) instead of jumping back to the
+     edited step — re-opening a group must never read like travelling backwards
+     through the form. The card's « Modifier » badge carries the mode. */
+  const shownStep = editingStep !== null ? 3 : step
   const appRef = useMemo(() => `REG-${String(Date.now()).slice(-6)}`, [])
   const waHelpLink = waLinkFor('help')
   const stepperLabels = t.stepLabels
@@ -196,11 +201,11 @@ export default function RegistrationPage() {
 
           {/* Scroll anchor for the deterministic arrival (P0-04). */}
           <div ref={stepAnchorRef}>
-            <Stepper currentStep={step} labels={stepperLabels} />
+            <Stepper currentStep={shownStep} labels={stepperLabels} />
           </div>
           <div className="mt-3 mb-4 md:mb-6 flex min-h-11 items-center justify-between gap-4">
             <p className="text-eyebrow font-semibold uppercase text-text-3">
-              {t.stepOf.replace('{current}', step + 1).replace('{total}', totalSteps)}
+              {t.stepOf.replace('{current}', shownStep + 1).replace('{total}', totalSteps)}
             </p>
             {step < 5 && (
               <Button variant="text" size="md" href={waHelpLink} target="_blank" rel="noopener noreferrer" className="-mr-1 h-11">
@@ -220,9 +225,9 @@ export default function RegistrationPage() {
                 exit={{ opacity: 0, x: -12 }}
                 transition={{ duration: 0.2, ease: [0.2, 0.8, 0.2, 1] }}
               >
-                {step === 0 && <ParentStep t={t} formData={formData} onChange={updateField} errors={errors} school={school} />}
-                {step === 1 && <ChildStep t={t} formData={formData} onChange={updateField} errors={errors} options={gradeOptions} />}
-                {step === 2 && <ProgramStep t={t} formData={formData} onChange={updateField} errors={errors} options={programOptions} program={program} language={language} />}
+                {step === 0 && <ParentStep t={t} formData={formData} onChange={updateField} errors={errors} school={school} editing={editingStep === 0} editLabel={t.reviewEdit} />}
+                {step === 1 && <ChildStep t={t} formData={formData} onChange={updateField} errors={errors} options={gradeOptions} editing={editingStep === 1} editLabel={t.reviewEdit} />}
+                {step === 2 && <ProgramStep t={t} formData={formData} onChange={updateField} errors={errors} options={programOptions} program={program} language={language} editing={editingStep === 2} editLabel={t.reviewEdit} />}
                 {step === 3 && <ReviewStep t={t} formData={formData} onEdit={goToEditStep} program={program} language={language} school={school} />}
                 {step === 4 && <ContactStep t={t} school={school} onContact={handleContactChoice} />}
                 {step === 5 && <FinalStep t={t} formData={formData} appRef={appRef} program={program} language={language} school={school} waPreReg={waPreReg} choice={choice} />}
@@ -265,20 +270,28 @@ export default function RegistrationPage() {
 }
 
 /* Step heading: h2 in the page outline. Phase 3.2: H2 scale (was H3) so the
-   current step title is the dominant operational element of the screen. */
-function StepHeading({ title, subtitle }) {
+   current step title is the dominant operational element of the screen.
+   Phase 3.3: the title/subtitle pair gets a 12 px gap (was 8) for a calmer
+   stack, and an editing session opens with an « Modifier » info badge — the DS
+   status vocabulary makes the mode explicit without touching wording or flow. */
+function StepHeading({ title, subtitle, editing = false, editLabel }) {
   return (
     <div>
+      {editing && (
+        <div className="mb-3">
+          <Badge variant="info">{editLabel}</Badge>
+        </div>
+      )}
       <h2 className="font-display font-semibold text-h2 text-text-1 text-balance">{title}</h2>
-      {subtitle && <p className="mt-2 text-body-sm text-text-2 text-pretty">{subtitle}</p>}
+      {subtitle && <p className="mt-3 text-body-sm text-text-2 text-pretty">{subtitle}</p>}
     </div>
   )
 }
 
-function ParentStep({ t, formData, onChange, errors, school }) {
+function ParentStep({ t, formData, onChange, errors, school, editing = false, editLabel }) {
   return (
     <div className="space-y-6">
-      <StepHeading title={t.parentTitle} subtitle={t.parentSubtitle} />
+      <StepHeading title={t.parentTitle} subtitle={t.parentSubtitle} editing={editing} editLabel={editLabel} />
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <FormField label={t.parentFirstName} name="parentFirstName" value={formData.parentFirstName} onChange={onChange} placeholder={t.parentFirstNamePlaceholder} required error={errors.parentFirstName} />
         <FormField label={t.parentLastName} name="parentLastName" value={formData.parentLastName} onChange={onChange} placeholder={t.parentLastNamePlaceholder} required error={errors.parentLastName} />
@@ -290,10 +303,10 @@ function ParentStep({ t, formData, onChange, errors, school }) {
   )
 }
 
-function ChildStep({ t, formData, onChange, errors, options }) {
+function ChildStep({ t, formData, onChange, errors, options, editing = false, editLabel }) {
   return (
     <div className="space-y-6">
-      <StepHeading title={t.childTitle} subtitle={t.childSubtitle} />
+      <StepHeading title={t.childTitle} subtitle={t.childSubtitle} editing={editing} editLabel={editLabel} />
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <FormField label={t.childFirstName} name="childFirstName" value={formData.childFirstName} onChange={onChange} placeholder={t.childFirstNamePlaceholder} required error={errors.childFirstName} />
         <FormField label={t.childLastName} name="childLastName" value={formData.childLastName} onChange={onChange} placeholder={t.childLastNamePlaceholder} required error={errors.childLastName} />
@@ -305,11 +318,11 @@ function ChildStep({ t, formData, onChange, errors, options }) {
   )
 }
 
-function ProgramStep({ t, formData, onChange, errors, options, program, language }) {
+function ProgramStep({ t, formData, onChange, errors, options, program, language, editing = false, editLabel }) {
   const tp = useT().programs
   return (
     <div className="space-y-6">
-      <StepHeading title={t.programTitle} subtitle={t.programSubtitle} />
+      <StepHeading title={t.programTitle} subtitle={t.programSubtitle} editing={editing} editLabel={editLabel} />
       <FormField label={t.selectProgram} name="selectedProgram" type="select" value={formData.selectedProgram} onChange={onChange} options={options} placeholder={t.chooseProgram} required error={errors.selectedProgram} />
       {program && (
         <div className="border-t border-border pt-5">
@@ -338,15 +351,22 @@ function ReviewStep({ t, formData, onEdit, program, language, school }) {
       <div className="divide-y divide-border border-y border-border">
         <ReviewGroup title={t.reviewParent} onEdit={() => onEdit(0)} editLabel={t.reviewEdit}>
           <ReviewRow label={t.reviewName} value={`${formData.parentFirstName} ${formData.parentLastName}`} />
-          <ReviewRow label={t.reviewPhone} value={formData.parentPhone} />
-          <ReviewRow label={t.reviewEmail} value={formData.parentEmail} />
-          {formData.parentAddress && <ReviewRow label={t.reviewAddress} value={formData.parentAddress} />}
+          {/* Phase 3.3 (§11): the paired contact lines sit side by side ≥ sm,
+              like the program group — the summary scans in two columns; the
+              address stays a full-width contextual line. Values untouched. */}
+          <div className="grid gap-x-6 gap-y-1.5 sm:grid-cols-2">
+            <ReviewRow label={t.reviewPhone} value={formData.parentPhone} />
+            <ReviewRow label={t.reviewEmail} value={formData.parentEmail} />
+          </div>
+          {formData.parentAddress && <ReviewRow label={t.reviewAddress} value={formData.parentAddress} secondary />}
         </ReviewGroup>
         <ReviewGroup title={t.reviewChild} onEdit={() => onEdit(1)} editLabel={t.reviewEdit}>
           <ReviewRow label={t.reviewName} value={`${formData.childFirstName} ${formData.childLastName}`} />
-          <ReviewRow label={t.reviewDob} value={formData.childDob || '—'} />
-          <ReviewRow label={t.reviewGrade} value={formData.childGrade || '—'} />
-          {formData.childPreviousSchool && <ReviewRow label={t.reviewPrevSchool} value={formData.childPreviousSchool} />}
+          <div className="grid gap-x-6 gap-y-1.5 sm:grid-cols-2">
+            <ReviewRow label={t.reviewDob} value={formData.childDob || '—'} />
+            <ReviewRow label={t.reviewGrade} value={formData.childGrade || '—'} />
+          </div>
+          {formData.childPreviousSchool && <ReviewRow label={t.reviewPrevSchool} value={formData.childPreviousSchool} secondary />}
         </ReviewGroup>
         {program && (
           <ReviewGroup title={t.reviewProgram} onEdit={() => onEdit(2)} editLabel={t.reviewEdit}>
@@ -380,11 +400,14 @@ function ReviewGroup({ title, onEdit, editLabel, children }) {
   )
 }
 
-function ReviewRow({ label, value }) {
+/* Phase 3.3: values read at a glance — primary values take Inter 500 text-1,
+   contextual lines (address, previous school) step down to the quieter text-2.
+   Labels keep caption text-3; wording and content untouched. */
+function ReviewRow({ label, value, secondary = false }) {
   return (
     <div className="grid grid-cols-[minmax(0,7rem)_minmax(0,1fr)] xs:grid-cols-[minmax(0,9rem)_minmax(0,1fr)] gap-x-4 text-body-sm">
       <dt className="text-text-3">{label}</dt>
-      <dd className="text-text-1 break-words">{value}</dd>
+      <dd className={secondary ? 'text-text-2 break-words' : 'font-medium text-text-1 break-words'}>{value}</dd>
     </div>
   )
 }
@@ -448,14 +471,16 @@ function FinalStep({ t, formData, appRef, program, language, school, waPreReg })
         </div>
       </div>
 
+      {/* Phase 3.3 (§12): reading order of the final screen — 1 status, 2 child,
+          3 class, 4 programme, then the main action. The administrative context
+          (reference, school year, date) moves below the action as a quiet
+          secondary block: still present, same values, same behaviour — it just
+          stops competing with the summary at the top of the fold. */}
       <dl className="divide-y divide-border border-y border-border">
-        <DetailRow label={t.finalRefLabel} value={appRef} mono />
+        <DetailRow label={t.finalStatusLabel} value={<Badge variant="planned">{t.statusPreReg}</Badge>} />
         <DetailRow label={t.finalChildLabel} value={`${formData.childFirstName} ${formData.childLastName}`} />
         <DetailRow label={t.finalGradeLabel} value={formData.childGrade || '—'} />
         {program && <DetailRow label={t.finalProgramLabel} value={getProgramName(program, language)} />}
-        <DetailRow label={t.finalYearLabel} value={school.schoolYear} />
-        <DetailRow label={t.finalDateLabel} value={date} />
-        <DetailRow label={t.finalStatusLabel} value={<Badge variant="planned">{t.statusPreReg}</Badge>} />
       </dl>
 
       {/* Phase 3.2 (§6): the main action now follows the status block directly so
@@ -475,6 +500,14 @@ function FinalStep({ t, formData, appRef, program, language, school, waPreReg })
           {t.finalCtaHome}
         </Button>
       </div>
+
+      {/* Phase 3.3 (§12): quiet administrative context — reference stays visible
+          and selectable, one notch down (caption scale, muted values). */}
+      <dl className="divide-y divide-border border-y border-border">
+        <DetailRow label={t.finalRefLabel} value={appRef} mono quiet />
+        <DetailRow label={t.finalYearLabel} value={school.schoolYear} quiet />
+        <DetailRow label={t.finalDateLabel} value={date} quiet />
+      </dl>
 
       <NoticeCard tone="info" icon={Banknote} title={t.finalNextTitle} role="note">
         {t.finalPaymentNote}
@@ -498,11 +531,18 @@ function FinalStep({ t, formData, appRef, program, language, school, waPreReg })
   )
 }
 
-function DetailRow({ label, value, mono = false }) {
+/* Phase 3.3: primary values take Inter 500; the quiet rows (administrative
+   context below the action) step down a notch — tighter padding, caption
+   scale, muted values — without ever disappearing. */
+function DetailRow({ label, value, mono = false, quiet = false }) {
   return (
-    <div className="grid grid-cols-[minmax(0,7rem)_minmax(0,1fr)] xs:grid-cols-[minmax(0,10rem)_minmax(0,1fr)] gap-x-4 py-3 text-body-sm">
+    <div className={`grid grid-cols-[minmax(0,7rem)_minmax(0,1fr)] xs:grid-cols-[minmax(0,10rem)_minmax(0,1fr)] gap-x-4 ${quiet ? 'py-2.5 text-caption' : 'py-3 text-body-sm'}`}>
       <dt className="text-text-3">{label}</dt>
-      <dd className={mono ? 'font-mono text-caption text-text-1 self-center' : 'text-text-1 self-center'}>{value}</dd>
+      <dd className={mono
+        ? `font-mono text-caption self-center ${quiet ? 'text-text-2' : 'text-text-1'}`
+        : quiet ? 'text-text-2 self-center' : 'font-medium text-text-1 self-center'}>
+        {value}
+      </dd>
     </div>
   )
 }

@@ -9,6 +9,13 @@ import { cn } from '../../utils/cn'
  *  focus = global :focus-visible ring · error = border error + Notice-style
  *  message (AlertCircle 16 + text, role=alert) wired via aria-invalid /
  *  aria-describedby. Select uses a Lucide ChevronDown, no data-URI.
+ *
+ * Phase 3.3 — state precision only (no logic, no validation change):
+ *  · EMPTY select / date read as empty: their closed display takes the
+ *    placeholder tone (text-3) until a value exists, like a text input's
+ *    placeholder — before, « Choisir une classe » looked like a filled value.
+ *  · Error message set to Body Small (15 px) per DS §16 (« erreur en Body Small
+ *    error + icône »); it was caption 13 px, the weakest text of the panel.
  */
 const AUTOCOMPLETE = {
   parentFirstName: 'given-name',
@@ -38,11 +45,17 @@ export default function FormField({
   const errorId = `${inputId}-error`
   const ac = autoComplete ?? AUTOCOMPLETE[name]
 
+  /* Phase 3.3: an empty select or date control must not read as filled — until
+     a value exists the closed display borrows the placeholder tone, exactly
+     like a text input's placeholder. Options keep the readable text-1. */
+  const emptyTone = !value && (type === 'select' || type === 'date') ? 'text-text-3' : 'text-text-1'
+
   const base = cn(
-    'w-full h-12 px-4 rounded-sm border bg-white text-base text-text-1 leading-none',
+    'w-full h-12 px-4 rounded-sm border bg-white text-base leading-none',
     'placeholder:text-text-3 transition-[border-color] duration-(--duration-fast) ease-out',
     'hover:border-text-3',
     error ? 'border-error' : 'border-border-strong',
+    emptyTone,
     className
   )
   const a11y = {
@@ -69,9 +82,9 @@ export default function FormField({
             className={cn(base, 'appearance-none pr-11 cursor-pointer')}
             {...a11y}
           >
-            <option value="">{placeholder || '—'}</option>
+            <option value="" className="bg-white text-text-3">{placeholder || '—'}</option>
             {options?.map((opt) => (
-              <option key={opt.value} value={opt.value}>{opt.label}</option>
+              <option key={opt.value} value={opt.value} className="bg-white text-text-1">{opt.label}</option>
             ))}
           </select>
           <ChevronDown
@@ -110,8 +123,8 @@ export default function FormField({
       )}
 
       {error && (
-        <p id={errorId} role="alert" className="mt-2 flex items-start gap-2 text-caption text-error">
-          <AlertCircle size={16} strokeWidth={1.75} className="mt-px shrink-0" aria-hidden="true" />
+        <p id={errorId} role="alert" className="mt-2 flex items-start gap-2 text-body-sm text-error">
+          <AlertCircle size={16} strokeWidth={1.75} className="mt-1 shrink-0" aria-hidden="true" />
           <span>{error}</span>
         </p>
       )}

@@ -26,4 +26,5 @@ node $R/section.mjs '#student-life' life   # audit d'une section : 10 largeurs F
 node $R/scroll.mjs                          # scroll P0
 node $R/navhero.mjs                         # Navbar + Hero
 node $R/anchors.mjs                         # ancres, /registration, FR→EN
+npm run build && node $R/pages-fallback.mjs # simule GitHub Pages (404.html) : rechargement direct de /registration et /confirmation
 ```

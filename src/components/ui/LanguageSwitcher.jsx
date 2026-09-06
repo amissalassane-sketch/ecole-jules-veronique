@@ -3,7 +3,10 @@ import { cn } from '../../utils/cn'
 
 /**
  * LanguageSwitcher — DS V2 §18. Segmented EN/FR control, radius pill,
- * each option ≥ 44 × 32 px, `aria-pressed` + `lang` on every option.
+ * each option 44 × 32 px visually, `aria-pressed` + `lang` on every option.
+ * Touch target (§17 « langue 44 px », a11y > aesthetics): an invisible
+ * ::before extends each option's hit area to 44 × 44 without changing the
+ * 32 px pill the header/footer are built around (2.12 decision).
  *
  * tone: 'light' (white / paper surfaces) · 'ink' (transparent header, footer)
  * `dark` is kept as an alias of tone="ink" for existing callers (Footer).
@@ -38,7 +41,8 @@ export default function LanguageSwitcher({ tone, dark = false, className }) {
             aria-label={o.name}
             onClick={() => setLanguage(o.code)}
             className={cn(
-              'min-w-11 h-8 px-3 rounded-pill text-caption font-semibold leading-none cursor-pointer',
+              'relative min-w-11 h-8 px-3 rounded-pill text-caption font-semibold leading-none cursor-pointer',
+              "before:content-[''] before:absolute before:inset-x-0 before:-inset-y-1.5",
               'transition-colors duration-(--duration-fast) ease-out',
               active
                 ? onInk

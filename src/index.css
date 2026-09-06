@@ -214,10 +214,6 @@
     max-width: calc(var(--container-narrow) + 2 * var(--grid-margin));
     padding-inline: var(--grid-margin);
   }
-  /* Same widths WITHOUT side padding — for use inside .container-page. */
-  .measure-prose  { max-width: var(--container-prose); }
-  .measure-narrow { max-width: var(--container-narrow); }
-
   /* 12/8/4 column grid. Children opt in with .col-span-* below. */
   .grid-page {
     display: grid;
@@ -251,7 +247,6 @@
   .touch-target { min-height: 44px; min-width: 44px; }
 
   /* Safe-area helpers */
-  .safe-bottom { padding-bottom: env(safe-area-inset-bottom, 0px); }
   .pb-safe { padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px)); }
 
   /* ── Scroll reveal (§14): CSS-only, driven by useScrollReveal / <Reveal>.
@@ -287,6 +282,4 @@
   .h-screen-dynamic { height: 100vh; height: 100dvh; }
 
   /* Hide scrollbars for horizontal-scroll containers */
-  .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
-  .scrollbar-none::-webkit-scrollbar { display: none; }
 }

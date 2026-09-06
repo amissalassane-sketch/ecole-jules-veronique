@@ -20,7 +20,7 @@ import { useLanguage } from '../context/LanguageContext'
  * Re-skin only: state, validation, 6-step flow, review/edit, WhatsApp prefill
  * and routes are unchanged. paper page · narrow container · H1 > H2 step
  * (styled H3) · ONE Card/Default panel · inputs 48 · errors as Notice-style
- * messages · Primary / Text actions · no emerald, no blue-600, no rounded-2xl.
+ * messages · Primary / Text actions · V2 tokens only (no legacy V1 colours or radii).
  */
 export default function RegistrationPage() {
   const t = useT().registration

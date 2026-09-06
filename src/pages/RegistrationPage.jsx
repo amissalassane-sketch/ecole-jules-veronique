@@ -33,7 +33,25 @@ import { useLanguage } from '../context/LanguageContext'
  *  · Step 6: action block moved directly under the status block (CTA in fold).
  *  · Step 5: nav action demoted to Secondary so the card holds the one Primary.
  *  · Step 4: program group rows sit side-by-side ≥ sm for instant comparison.
+ *
+ * Phase 3.4 — coherence class ↔ program (functional, data-driven):
+ *  · programs[].grades are disjoint ⇒ the class determines the program; the
+ *    class select (step 2) derives selectedProgram, step 3 confirms/informs
+ *    instead of offering a second independent choice;
+ *  · validation: class must exist in programs.js; program must equal the
+ *    derived one (invariant, refused + focusable alert otherwise);
+ *  · leaving an edit session re-validates the edited step first;
+ *  · review groups class + program side by side (one pedagogical choice).
  */
+/* Phase 3.4 — classe → programme. In programs.js the `grades` lists of the
+   three programs are disjoint (Crèche/Garderie · Niveau 1/2 · CI…CM2), so every
+   class belongs to exactly one program: the program can always be derived from
+   the chosen class, and an inconsistent pair becomes impossible to express.
+   No new business category, no invented data — pure read of programs.js. */
+function programForGrade(grade) {
+  return programs.find((program) => program.grades.includes(grade)) || null
+}
+
 export default function RegistrationPage() {
   const t = useT().registration
   const { language } = useLanguage()
@@ -86,15 +104,22 @@ export default function RegistrationPage() {
     }))),
     [language]
   )
-  const programOptions = useMemo(
-    () => programs.map((program) => ({ value: program.id, label: getProgramName(program, language) })),
-    [language]
-  )
 
   const updateField = useCallback((event) => {
     const { name, value } = event.target
-    setFormData((previous) => ({ ...previous, [name]: value }))
-    if (errors[name]) setErrors((previous) => ({ ...previous, [name]: '' }))
+    setFormData((previous) => {
+      const next = { ...previous, [name]: value }
+      /* Phase 3.4: choosing (or changing) a class re-derives the program — the
+         single source of truth is the class, so the pair stays coherent
+         everywhere (review, final screen, WhatsApp prefill). */
+      if (name === 'childGrade') next.selectedProgram = programForGrade(value)?.id || ''
+      return next
+    })
+    if (name === 'childGrade') {
+      setErrors((previous) => ({ ...previous, childGrade: '', selectedProgram: '' }))
+    } else if (errors[name]) {
+      setErrors((previous) => ({ ...previous, [name]: '' }))
+    }
   }, [errors])
 
   const validateStep = useCallback(() => {
@@ -111,11 +136,36 @@ export default function RegistrationPage() {
       if (!formData.childLastName.trim()) nextErrors.childLastName = t.required
       if (!formData.childDob) nextErrors.childDob = t.required
       if (!formData.childGrade) nextErrors.childGrade = t.selectGrade
+      /* Phase 3.4: a class is valid only if programs.js actually offers it —
+         the grade lists are the only class vocabulary that exists. */
+      else if (!programForGrade(formData.childGrade)) nextErrors.childGrade = t.selectGrade
     }
-    if (step === 2 && !formData.selectedProgram) nextErrors.selectedProgram = t.selectProgram
+    /* Phase 3.4: the program step no longer chooses anything — it confirms the
+       program derived from the class. The coherence invariant is validated
+       here anyway: any drift (stale state, future code path) is refused and
+       surfaced on the confirmation screen itself. */
+    if (step === 2) {
+      const derived = programForGrade(formData.childGrade)
+      if (!derived || formData.selectedProgram !== derived.id) nextErrors.selectedProgram = t.selectProgram
+    }
     setErrors(nextErrors)
     return nextErrors
   }, [step, formData, t])
+
+  /* Phase 3.2 (P0-01) focus helper, extended in 3.4: a coherence alert carries
+     tabIndex=-1 so it can receive focus like a field error. */
+  const focusFirstInvalid = useCallback(() => {
+    requestAnimationFrame(() => {
+      const first = document.querySelector('main [aria-invalid="true"], main [role="alert"][tabindex="-1"]')
+      if (!first) return
+      first.focus({ preventScroll: true })
+      try {
+        first.scrollIntoView({ block: 'center', behavior: 'instant' })
+      } catch {
+        first.scrollIntoView(true)
+      }
+    })
+  }, [])
 
   const nextStep = useCallback(() => {
     const nextErrors = validateStep()
@@ -123,20 +173,11 @@ export default function RegistrationPage() {
       /* Phase 3.2 (P0-01): a rejected submit moves focus + viewport to the first
          invalid control (DOM order = visual order). Messages, rules and wording
          are untouched; the field is centred so its inline error stays visible. */
-      requestAnimationFrame(() => {
-        const first = document.querySelector('main [aria-invalid="true"]')
-        if (!first) return
-        first.focus({ preventScroll: true })
-        try {
-          first.scrollIntoView({ block: 'center', behavior: 'instant' })
-        } catch {
-          first.scrollIntoView(true)
-        }
-      })
+      focusFirstInvalid()
       return
     }
     setStep((current) => Math.min(current + 1, 5))
-  }, [validateStep])
+  }, [validateStep, focusFirstInvalid])
 
   const previousStep = useCallback(() => {
     setChoice(null)
@@ -148,12 +189,19 @@ export default function RegistrationPage() {
     setStep(targetStep)
   }, [])
 
+  /* Phase 3.4 (§9): leaving an edit session always re-validates the step first —
+     an emptied required field or an incoherent pair keeps the parent on the
+     step (error visible + focused) instead of leaking into the review. */
   const returnToReview = useCallback(() => {
-    if (editingStep !== null) {
-      setStep(3)
-      setEditingStep(null)
+    if (editingStep === null) return
+    const nextErrors = validateStep()
+    if (Object.keys(nextErrors).length > 0) {
+      focusFirstInvalid()
+      return
     }
-  }, [editingStep])
+    setStep(3)
+    setEditingStep(null)
+  }, [editingStep, validateStep, focusFirstInvalid])
 
   const program = programs.find((item) => item.id === formData.selectedProgram)
   const totalSteps = 6
@@ -227,7 +275,7 @@ export default function RegistrationPage() {
               >
                 {step === 0 && <ParentStep t={t} formData={formData} onChange={updateField} errors={errors} school={school} editing={editingStep === 0} editLabel={t.reviewEdit} />}
                 {step === 1 && <ChildStep t={t} formData={formData} onChange={updateField} errors={errors} options={gradeOptions} editing={editingStep === 1} editLabel={t.reviewEdit} />}
-                {step === 2 && <ProgramStep t={t} formData={formData} onChange={updateField} errors={errors} options={programOptions} program={program} language={language} editing={editingStep === 2} editLabel={t.reviewEdit} />}
+                {step === 2 && <ProgramStep t={t} formData={formData} errors={errors} program={program} language={language} editing={editingStep === 2} editLabel={t.reviewEdit} />}
                 {step === 3 && <ReviewStep t={t} formData={formData} onEdit={goToEditStep} program={program} language={language} school={school} />}
                 {step === 4 && <ContactStep t={t} school={school} onContact={handleContactChoice} />}
                 {step === 5 && <FinalStep t={t} formData={formData} appRef={appRef} program={program} language={language} school={school} waPreReg={waPreReg} choice={choice} />}
@@ -318,19 +366,23 @@ function ChildStep({ t, formData, onChange, errors, options, editing = false, ed
   )
 }
 
-function ProgramStep({ t, formData, onChange, errors, options, program, language, editing = false, editLabel }) {
+/* Phase 3.4 (§7): the program is derived from the class (programs[].grades are
+   disjoint), so this step confirms and informs instead of offering a second,
+   independent choice that could contradict the class. The chosen class is
+   restated next to the program it determines; the coherence alert (defensive,
+   unreachable through the UI) is focusable like a field error. */
+function ProgramStep({ t, formData, errors, program, language, editing = false, editLabel }) {
   const tp = useT().programs
   return (
     <div className="space-y-6">
       <StepHeading title={t.programTitle} subtitle={t.programSubtitle} editing={editing} editLabel={editLabel} />
-      <FormField label={t.selectProgram} name="selectedProgram" type="select" value={formData.selectedProgram} onChange={onChange} options={options} placeholder={t.chooseProgram} required error={errors.selectedProgram} />
       {program && (
         <div className="border-t border-border pt-5">
           <h3 className="font-body font-semibold text-h4 text-text-1">{getProgramName(program, language)}</h3>
           <dl className="mt-3 grid gap-x-6 gap-y-2 sm:grid-cols-2 text-body-sm">
             <div>
               <dt className="text-caption text-text-3">{t.childGrade}</dt>
-              <dd className="text-text-1">{program.grades.join(' · ')}</dd>
+              <dd className="font-medium text-text-1">{formData.childGrade}</dd>
             </div>
             <div>
               <dt className="text-caption text-text-3">{tp.schedule}</dt>
@@ -339,6 +391,11 @@ function ProgramStep({ t, formData, onChange, errors, options, program, language
           </dl>
           <p className="mt-4 text-caption text-text-3">{t.reviewFinalNote}</p>
         </div>
+      )}
+      {errors.selectedProgram && (
+        <p role="alert" tabIndex={-1} className="flex items-start gap-2 text-body-sm text-error">
+          {errors.selectedProgram}
+        </p>
       )}
     </div>
   )
@@ -362,21 +419,21 @@ function ReviewStep({ t, formData, onEdit, program, language, school }) {
         </ReviewGroup>
         <ReviewGroup title={t.reviewChild} onEdit={() => onEdit(1)} editLabel={t.reviewEdit}>
           <ReviewRow label={t.reviewName} value={`${formData.childFirstName} ${formData.childLastName}`} />
-          <div className="grid gap-x-6 gap-y-1.5 sm:grid-cols-2">
-            <ReviewRow label={t.reviewDob} value={formData.childDob || '—'} />
-            <ReviewRow label={t.reviewGrade} value={formData.childGrade || '—'} />
-          </div>
+          <ReviewRow label={t.reviewDob} value={formData.childDob || '—'} />
           {formData.childPreviousSchool && <ReviewRow label={t.reviewPrevSchool} value={formData.childPreviousSchool} secondary />}
         </ReviewGroup>
         {program && (
-          <ReviewGroup title={t.reviewProgram} onEdit={() => onEdit(2)} editLabel={t.reviewEdit}>
-            {/* Phase 3.2 (§8): program and class·year sit side by side from sm
-                so the two halves of the pedagogical choice compare at a glance.
-                Values and labels untouched; no coherence rule introduced here. */}
+          <ReviewGroup title={t.reviewProgram} onEdit={() => onEdit(1)} editLabel={t.reviewEdit}>
+            {/* Phase 3.4 (§10): class and program are one pedagogical choice —
+                they are read side by side so the parent answers « yes, that is
+                the class and program I chose » in one glance. Editing this
+                group opens the step that holds the class (the program follows
+                from it). The year row no longer repeats the class. */}
             <div className="grid gap-x-6 gap-y-1.5 sm:grid-cols-2">
+              <ReviewRow label={t.reviewGrade} value={formData.childGrade || '—'} />
               <ReviewRow label={t.finalProgramLabel} value={getProgramName(program, language)} />
-              <ReviewRow label={t.finalYearLabel} value={`${formData.childGrade} · ${school.schoolYear}`} />
             </div>
+            <ReviewRow label={t.finalYearLabel} value={school.schoolYear} secondary />
           </ReviewGroup>
         )}
       </div>

@@ -237,7 +237,7 @@ const fr = {
     childLastNamePlaceholder: 'Nom de l’enfant',
     childPrevSchoolPlaceholder: 'Nom de l’école précédente',
     programTitle: 'Programme et classe',
-    programSubtitle: 'Sélectionnez le niveau actuellement proposé qui vous intéresse.',
+    programSubtitle: 'Ce programme correspond à la classe choisie pour votre enfant.',
     selectProgram: 'Programme',
     chooseProgram: 'Choisir un programme',
     selectGrade: 'Choisir une classe',

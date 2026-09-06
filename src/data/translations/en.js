@@ -237,7 +237,7 @@ const en = {
     childLastNamePlaceholder: "Child's last name",
     childPrevSchoolPlaceholder: 'Previous school name',
     programTitle: 'Program and class',
-    programSubtitle: 'Select the currently offered level you are interested in.',
+    programSubtitle: 'This program matches the class chosen for your child.',
     selectProgram: 'Program',
     chooseProgram: 'Choose a program',
     selectGrade: 'Choose a class',

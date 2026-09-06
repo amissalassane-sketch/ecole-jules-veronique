@@ -157,6 +157,7 @@ const en = {
     note: 'Current status: the platform is being defined. Online payments, a mobile app, and the parent portal are not yet available.',
   },
   contactStrip: {
+    email: 'Send an email',
     title: 'Have a question or want to visit the school?',
     subtitle: 'The team can explain the levels, admission test, required documents, and school fees.',
     chat: 'Message on WhatsApp',
@@ -212,9 +213,6 @@ const en = {
   faq: {
     label: 'FAQ',
     title: 'Frequently asked questions',
-    subtitle: 'Answers shared by the school to families’ most common questions.',
-    stillQuestions: 'Have another question?',
-    stillQuestionsDesc: 'The administration can answer questions about your situation directly.',
   },
   finalCta: {
     title: 'Let’s prepare for the 2026–2027 school year together.',

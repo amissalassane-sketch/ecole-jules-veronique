@@ -1,51 +1,35 @@
-import SectionHeading from '../ui/SectionHeading'
+import Section from '../layout/Section'
+import Eyebrow from '../ui/Eyebrow'
 import ScrollReveal from '../animations/ScrollReveal'
 import Accordion from '../ui/Accordion'
-import Button from '../ui/Button'
-import { Mail, Phone, MessageCircle } from 'lucide-react'
-import { school } from '../../data/school'
 import { faqItems } from '../../data/faq'
-import { waLinkFor } from '../../utils/contact'
 import { useT } from '../../hooks/useT'
 import { useLanguage } from '../../context/LanguageContext'
 
+/**
+ * Questions fréquentes — DS V2 §08 type S8 "Accordion" (blueprint §24 row 8).
+ * Absorbs the former DigitalVision section as ONE FAQ entry (faq.js, last item).
+ *
+ *  paper · narrow container · Eyebrow → H2 → Accordion (questions 17/600 on hairlines).
+ *  The nested "still have questions" contact block moved to the Contact section (S9).
+ *  Data: faq.js — nothing invented.
+ */
 export default function FAQ() {
   const t = useT()
   const { language } = useLanguage()
   const items = faqItems[language].map((item, index) => ({ ...item, id: `faq-${index}` }))
 
   return (
-    <section id="faq" className="py-section bg-white">
-      <div className="container-page">
-        <SectionHeading label={t.faq.label} title={t.faq.title} subtitle={t.faq.subtitle} />
-
-        <div className="max-w-2xl mx-auto">
-          <ScrollReveal>
-            <Accordion items={items} />
-          </ScrollReveal>
-
-          <ScrollReveal delay={0.15}>
-            <div id="contact" className="mt-10 md:mt-14 text-center p-6 sm:p-8 rounded-2xl bg-surface-alt">
-              <h3 className="font-display text-lg sm:text-xl font-bold text-neutral-900 mb-1.5">{t.faq.stillQuestions}</h3>
-              <p className="text-neutral-500 text-xs sm:text-sm mb-5 max-w-sm mx-auto">{t.faq.stillQuestionsDesc}</p>
-              <div className="flex flex-col sm:flex-row gap-3 justify-center flex-wrap">
-                <Button variant="outline" size="md" href={`mailto:${school.email}`} className="text-sm">
-                  <Mail size={15} />
-                  {school.email}
-                </Button>
-                <Button variant="primary" size="md" href={`tel:${school.phone}`} className="text-sm">
-                  <Phone size={15} />
-                  {school.phone}
-                </Button>
-                <Button variant="outline" size="md" href={waLinkFor('general')} target="_blank" rel="noopener noreferrer" className="text-sm">
-                  <MessageCircle size={15} />
-                  {t.nav.whatsapp}
-                </Button>
-              </div>
-            </div>
-          </ScrollReveal>
-        </div>
-      </div>
-    </section>
+    <Section id="faq" tone="paper" container="narrow" aria-labelledby="faq-title">
+      <ScrollReveal>
+        <Eyebrow>{t.faq.label}</Eyebrow>
+        <h2 id="faq-title" className="mt-3 lg:mt-4 font-display font-semibold text-h2 text-text-1 text-balance">
+          {t.faq.title}
+        </h2>
+      </ScrollReveal>
+      <ScrollReveal delay={0.08} className="mt-8 md:mt-10 lg:mt-12">
+        <Accordion items={items} />
+      </ScrollReveal>
+    </Section>
   )
 }

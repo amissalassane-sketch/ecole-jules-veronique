@@ -157,6 +157,7 @@ const fr = {
     note: 'Statut actuel : plateforme en cours de définition. Les paiements en ligne, l’application mobile et le portail parents ne sont pas encore disponibles.',
   },
   contactStrip: {
+    email: 'Écrire un email',
     title: 'Une question ou une envie de visiter l’école ?',
     subtitle: 'L’équipe vous renseigne sur les niveaux, le test d’admission, les pièces à fournir et les frais scolaires.',
     chat: 'Écrire sur WhatsApp',
@@ -212,9 +213,6 @@ const fr = {
   faq: {
     label: 'FAQ',
     title: 'Questions fréquentes',
-    subtitle: 'Les réponses communiquées par l’école aux questions des familles.',
-    stillQuestions: 'Une autre question ?',
-    stillQuestionsDesc: 'L’administration peut vous renseigner directement sur votre situation.',
   },
   finalCta: {
     title: 'Préparons ensemble la rentrée 2026–2027.',

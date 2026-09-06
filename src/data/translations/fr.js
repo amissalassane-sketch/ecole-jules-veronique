@@ -217,10 +217,7 @@ const fr = {
   finalCta: {
     title: 'Préparons ensemble la rentrée 2026–2027.',
     subtitle: 'Les demandes pour l’année scolaire 2026–2027 sont ouvertes. Échangez avec l’école avant de finaliser l’inscription.',
-    enroll: 'Préparer une demande',
-    bookVisit: 'Appeler l’école',
     talk: 'Parler aux admissions',
-    contact: 'Téléphone : [PHONE] · WhatsApp : [WHATSAPP]',
   },
   footer: {
     description: 'Une école maternelle et primaire bilingue à Ouêdo, en face de la Cité nouvelle, qui accompagne les enfants dans un cadre fondé sur l’excellence, la discipline et les valeurs.',

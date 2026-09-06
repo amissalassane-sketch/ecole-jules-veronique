@@ -217,10 +217,7 @@ const en = {
   finalCta: {
     title: 'Let’s prepare for the 2026–2027 school year together.',
     subtitle: 'Applications for the 2026–2027 school year are open. Speak with the school before completing registration.',
-    enroll: 'Prepare a request',
-    bookVisit: 'Call the school',
     talk: 'Talk to admissions',
-    contact: 'Phone: [PHONE] · WhatsApp: [WHATSAPP]',
   },
   footer: {
     description: 'A bilingual kindergarten and primary school in Ouêdo, opposite Cité nouvelle, supporting children in a setting founded on excellence, discipline, and values.',

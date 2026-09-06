@@ -2,13 +2,13 @@ import { Check } from 'lucide-react'
 import { cn } from '../../utils/cn'
 
 /**
- * Progress indicator for the registration flow.
+ * Stepper — registration progress (re-skin on V2 tokens, same API).
  *
- * Mobile (<640px): the 6 labels ("Vérification", "Programme"…) cannot fit on a
- * 360px screen, so we show a compact dot rail plus the current step label.
- * No horizontal scrolling.
- *
- * Tablet+ (≥640px): full numbered stepper with labels underneath.
+ *  < 640 : current label (Inter 600 15) + « n/total » caption + 2 px primary rail.
+ *  ≥ 640 : numbered 32 px discs — done = primary + Check 16, current = primary
+ *          with 2 px primary-light ring, upcoming = linen/text-3 — connected by
+ *          1 px hairlines; labels caption 13. No emerald, no rounded-full pills
+ *          beyond the disc itself, state also conveyed by number/check + label.
  */
 export default function Stepper({ currentStep, labels }) {
   const steps = labels || ['Parent', 'Child', 'Program', 'Review', 'Finalize', 'Done']
@@ -25,68 +25,60 @@ export default function Stepper({ currentStep, labels }) {
       aria-valuenow={current + 1}
       aria-valuetext={`${steps[current]} — ${current + 1}/${total}`}
     >
-      {/* ── Mobile: progress bar + current label ── */}
+      {/* ── Mobile: label + rail ── */}
       <div className="sm:hidden">
-        <div className="flex items-baseline justify-between mb-2 gap-3">
-          <span className="text-sm font-semibold text-primary-700 truncate">
-            {steps[current]}
-          </span>
-          <span className="text-xs font-medium text-neutral-400 shrink-0 tabular-nums">
-            {current + 1}/{total}
-          </span>
+        <div className="flex items-baseline justify-between gap-3 mb-2">
+          <span className="text-[15px] font-semibold text-text-1 truncate">{steps[current]}</span>
+          <span className="text-caption text-text-3 shrink-0 tabular-nums">{current + 1}/{total}</span>
         </div>
-        <div className="h-1.5 w-full rounded-full bg-neutral-200 overflow-hidden">
+        <div className="h-0.5 w-full bg-border overflow-hidden">
           <div
-            className="h-full rounded-full bg-primary-600 transition-all duration-500 ease-out"
+            className="h-full bg-primary transition-[width] duration-(--duration-panel) ease-out"
             style={{ width: `${Math.max(pct, 4)}%` }}
           />
         </div>
       </div>
 
-      {/* ── Tablet & desktop: full stepper ── */}
-      <div className="hidden sm:flex items-start justify-between gap-1">
+      {/* ── Tablet & desktop ── */}
+      <ol className="hidden sm:flex items-start justify-between gap-1">
         {steps.map((label, i) => {
-          const isCompleted = i < current
-          const isCurrent = i === current
-          const isLast = i === total - 1
-
+          const done = i < current
+          const active = i === current
+          const last = i === total - 1
           return (
-            <div key={label} className="flex items-start flex-1 min-w-0 last:flex-none">
-              <div className="flex flex-col items-center gap-1.5 min-w-0">
-                <div
-                  className={cn(
-                    'w-9 h-9 rounded-full flex items-center justify-center shrink-0 text-sm font-bold transition-all duration-300',
-                    isCompleted && 'bg-emerald-500 text-white',
-                    isCurrent && 'bg-primary-600 text-white ring-2 ring-primary-100 ring-offset-1',
-                    !isCompleted && !isCurrent && 'bg-neutral-100 text-neutral-400'
-                  )}
-                >
-                  {isCompleted ? <Check size={15} /> : i + 1}
-                </div>
+            <li key={label} className="flex items-start flex-1 min-w-0 last:flex-none" aria-current={active ? 'step' : undefined}>
+              <div className="flex flex-col items-center gap-2 min-w-0">
                 <span
                   className={cn(
-                    'text-[11px] font-semibold text-center leading-tight px-0.5 hyphens-auto',
-                    isCurrent && 'text-primary-600',
-                    isCompleted && 'text-emerald-600',
-                    !isCompleted && !isCurrent && 'text-neutral-400'
+                    'flex h-8 w-8 shrink-0 items-center justify-center rounded-pill text-caption font-semibold tabular-nums',
+                    'transition-colors duration-(--duration-base)',
+                    done && 'bg-primary text-text-inverse',
+                    active && 'bg-primary text-text-inverse ring-2 ring-primary-light ring-offset-2 ring-offset-paper',
+                    !done && !active && 'bg-linen text-text-3'
+                  )}
+                  aria-hidden="true"
+                >
+                  {done ? <Check size={16} strokeWidth={2} /> : i + 1}
+                </span>
+                <span
+                  className={cn(
+                    'text-caption text-center leading-tight px-0.5 hyphens-auto',
+                    active ? 'font-semibold text-text-1' : done ? 'text-text-2' : 'text-text-3'
                   )}
                 >
                   {label}
                 </span>
               </div>
-
-              {!isLast && (
-                <div
-                  className={cn(
-                    'h-0.5 flex-1 mt-[18px] mx-1 rounded-full transition-colors duration-300',
-                    i < current ? 'bg-emerald-400' : 'bg-neutral-200'
-                  )}
+              {!last && (
+                <span
+                  aria-hidden="true"
+                  className={cn('h-px flex-1 mt-4 mx-2 transition-colors duration-(--duration-base)', i < current ? 'bg-primary' : 'bg-border')}
                 />
               )}
-            </div>
+            </li>
           )
         })}
-      </div>
+      </ol>
     </div>
   )
 }

@@ -1,6 +1,6 @@
 import { useState, useCallback, useMemo, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowLeft, ArrowRight, Check, MapPin, Phone, MessageCircle, Clock, Banknote, ExternalLink } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Check, MapPin, Phone, Mail, Info, MessageCircle, Clock, Banknote, ExternalLink } from 'lucide-react'
 import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
 import Button from '../components/ui/Button'
@@ -11,7 +11,7 @@ import Stepper from '../components/registration/Stepper'
 import FormField from '../components/registration/FormField'
 import { programs, getProgramName } from '../data/programs'
 import { school } from '../data/school'
-import { waLinkFor } from '../utils/contact'
+import { waLinkFor, phoneLink } from '../utils/contact'
 import { useT } from '../hooks/useT'
 import { useLanguage } from '../context/LanguageContext'
 
@@ -42,6 +42,20 @@ import { useLanguage } from '../context/LanguageContext'
  *    derived one (invariant, refused + focusable alert otherwise);
  *  · leaving an edit session re-validates the edited step first;
  *  · review groups class + program side by side (one pedagogical choice).
+ *
+ * Phase 3.5 — transmission, contact & écran final (functional/UX):
+ *  · REG-XXXXXX removed: generated at mount, never persisted nor transmitted
+ *    — an administrative file number the school could not exploit;
+ *  · dead `choice` state removed (set once, read nowhere but a motion key);
+ *  · step 5 lists only real configured channels (WhatsApp / tel: / mailto: /
+ *    directions), each performing the action it announces; the fake
+ *    « Contacter les admissions » button is gone; nav Primary returns;
+ *  · WhatsApp draft now carries every collected value with a real use
+ *    (parent contact block, child identity + class, program, year); optional
+ *    lines vanish when empty; closing line states nothing was auto-sent;
+ *  · final screen: transparency notice before the CTA (« rien n'a encore été
+ *    envoyé »), CTA label = the real action, post-click state limited to what
+ *    the browser verifies (link activated → « completes inside WhatsApp »).
  */
 /* Phase 3.4 — classe → programme. In programs.js the `grades` lists of the
    three programs are disjoint (Crèche/Garderie · Niveau 1/2 · CI…CM2), so every
@@ -56,7 +70,6 @@ export default function RegistrationPage() {
   const t = useT().registration
   const { language } = useLanguage()
   const [step, setStep] = useState(0)
-  const [choice, setChoice] = useState(null)
   const [editingStep, setEditingStep] = useState(null)
   const [formData, setFormData] = useState({
     parentFirstName: '',
@@ -180,7 +193,6 @@ export default function RegistrationPage() {
   }, [validateStep, focusFirstInvalid])
 
   const previousStep = useCallback(() => {
-    setChoice(null)
     setStep((current) => Math.max(current - 1, 0))
   }, [])
 
@@ -210,28 +222,42 @@ export default function RegistrationPage() {
      edited step — re-opening a group must never read like travelling backwards
      through the form. The card's « Modifier » badge carries the mode. */
   const shownStep = editingStep !== null ? 3 : step
-  const appRef = useMemo(() => `REG-${String(Date.now()).slice(-6)}`, [])
   const waHelpLink = waLinkFor('help')
   const stepperLabels = t.stepLabels
 
+  /* Phase 3.5 (§7): the WhatsApp draft carries every collected value that has a
+     real use for the first exchange with the school — parent contact block,
+     child identity + class, derived program, school year — and nothing else.
+     Optional lines (address, previous school) vanish when empty so no
+     half-filled line ever reaches the draft. The closing line states the
+     truth of this site: nothing was sent automatically. */
+  const formatDob = (iso) => {
+    if (!iso) return ''
+    const d = new Date(`${iso}T00:00:00`)
+    return Number.isNaN(d.getTime()) ? iso : d.toLocaleDateString(language === 'en' ? 'en-GB' : 'fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })
+  }
   const waContextMessage = useMemo(() => {
     const template = t.waMsgPreReg || ''
+    const values = {
+      YEAR: school.schoolYear,
+      PARENT_NAME: `${formData.parentFirstName} ${formData.parentLastName}`.trim(),
+      PARENT_PHONE: formData.parentPhone,
+      PARENT_EMAIL: formData.parentEmail,
+      PARENT_ADDRESS: formData.parentAddress,
+      CHILD_NAME: `${formData.childFirstName} ${formData.childLastName}`.trim(),
+      CHILD_DOB: formatDob(formData.childDob),
+      GRADE: formData.childGrade,
+      CHILD_PREV_SCHOOL: formData.childPreviousSchool,
+      PROGRAM: program ? getProgramName(program, language) : '',
+    }
     return template
-      .replace('[PARENT_NAME]', `${formData.parentFirstName} ${formData.parentLastName}`)
-      .replace('[CHILD_NAME]', `${formData.childFirstName} ${formData.childLastName}`)
-      .replace('[GRADE]', formData.childGrade)
-      .replace('[PROGRAM]', program ? getProgramName(program, language) : '')
-      .replace('[NOM_PARENT]', `${formData.parentFirstName} ${formData.parentLastName}`)
-      .replace('[NOM_ENFANT]', `${formData.childFirstName} ${formData.childLastName}`)
-      .replace('[CLASSE]', formData.childGrade)
-      .replace('[PROGRAMME]', program ? getProgramName(program, language) : '')
+      .replace(/\[([A-Z_]+)\]/g, (match, key) => values[key] ?? match)
+      .split('\n')
+      .filter((line) => !/:\s*$/.test(line))
+      .join('\n')
   }, [formData, program, language, t.waMsgPreReg])
 
   const waPreReg = `https://wa.me/${school.whatsapp.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(waContextMessage)}`
-  const handleContactChoice = () => {
-    setChoice('school')
-    setStep(5)
-  }
 
   return (
     <>
@@ -267,7 +293,7 @@ export default function RegistrationPage() {
           <Card className="p-5 sm:p-6 md:p-8">
             <AnimatePresence mode="wait">
               <motion.div
-                key={`${step}-${choice || ''}`}
+                key={step}
                 initial={{ opacity: 0, x: 12 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -12 }}
@@ -277,30 +303,35 @@ export default function RegistrationPage() {
                 {step === 1 && <ChildStep t={t} formData={formData} onChange={updateField} errors={errors} options={gradeOptions} editing={editingStep === 1} editLabel={t.reviewEdit} />}
                 {step === 2 && <ProgramStep t={t} formData={formData} errors={errors} program={program} language={language} editing={editingStep === 2} editLabel={t.reviewEdit} />}
                 {step === 3 && <ReviewStep t={t} formData={formData} onEdit={goToEditStep} program={program} language={language} school={school} />}
-                {step === 4 && <ContactStep t={t} school={school} onContact={handleContactChoice} />}
-                {step === 5 && <FinalStep t={t} formData={formData} appRef={appRef} program={program} language={language} school={school} waPreReg={waPreReg} choice={choice} />}
+                {step === 4 && <ContactStep t={t} school={school} />}
+                {step === 5 && <FinalStep t={t} formData={formData} program={program} language={language} school={school} waPreReg={waPreReg} />}
               </motion.div>
             </AnimatePresence>
           </Card>
 
-          {step < 5 && (
-            <div className="mt-6 flex flex-col-reverse gap-3 xs:flex-row xs:items-center xs:justify-between">
+          {/* Phase 3.5 (§13, cas G): the final screen now also offers the text
+              « Retour » action (data stays in memory), so noticing a mistake
+              after the draft no longer forces leaving the journey. The nav
+              Primary only exists below the final step — the final screen keeps
+              its single WhatsApp primary inside the card. */}
+          <div className="mt-6 flex flex-col-reverse gap-3 xs:flex-row xs:items-center xs:justify-between">
+            <Button
+              variant="text"
+              size="md"
+              onClick={editingStep !== null ? returnToReview : previousStep}
+              disabled={step === 0 && editingStep === null}
+              className="self-start xs:self-auto -ml-1"
+            >
+              <ArrowLeft size={16} strokeWidth={2} aria-hidden="true" />
+              {editingStep !== null ? t.backToReview : t.back}
+            </Button>
+            {step < 5 && (
+              /* Phase 3.5: the contact step no longer holds a card-level
+                 primary (its channels are real links), so the nav action is
+                 the single Primary of the screen again — one primary per
+                 screen, label « Continuer » describing the real action. */
               <Button
-                variant="text"
-                size="md"
-                onClick={editingStep !== null ? returnToReview : previousStep}
-                disabled={step === 0 && editingStep === null}
-                className="self-start xs:self-auto -ml-1"
-              >
-                <ArrowLeft size={16} strokeWidth={2} aria-hidden="true" />
-                {editingStep !== null ? t.backToReview : t.back}
-              </Button>
-              {/* Phase 3.2 (§7): on the contact step the card already holds the
-                  single Primary action; the nav action is demoted to Secondary
-                  so the screen no longer shows two competing primaries. Button,
-                  label and behaviour are unchanged — hierarchy only. */}
-              <Button
-                variant={editingStep === null && step === 4 ? 'secondary' : 'primary'}
+                variant="primary"
                 size="lg"
                 onClick={editingStep !== null ? returnToReview : nextStep}
                 className="w-full xs:w-auto"
@@ -308,8 +339,8 @@ export default function RegistrationPage() {
                 {editingStep !== null ? t.done : t.continue}
                 <ArrowRight size={16} strokeWidth={2} aria-hidden="true" />
               </Button>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </main>
       <Footer />
@@ -469,35 +500,45 @@ function ReviewRow({ label, value, secondary = false }) {
   )
 }
 
-function ContactStep({ t, school, onContact }) {
+/* Phase 3.5 (§5, §13): « Contacter l'administration » now lists exactly the
+   channels that exist in school.js / contact.js — WhatsApp, tel:, mailto:,
+   directions — and each row performs the action it announces. The former
+   « Contacter les admissions » button only advanced the step and contacted
+   nobody: removed. Advancing to the prepared message stays the nav Primary. */
+function ContactStep({ t, school }) {
+  const mapQuery = encodeURIComponent(school.address)
+  const mapLink = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`
   return (
     <div className="space-y-6">
       <StepHeading title={t.choiceTitle} subtitle={t.choiceSubtitle} />
-      <div className="border-t border-border pt-5">
-        <h3 className="font-body font-semibold text-h4 text-text-1">{t.schoolFinalizeTitle}</h3>
-        <p className="mt-2 text-body-sm text-text-2 text-pretty">{t.schoolFinalizeDesc}</p>
-        <ul className="mt-5 space-y-2 text-body-sm text-text-2">
-          <li className="flex items-start gap-3">
-            <MapPin size={16} strokeWidth={1.75} className="mt-1 shrink-0 text-text-3" aria-hidden="true" />
+      <ul className="space-y-2 border-t border-border pt-5 text-body-sm text-text-2">
+        <li className="flex items-start gap-3">
+          <MessageCircle size={16} strokeWidth={1.75} className="mt-1 shrink-0 text-text-3" aria-hidden="true" />
+          <a href={waLinkFor('admissions')} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center text-text-1 underline-offset-4 hover:underline tabular-nums">{school.whatsapp}</a>
+        </li>
+        <li className="flex items-start gap-3">
+          <Phone size={16} strokeWidth={1.75} className="mt-1 shrink-0 text-text-3" aria-hidden="true" />
+          <a href={phoneLink} className="inline-flex min-h-11 items-center text-text-1 underline-offset-4 hover:underline tabular-nums">{school.phone}</a>
+        </li>
+        <li className="flex items-start gap-3">
+          <Mail size={16} strokeWidth={1.75} className="mt-1 shrink-0 text-text-3" aria-hidden="true" />
+          <a href={`mailto:${school.email}`} className="inline-flex min-h-11 items-center break-all text-text-1 underline-offset-4 hover:underline">{school.email}</a>
+        </li>
+        <li className="flex items-start gap-3">
+          <MapPin size={16} strokeWidth={1.75} className="mt-1 shrink-0 text-text-3" aria-hidden="true" />
+          <span className="flex flex-wrap items-center gap-x-3 gap-y-1">
             <span>{school.address}</span>
-          </li>
-          <li className="flex items-start gap-3">
-            <Phone size={16} strokeWidth={1.75} className="mt-1 shrink-0 text-text-3" aria-hidden="true" />
-            <a href={`tel:${school.phone}`} className="inline-flex min-h-11 items-center text-text-1 underline-offset-4 hover:underline tabular-nums">{school.phone}</a>
-          </li>
-          <li className="flex items-start gap-3">
-            <Clock size={16} strokeWidth={1.75} className="mt-1 shrink-0 text-text-3" aria-hidden="true" />
-            <span>{school.openingHours.label}</span>
-          </li>
-        </ul>
-      </div>
-      {/* Phase 3.2 (§7): the single Primary action now directly follows the
-          contact coordinates it acts on; the bank-payment notice closes the
-          step as context. Order only — no text, no behaviour changed. */}
-      <Button variant="primary" size="lg" onClick={onContact} className="w-full xs:w-auto">
-        {t.contactAdmissions}
-        <ArrowRight size={16} strokeWidth={2} aria-hidden="true" />
-      </Button>
+            <a href={mapLink} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-1.5 text-text-1 underline underline-offset-4 hover:decoration-2">
+              {t.finalCtaPrimary}
+              <ExternalLink size={16} strokeWidth={2} aria-hidden="true" />
+            </a>
+          </span>
+        </li>
+        <li className="flex items-start gap-3">
+          <Clock size={16} strokeWidth={1.75} className="mt-1 shrink-0 text-text-3" aria-hidden="true" />
+          <span>{school.openingHours.label}</span>
+        </li>
+      </ul>
       <NoticeCard tone="info" icon={Banknote} title={t.bankPaymentTitle} role="note">
         {t.bankPaymentDesc}
       </NoticeCard>
@@ -505,7 +546,17 @@ function ContactStep({ t, school, onContact }) {
   )
 }
 
-function FinalStep({ t, formData, appRef, program, language, school, waPreReg }) {
+/* Phase 3.5 (§10, §14): three distinct states, never merged —
+   1 « prepared » (badge + title, always true here),
+   2 the action (open WhatsApp with the draft),
+   3 after the click: only what the browser can verify — the link was
+     activated — worded as « sending completes inside WhatsApp », never as
+     « sent ». The REG-XXXXXX reference was removed (§4): generated at mount
+     from Date.now(), never persisted, never transmitted, so the school could
+     not exploit it; displaying it as « Référence de demande » implied an
+     administrative file that does not exist. */
+function FinalStep({ t, formData, program, language, school, waPreReg }) {
+  const [waOpened, setWaOpened] = useState(false)
   const mapQuery = encodeURIComponent(school.address)
   const mapLink = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`
   const date = new Date().toLocaleDateString(language === 'en' ? 'en-GB' : 'fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })
@@ -540,12 +591,11 @@ function FinalStep({ t, formData, appRef, program, language, school, waPreReg })
         {program && <DetailRow label={t.finalProgramLabel} value={getProgramName(program, language)} />}
       </dl>
 
-      {/* Phase 3.2 (§6): the main action now follows the status block directly so
-          it lands in the first viewport (measured 1614 px from document top
-          before, ~2 folds below the arrival point at 390×844). Texts, targets and
-          behaviour untouched; the payment notice and the 01–04 list follow it. */}
+      {/* Phase 3.2 (§6): the main action follows the status block directly so it
+          lands in the first viewport. Phase 3.5 (§12): its label describes the
+          real action — hand the prepared message to WhatsApp. */}
       <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-        <Button variant="primary" size="lg" href={waPreReg} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
+        <Button variant="primary" size="lg" href={waPreReg} target="_blank" rel="noopener noreferrer" onClick={() => setWaOpened(true)} className="w-full sm:w-auto">
           <MessageCircle size={20} strokeWidth={1.75} aria-hidden="true" />
           {t.finalCtaSecondary}
         </Button>
@@ -558,10 +608,30 @@ function FinalStep({ t, formData, appRef, program, language, school, waPreReg })
         </Button>
       </div>
 
-      {/* Phase 3.3 (§12): quiet administrative context — reference stays visible
-          and selectable, one notch down (caption scale, muted values). */}
+      {/* Phase 3.5 (§11): the state before the action, stated plainly — nothing
+          left the browser yet. Placed directly under the CTA it captions: the
+          badge + title above carry state 1, the CTA stays in the first
+          viewport (measured: putting this notice above pushed the CTA below
+          the fold at 320 px). */}
+      <NoticeCard tone="warning" icon={Info} title={t.finalTransparencyTitle}>
+        {t.finalTransparencyBody}
+      </NoticeCard>
+
+      {/* Phase 3.5 (§10 state 3): shown only after the parent activated the
+          WhatsApp link — the one thing the browser can verify. role=status so
+          assistive tech announces it; wording stops at « completes inside
+          WhatsApp », never « sent ». */}
+      {waOpened && (
+        <p role="status" className="flex items-start gap-2 text-body-sm text-text-2">
+          <Info size={16} strokeWidth={1.75} className="mt-1 shrink-0 text-text-3" aria-hidden="true" />
+          {t.waOpenedNote}
+        </p>
+      )}
+
+      {/* Phase 3.3 (§12): quiet administrative context, one notch down.
+          Phase 3.5: the REG reference is gone (§4) — year + preparation date
+          are the only factual context left. */}
       <dl className="divide-y divide-border border-y border-border">
-        <DetailRow label={t.finalRefLabel} value={appRef} mono quiet />
         <DetailRow label={t.finalYearLabel} value={school.schoolYear} quiet />
         <DetailRow label={t.finalDateLabel} value={date} quiet />
       </dl>
@@ -591,13 +661,11 @@ function FinalStep({ t, formData, appRef, program, language, school, waPreReg })
 /* Phase 3.3: primary values take Inter 500; the quiet rows (administrative
    context below the action) step down a notch — tighter padding, caption
    scale, muted values — without ever disappearing. */
-function DetailRow({ label, value, mono = false, quiet = false }) {
+function DetailRow({ label, value, quiet = false }) {
   return (
     <div className={`grid grid-cols-[minmax(0,7rem)_minmax(0,1fr)] xs:grid-cols-[minmax(0,10rem)_minmax(0,1fr)] gap-x-4 ${quiet ? 'py-2.5 text-caption' : 'py-3 text-body-sm'}`}>
       <dt className="text-text-3">{label}</dt>
-      <dd className={mono
-        ? `font-mono text-caption self-center ${quiet ? 'text-text-2' : 'text-text-1'}`
-        : quiet ? 'text-text-2 self-center' : 'font-medium text-text-1 self-center'}>
+      <dd className={quiet ? 'text-text-2 self-center' : 'font-medium text-text-1 self-center'}>
         {value}
       </dd>
     </div>

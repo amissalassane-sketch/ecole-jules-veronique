@@ -18,8 +18,8 @@ const en = {
   },
   hero: {
     title: 'A bilingual nursery and primary school in Ouêdo.',
-    lead: 'French and English every day, from nursery to Grade 6, in a setting built on excellence, discipline and values.',
-    subtitle: 'A bilingual kindergarten and primary school helping every child reveal their best self in an environment built on excellence, discipline, and values.',
+    lead: 'French and English are practised every day, from nursery to Grade 6. Excellence, discipline and values guide the school.',
+    subtitle: 'A bilingual kindergarten and primary school in Ouêdo, in French and English every day.',
     enroll: 'Pre-register my child',
     talkToAdmissions: 'Talk to admissions',
     factsLabel: 'At a glance',
@@ -33,12 +33,12 @@ const en = {
   },
   intro: {
     label: 'Our school',
-    title: 'Revealing the best in every child.',
+    title: 'Our mission, day by day.',
     mission:
-      'Jules & Véronique Bilingual Kindergarten and Primary School welcomes children from nursery to Grade 6 in Ouêdo (Abomey-Calavi). It offers a French-English bilingual education built on excellence, discipline and values.',
+      'Jules & Véronique Bilingual Kindergarten and Primary School is in Ouêdo, in the Abomey-Calavi municipality. It welcomes children from nursery to Grade 6 and teaches them French and English. Excellence, discipline and values shape everyday life at school.',
     patronage:
       'Under the patronage of Saint Augustine, our mission is to provide a quality bilingual education and to nurture curious, responsible learners who are open to the world.',
-    schoolPhoto: 'School photo — coming soon',
+    schoolPhoto: 'School photo, coming soon',
     factsLabel: 'Key facts about the school',
     facts: {
       founded: 'School established',
@@ -53,7 +53,7 @@ const en = {
   },
   commitments: {
     label: 'Our commitments',
-    title: 'An education designed for the future.',
+    title: 'What we guarantee to families.',
     items: [
       {
         title: 'Daily bilingual education from kindergarten',
@@ -132,8 +132,8 @@ const en = {
   },
   studentLife: {
     label: 'School life',
-    title: 'Learning through creativity, play and the school setting.',
-    photo: 'Photo of the courtyard or a classroom — coming soon',
+    title: 'Learning by creating and playing.',
+    photo: 'Photo of the courtyard or a classroom, coming soon',
   },
   facilities: {
     label: 'Facilities',
@@ -194,7 +194,7 @@ const en = {
     talk: 'Talk to admissions',
   },
   footer: {
-    description: 'A bilingual kindergarten and primary school in Ouêdo, opposite Cité nouvelle, supporting children in a setting founded on excellence, discipline, and values.',
+    description: 'A bilingual kindergarten and primary school in Ouêdo, opposite Cité nouvelle. Every day brings French and English, from nursery to Grade 6.',
     enroll: 'Start an application',
     whatsapp: 'WhatsApp',
     schoolHeading: 'The school',

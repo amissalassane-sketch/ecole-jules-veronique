@@ -82,7 +82,7 @@ export default function FormField({
             className={cn(base, 'appearance-none pr-11 cursor-pointer')}
             {...a11y}
           >
-            <option value="" className="bg-white text-text-3">{placeholder || '—'}</option>
+            <option value="" className="bg-white text-text-3">{placeholder}</option>
             {options?.map((opt) => (
               <option key={opt.value} value={opt.value} className="bg-white text-text-1">{opt.label}</option>
             ))}

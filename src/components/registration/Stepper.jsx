@@ -26,7 +26,7 @@ export default function Stepper({ currentStep, labels }) {
       aria-valuemin={1}
       aria-valuemax={total}
       aria-valuenow={current + 1}
-      aria-valuetext={`${steps[current]} — ${current + 1}/${total}`}
+      aria-valuetext={`${steps[current]}, ${current + 1}/${total}`}
     >
       {/* ── Mobile: label + rail ── */}
       <div className="sm:hidden">

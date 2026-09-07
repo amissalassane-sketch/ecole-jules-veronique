@@ -18,8 +18,8 @@ const fr = {
   },
   hero: {
     title: 'Une école maternelle et primaire bilingue, à Ouêdo.',
-    lead: 'Du français et de l’anglais chaque jour, de la crèche au CM2, dans un cadre fondé sur l’excellence, la discipline et les valeurs.',
-    subtitle: 'Une école maternelle et primaire bilingue qui accompagne chaque enfant pour révéler le meilleur de lui-même, dans un environnement fondé sur l’excellence, la discipline et les valeurs.',
+    lead: 'Le français et l’anglais se pratiquent chaque jour, de la crèche au CM2. L’excellence, la discipline et les valeurs guident l’école.',
+    subtitle: 'Une école maternelle et primaire bilingue à Ouêdo, en français et en anglais chaque jour.',
     enroll: 'Préinscrire mon enfant',
     talkToAdmissions: 'Parler aux admissions',
     factsLabel: 'L’essentiel',
@@ -33,12 +33,12 @@ const fr = {
   },
   intro: {
     label: 'Notre école',
-    title: 'Révéler le meilleur de chaque enfant.',
+    title: 'Notre mission, au quotidien.',
     mission:
-      'L’École Maternelle et Primaire Bilingue Jules et Véronique accueille les enfants de la crèche au CM2, à Ouêdo (Abomey-Calavi). Elle propose une éducation bilingue français-anglais fondée sur l’excellence, la discipline et les valeurs.',
+      'L’École Maternelle et Primaire Bilingue Jules et Véronique se situe à Ouêdo, dans la commune d’Abomey-Calavi. Elle accueille les enfants de la crèche au CM2 et leur apprend le français et l’anglais. L’excellence, la discipline et les valeurs rythment la vie de l’école.',
     patronage:
       'Sous le patronage de Saint Augustin, notre mission est d’offrir une éducation bilingue de qualité et de former des apprenants curieux, responsables et ouverts sur le monde.',
-    schoolPhoto: 'Photo de l’école — à venir',
+    schoolPhoto: 'Photo de l’école, à venir',
     factsLabel: 'Repères sur l’école',
     facts: {
       founded: 'Année de création',
@@ -53,7 +53,7 @@ const fr = {
   },
   commitments: {
     label: 'Nos engagements',
-    title: 'Une éducation qui prépare l’avenir.',
+    title: 'Ce que nous garantissons aux familles.',
     items: [
       {
         title: 'Un bilinguisme quotidien dès la maternelle',
@@ -128,8 +128,8 @@ const fr = {
   },
   studentLife: {
     label: 'Vie scolaire',
-    title: 'Apprendre aussi par la créativité, le jeu et le cadre.',
-    photo: 'Photo de la cour ou d’une classe — à venir',
+    title: 'Apprendre en créant et en jouant.',
+    photo: 'Photo de la cour ou d’une classe, à venir',
   },
   facilities: {
     label: 'Installations',
@@ -190,7 +190,7 @@ const fr = {
     talk: 'Parler aux admissions',
   },
   footer: {
-    description: 'Une école maternelle et primaire bilingue à Ouêdo, en face de la Cité nouvelle, qui accompagne les enfants dans un cadre fondé sur l’excellence, la discipline et les valeurs.',
+    description: 'Une école maternelle et primaire bilingue à Ouêdo, en face de la Cité nouvelle. Chaque jour, le français et l’anglais, de la crèche au CM2.',
     enroll: 'Préinscrire mon enfant',
     whatsapp: 'WhatsApp',
     schoolHeading: 'L’école',

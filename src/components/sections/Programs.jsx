@@ -123,7 +123,7 @@ function ProgramCard({ program, language, t, withMedia = false, as }) {
 
         <div className="mt-6">
           <p className="text-caption text-text-3">{t.programs.grades}</p>
-          <ul className="mt-2 flex flex-wrap gap-2" aria-label={`${t.programs.grades} — ${name}`}>
+          <ul className="mt-2 flex flex-wrap gap-2" aria-label={`${t.programs.grades}, ${name}`}>
             {program.grades.map((g) => (
               <li key={g} className="rounded-xs bg-primary-light px-2 py-0.5 text-caption font-medium text-primary">
                 {g}

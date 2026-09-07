@@ -4,7 +4,7 @@
 export const school = {
   name: 'École bilingue Jules & Véronique',
   shortName: 'Jules & Véronique',
-  tagline: 'Éveiller le potentiel, inspirer l’excellence.',
+  tagline: 'Français et anglais à parts égales.',
   foundingYear: '2025–2026',
   schoolYear: '2026–2027',
 

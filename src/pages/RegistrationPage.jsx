@@ -113,7 +113,7 @@ export default function RegistrationPage() {
   const gradeOptions = useMemo(
     () => programs.flatMap((program) => program.grades.map((grade) => ({
       value: grade,
-      label: `${grade} — ${getProgramName(program, language)}`,
+      label: `${grade}, ${getProgramName(program, language)}`,
     }))),
     [language]
   )
@@ -453,7 +453,7 @@ function ReviewStep({ t, formData, onEdit, program, language, school }) {
         </ReviewGroup>
         <ReviewGroup title={t.reviewChild} onEdit={() => onEdit(1)} editLabel={t.reviewEdit}>
           <ReviewRow label={t.reviewName} value={`${formData.childFirstName} ${formData.childLastName}`} />
-          <ReviewRow label={t.reviewDob} value={formData.childDob || '—'} />
+          <ReviewRow label={t.reviewDob} value={formData.childDob} />
           {formData.childPreviousSchool && <ReviewRow label={t.reviewPrevSchool} value={formData.childPreviousSchool} secondary />}
         </ReviewGroup>
         {program && (
@@ -464,7 +464,7 @@ function ReviewStep({ t, formData, onEdit, program, language, school }) {
                 group opens the step that holds the class (the program follows
                 from it). The year row no longer repeats the class. */}
             <div className="grid gap-x-6 gap-y-1.5 sm:grid-cols-2">
-              <ReviewRow label={t.reviewGrade} value={formData.childGrade || '—'} />
+              <ReviewRow label={t.reviewGrade} value={formData.childGrade} />
               <ReviewRow label={t.finalProgramLabel} value={getProgramName(program, language)} />
             </div>
             <ReviewRow label={t.finalYearLabel} value={school.schoolYear} secondary />
@@ -595,7 +595,7 @@ function FinalStep({ t, formData, program, language, school, waPreReg }) {
       <dl className="divide-y divide-border border-y border-border">
         <DetailRow label={t.finalStatusLabel} value={<Badge variant="planned">{t.statusPreReg}</Badge>} />
         <DetailRow label={t.finalChildLabel} value={`${formData.childFirstName} ${formData.childLastName}`} />
-        <DetailRow label={t.finalGradeLabel} value={formData.childGrade || '—'} />
+        <DetailRow label={t.finalGradeLabel} value={formData.childGrade} />
         {program && <DetailRow label={t.finalProgramLabel} value={getProgramName(program, language)} />}
       </dl>
 

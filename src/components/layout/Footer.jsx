@@ -65,7 +65,7 @@ export default function Footer() {
             <Link
               to="/"
               className="inline-flex items-center gap-3 min-h-11 -ml-1 pl-1 pr-2 rounded-sm"
-              aria-label={`${school.shortName} — ${t.nav.home}`}
+              aria-label={`${school.shortName}, ${t.nav.home}`}
             >
               <span
                 aria-hidden="true"

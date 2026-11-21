@@ -2,8 +2,8 @@
 
 export const pricing = {
   isPublished: false,
-  note: 'Les tarifs scolaires ne sont pas publiés pour le moment. Contactez l’administration pour obtenir les montants à jour.',
-  noteEn: 'School fees are not published at this time. Please contact the administration for current amounts.',
+  note: 'L’administration vous communique les montants à jour sur simple demande, par WhatsApp ou par téléphone.',
+  noteEn: 'The administration shares current amounts on request, by WhatsApp or phone.',
   tuition: [],
   optionalFees: [],
   paymentOptions: ['Paiement à la banque'],

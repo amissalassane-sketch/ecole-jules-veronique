@@ -1,13 +1,11 @@
-import { MapPin, ShieldCheck } from 'lucide-react'
+import { MapPin } from 'lucide-react'
 import Section from '../layout/Section'
 import Eyebrow from '../ui/Eyebrow'
 import MediaPlaceholder from '../ui/MediaPlaceholder'
 import Divider from '../ui/Divider'
-import { NoticeCard } from '../ui/Card'
 import ScrollReveal from '../animations/ScrollReveal'
 import { school } from '../../data/school'
 import { useT } from '../../hooks/useT'
-import { useLanguage } from '../../context/LanguageContext'
 
 /**
  * L'école — DS V2 §08 type S2 "Editorial Split" (blueprint §17 row 2).
@@ -19,19 +17,16 @@ import { useLanguage } from '../../context/LanguageContext'
  * Facts are non-numeric school facts, laid out as a definition list on
  * hairlines — not as "stats" cards, no icon per fact (§09, §12).
  * Every value comes from school.js / translations — nothing invented.
- * One transparency Notice (approvals in progress) per §16 "Institutionnel".
  */
 export default function Introduction() {
   const t = useT()
-  const { language } = useLanguage()
 
   const facts = [
     { label: t.intro.facts.founded, value: school.foundingYear },
     { label: t.intro.facts.levels, value: t.intro.facts.levelsValue },
     { label: t.intro.facts.languages, value: school.languages.join(' · ') },
-    { label: t.intro.facts.balance, value: t.intro.facts.balanceValue },
+    { label: t.intro.facts.systems, value: t.intro.facts.systemsValue },
   ]
-  const accreditation = language === 'en' ? school.accreditationEn : school.accreditation
 
   return (
     <Section id="school" tone="paper" aria-labelledby="school-title">
@@ -73,11 +68,10 @@ export default function Introduction() {
               </div>
             ))}
           </dl>
-          <p className="mt-4 text-caption text-text-3 max-w-[50ch]">{t.intro.factsNote}</p>
 
           <Divider className="mt-8" />
 
-          {/* ── Meta: address + one transparency notice (approvals) ── */}
+          {/* ── Meta: address ── */}
           <address className="mt-6 not-italic flex items-start gap-3 text-body-sm text-text-2 max-w-[65ch]">
             <MapPin size={20} strokeWidth={1.75} className="mt-0.5 shrink-0 text-text-3" aria-hidden="true" />
             <span>
@@ -85,9 +79,6 @@ export default function Introduction() {
               {school.address}
             </span>
           </address>
-          <NoticeCard tone="warning" icon={ShieldCheck} role="note" className="mt-4">
-            {accreditation}
-          </NoticeCard>
         </ScrollReveal>
       </div>
     </Section>

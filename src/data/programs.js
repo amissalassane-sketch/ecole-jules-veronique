@@ -55,9 +55,9 @@ export const programs = [
     languages: ['Français', 'English'],
     schedule: 'Lundi–vendredi, 8h00–16h00',
     objectives:
-      'Préparer les apprenants aux examens béninois et aux parcours internationaux annoncés par l’école.',
+      'Préparer les apprenants au CEP béninois et au Common Entrance britannique.',
     objectivesEn:
-      'Prepare learners for Beninese examinations and the international pathways announced by the school.',
+      'Prepare learners for the Beninese CEP and the British Common Entrance.',
     image: null,
     color: '#0D3B4C',
   },

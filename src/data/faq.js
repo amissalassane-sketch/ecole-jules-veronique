@@ -2,11 +2,11 @@ export const faqItems = {
   fr: [
     {
       question: 'Quels niveaux sont proposés ?',
-      answer: 'L’école accueille les enfants en crèche et garderie, en maternelle (niveaux 1 et 2) et au primaire du CI au CM2. La création du secondaire est en cours.',
+      answer: 'L’école accueille les enfants en crèche et garderie, en maternelle (niveaux 1 et 2) et au primaire du CI au CM2.',
     },
     {
       question: 'Quelles langues sont enseignées ?',
-      answer: 'Le français et l’anglais sont enseignés chaque jour dans toutes les classes. La répartition hebdomadaire annoncée est de 50 % des cours en français et 50 % en anglais.',
+      answer: 'Le français et l’anglais sont enseignés chaque jour dans toutes les classes, à parts égales : la moitié des cours en français, l’autre moitié en anglais.',
     },
     {
       question: 'Quels sont les horaires de cours ?',
@@ -18,33 +18,29 @@ export const faqItems = {
     },
     {
       question: 'Quels documents faut-il fournir ?',
-      answer: 'La fiche d’inscription, l’acte de naissance sécurisé, deux photos d’identité, le certificat de scolarité, les bulletins de l’année antérieure, le carnet de vaccination, une chemise dossier à rabat simple et un paquet de papier rame A4.',
+      answer: 'La fiche d’inscription, l’acte de naissance sécurisé, deux photos d’identité, le certificat de scolarité, les bulletins de l’année antérieure, le carnet de vaccination, une chemise à rabat et une rame de papier A4.',
     },
     {
       question: 'Les tarifs sont-ils publiés sur le site ?',
-      answer: 'Non. Les tarifs ne sont pas publiés pour le moment. L’administration peut communiquer les montants à jour aux familles.',
+      answer: 'Non. L’administration communique les montants à jour sur simple demande, par WhatsApp ou par téléphone.',
     },
     {
       question: 'Quels moyens de paiement sont acceptés ?',
-      answer: 'Pour le moment, l’ensemble des frais est payé à la banque. Le mobile money et la carte bancaire sont envisagés dans un proche avenir.',
+      answer: 'L’ensemble des frais se règle à la banque.',
     },
     {
       question: 'La cantine et le transport sont-ils disponibles ?',
-      answer: 'Une cantine propose le repas de midi et le goûter de l’après-midi aux apprenants inscrits. L’école n’assure pas encore le transport des enfants.',
-    },
-    {
-      question: 'Les fonctionnalités numériques sont-elles déjà disponibles ?',
-      answer: 'La plateforme numérique décrite dans les TDR est en cours de définition. Les inscriptions, dossiers élèves, notes, bulletins, absences, paiements, notifications, portail parents et application mobile ne sont pas présentés comme disponibles sur ce site.',
+      answer: 'Une cantine propose le repas de midi et le goûter de l’après-midi aux apprenants inscrits. L’école n’assure pas le transport des enfants.',
     },
   ],
   en: [
     {
       question: 'Which levels are available?',
-      answer: 'The school welcomes children in nursery and daycare, kindergarten (levels 1 and 2), and primary school from CI to CM2. Secondary school is currently being developed.',
+      answer: 'The school welcomes children in nursery and daycare, kindergarten (levels 1 and 2), and primary school from CI to CM2.',
     },
     {
       question: 'Which languages are taught?',
-      answer: 'French and English are taught every day in every class. The announced weekly balance is 50% of lessons in French and 50% in English.',
+      answer: 'French and English are taught every day in every class, in equal measure: half of the lessons in French, half in English.',
     },
     {
       question: 'What are the school hours?',
@@ -56,23 +52,19 @@ export const faqItems = {
     },
     {
       question: 'Which documents are required?',
-      answer: 'The registration form, a secure birth certificate, two ID photos, a school certificate, the previous year’s report cards, vaccination record, a simple plastic folder, and one pack of A4 paper.',
+      answer: 'The registration form, a secure birth certificate, two ID photos, a school certificate, the previous year’s report cards, vaccination record, a flap folder and a ream of A4 paper.',
     },
     {
       question: 'Are fees published on the website?',
-      answer: 'No. Fees are not published at this time. The administration can provide families with current amounts.',
+      answer: 'No. The administration shares current amounts on request, by WhatsApp or phone.',
     },
     {
       question: 'Which payment methods are accepted?',
-      answer: 'For now, all fees are paid at the bank. Mobile money and bank card payments are being considered for the near future.',
+      answer: 'All fees are paid at the bank.',
     },
     {
       question: 'Are cafeteria and transport services available?',
-      answer: 'A cafeteria provides lunch and an afternoon snack for enrolled learners. The school does not currently provide transportation.',
-    },
-    {
-      question: 'Are the digital features already available?',
-      answer: 'The digital platform described in the terms of reference is still being defined. This website does not present enrolment, student records, grades, report cards, attendance, payments, notifications, a parent portal, or a mobile app as currently available.',
+      answer: 'A cafeteria provides lunch and an afternoon snack for enrolled learners. The school does not provide transportation.',
     },
   ],
 }

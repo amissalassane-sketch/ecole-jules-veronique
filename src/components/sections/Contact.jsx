@@ -89,7 +89,7 @@ export default function Contact() {
               <dd>{school.address}</dd>
             </div>
             <div className="flex items-start gap-2">
-              <dt className="sr-only">{t.footer.openHours}</dt>
+              <dt className="sr-only">{t.footer.openHoursLabel}</dt>
               <Clock size={16} strokeWidth={1.75} className="mt-1 shrink-0 text-text-3" aria-hidden="true" />
               <dd>{t.footer.openHours}</dd>
             </div>

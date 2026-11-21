@@ -76,13 +76,12 @@ export default function Programs() {
 
       {/* One transparency notice for pathways / examinations (§17: once per subject) */}
       <ScrollReveal delay={0.08} className="mt-8 md:mt-10">
-        <NoticeCard tone="info" icon={FileText} title={t.programs.diplomasTitle} role="note" className="max-w-[60rem]">
+        <NoticeCard tone="info" icon={FileText} title={t.programs.diplomasTitle} role="note">
           <ul className="space-y-1">
             <li>{t.programs.nationalDiplomas}</li>
             <li>{t.programs.internationalDiplomas}</li>
             <li>{`${t.programs.systems}${language === 'en' ? ': ' : '\u202f: '}${t.programs.systemsValue}`}</li>
           </ul>
-          <p className="mt-2 text-caption text-text-3">{t.programs.diplomaNote}</p>
         </NoticeCard>
       </ScrollReveal>
     </Section>

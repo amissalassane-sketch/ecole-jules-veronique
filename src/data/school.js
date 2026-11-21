@@ -32,8 +32,9 @@ export const school = {
   levels: ['Crèche & Garderie', 'Maternelle : Niveaux 1 et 2', 'Primaire : CI au CM2'],
   educationSystems: ['Système béninois', 'Système britannique'],
   diplomas: {
-    national: ['CEP', 'BEPC', 'BAC'],
-    international: ['Common Entrance', 'Junior WAEC', 'Senior WAEC'],
+    // End-of-primary exams only: secondary-level ones return when the secondary opens.
+    national: ['CEP'],
+    international: ['Common Entrance'],
   },
 
   services: {

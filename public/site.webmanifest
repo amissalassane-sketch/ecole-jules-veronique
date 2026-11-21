@@ -1,0 +1,21 @@
+{
+  "name": "École bilingue Jules & Véronique",
+  "short_name": "Jules & Véronique",
+  "start_url": "/",
+  "display": "browser",
+  "lang": "fr",
+  "background_color": "#FAF7F0",
+  "theme_color": "#0B2414",
+  "icons": [
+    {
+      "src": "/logo-192.webp",
+      "sizes": "192x192",
+      "type": "image/webp"
+    },
+    {
+      "src": "/logo-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

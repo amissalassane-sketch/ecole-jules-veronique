@@ -227,6 +227,12 @@ const en = {
     phoneLabel: 'Phone',
     emailLabel: 'Email',
   },
+  notFound: {
+    title: 'This page does not exist',
+    body: 'The link may be old or incomplete. You will find everything from the home page.',
+    home: 'Back to home',
+    enroll: 'Pre-register my child',
+  },
   registration: {
     eyebrow: '{year} school year',
     title: 'Pre-register your child',

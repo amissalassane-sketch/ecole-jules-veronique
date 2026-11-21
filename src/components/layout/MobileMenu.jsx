@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X, Phone, MessageCircle } from 'lucide-react'
 import Button from '../ui/Button'
 import Logo from '../ui/Logo'
+import SectionLink from '../ui/SectionLink'
 import { school } from '../../data/school'
 import { waLink, phoneLink } from '../../utils/contact'
 import { useT } from '../../hooks/useT'
@@ -97,13 +98,13 @@ export default function MobileMenu({ open, onClose, links, isHome, triggerRef, i
               <ul>
                 {links.map((link) => (
                   <li key={link.href} className="border-b border-border">
-                    <a
-                      href={isHome ? link.href : `/${link.href}`}
+                    <SectionLink
+                      hash={link.href}
                       onClick={onClose}
                       className="flex items-center min-h-13 py-3 text-[17px] font-medium text-text-1 hover:text-primary transition-colors duration-(--duration-fast)"
                     >
                       {t.nav[link.key]}
-                    </a>
+                    </SectionLink>
                   </li>
                 ))}
               </ul>

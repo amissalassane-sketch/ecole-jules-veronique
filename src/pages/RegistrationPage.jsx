@@ -63,6 +63,13 @@ import { useLanguage } from '../context/LanguageContext'
    class belongs to exactly one program: the program can always be derived from
    the chosen class, and an inconsistent pair becomes impossible to express.
    No new business category, no invented data — pure read of programs.js. */
+/* « 10 mai 2020 » / « 10 May 2020 » — never the raw ISO value on screen. */
+function formatDate(iso, language) {
+  if (!iso) return ''
+  const d = new Date(`${iso}T00:00:00`)
+  return Number.isNaN(d.getTime()) ? iso : d.toLocaleDateString(language === 'en' ? 'en-GB' : 'fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })
+}
+
 function programForGrade(grade) {
   return programs.find((program) => program.grades.includes(grade)) || null
 }
@@ -236,11 +243,7 @@ export default function RegistrationPage() {
      Optional lines (address, previous school) vanish when empty so no
      half-filled line ever reaches the draft. The closing line states the
      truth of this site: nothing was sent automatically. */
-  const formatDob = (iso) => {
-    if (!iso) return ''
-    const d = new Date(`${iso}T00:00:00`)
-    return Number.isNaN(d.getTime()) ? iso : d.toLocaleDateString(language === 'en' ? 'en-GB' : 'fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })
-  }
+  const formatDob = (iso) => formatDate(iso, language)
   const waContextMessage = useMemo(() => {
     const template = t.waMsgPreReg || ''
     const values = {
@@ -269,12 +272,11 @@ export default function RegistrationPage() {
       <Navbar />
       <main className="min-h-screen-dynamic bg-paper pt-[calc(var(--header-h)+1.5rem)] md:pt-[calc(var(--header-h)+3.5rem)] pb-16 md:pb-24">
         <div className="container-narrow">
-          {/* ── Page header ── Phase 3.2: the route H1 introduces the journey at
-              H3 scale / muted (it repeated identically on all 6 screens and
-              out-ranked the operational step title); the step H2 now carries
-              the H2 scale. Tokens only — no copy, no palette change. */}
+          {/* ── Page header ── the route H1 is the largest title on the page
+              (H2 scale), the step title sits one level below (H3 scale), so
+              the visual order matches the heading order. */}
           <header className="pb-5 md:pb-6">
-            <h1 className="font-display font-semibold text-h3 text-text-2 text-balance">{t.title}</h1>
+            <h1 className="font-display font-semibold text-h2 text-text-1 text-balance">{t.title}</h1>
             <p className="mt-2 text-body-sm md:text-lead text-text-2 text-pretty max-w-[60ch]">{t.subtitle}</p>
           </header>
 
@@ -366,7 +368,7 @@ function StepHeading({ title, subtitle, editing = false, editLabel }) {
           <Badge variant="info">{editLabel}</Badge>
         </div>
       )}
-      <h2 className="font-display font-semibold text-h2 text-text-1 text-balance">{title}</h2>
+      <h2 className="font-display font-semibold text-h3 text-text-1 text-balance">{title}</h2>
       {subtitle && <p className="mt-3 text-body-sm text-text-2 text-pretty">{subtitle}</p>}
     </div>
   )
@@ -446,7 +448,7 @@ function ReviewStep({ t, formData, onEdit, program, language, school }) {
       <StepHeading title={t.reviewTitle} subtitle={t.reviewSubtitle} />
       <div className="divide-y divide-border border-y border-border">
         <ReviewGroup title={t.reviewParent} onEdit={() => onEdit(0)} editLabel={t.reviewEdit}>
-          <ReviewRow label={t.reviewName} value={`${formData.parentFirstName} ${formData.parentLastName}`} />
+          <ReviewRow label={t.reviewParentName} value={`${formData.parentFirstName} ${formData.parentLastName}`} />
           {/* Phase 3.3 (§11): the paired contact lines sit side by side ≥ sm,
               like the program group — the summary scans in two columns; the
               address stays a full-width contextual line. Values untouched. */}
@@ -457,8 +459,8 @@ function ReviewStep({ t, formData, onEdit, program, language, school }) {
           {formData.parentAddress && <ReviewRow label={t.reviewAddress} value={formData.parentAddress} secondary />}
         </ReviewGroup>
         <ReviewGroup title={t.reviewChild} onEdit={() => onEdit(1)} editLabel={t.reviewEdit}>
-          <ReviewRow label={t.reviewName} value={`${formData.childFirstName} ${formData.childLastName}`} />
-          <ReviewRow label={t.reviewDob} value={formData.childDob} />
+          <ReviewRow label={t.reviewChildName} value={`${formData.childFirstName} ${formData.childLastName}`} />
+          <ReviewRow label={t.reviewDob} value={formatDate(formData.childDob, language)} />
           {formData.childPreviousSchool && <ReviewRow label={t.reviewPrevSchool} value={formData.childPreviousSchool} secondary />}
         </ReviewGroup>
         {program && (

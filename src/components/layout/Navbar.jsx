@@ -4,6 +4,7 @@ import { Menu } from 'lucide-react'
 import { cn } from '../../utils/cn'
 import Button from '../ui/Button'
 import Logo from '../ui/Logo'
+import SectionLink from '../ui/SectionLink'
 import LanguageSwitcher from '../ui/LanguageSwitcher'
 import MobileMenu from './MobileMenu'
 import MobileCtaBar from './MobileCtaBar'
@@ -173,8 +174,8 @@ export default function Navbar() {
                 const active = isHome && activeHash === link.href
                 return (
                   <li key={link.href}>
-                    <a
-                      href={isHome ? link.href : `/${link.href}`}
+                    <SectionLink
+                      hash={link.href}
                       aria-current={active ? 'location' : undefined}
                       className={cn(
                         'relative flex items-center h-11 px-2 xl:px-3 text-[15px] font-medium rounded-sm whitespace-nowrap',
@@ -189,7 +190,7 @@ export default function Navbar() {
                       )}
                     >
                       {t.nav[link.key]}
-                    </a>
+                    </SectionLink>
                   </li>
                 )
               })}
@@ -199,9 +200,12 @@ export default function Navbar() {
           {/* ── Desktop actions ── */}
           <div className="hidden lg:flex items-center gap-3 xl:gap-4 shrink-0">
             <LanguageSwitcher tone={transparent ? 'ink' : 'light'} />
-            <Button variant={transparent ? 'primaryOnInk' : 'primary'} size="sm" to="/registration" className="whitespace-nowrap">
-              {t.nav.enroll}
-            </Button>
+            {/* Hidden on the registration page: it would point to the page itself. */}
+            {!isRegistration && (
+              <Button variant={transparent ? 'primaryOnInk' : 'primary'} size="sm" to="/registration" className="whitespace-nowrap">
+                {t.nav.enroll}
+              </Button>
+            )}
           </div>
 
           {/* ── Mobile actions: switch + hamburger (icon button, no solid fill) ── */}

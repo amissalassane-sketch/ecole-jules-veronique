@@ -2,7 +2,7 @@ import puppeteer from 'puppeteer-core'
 import chromium from '@sparticuz/chromium'
 import fs from 'fs'
 
-const URL = 'http://localhost:5173/Official-website-of-Jul-and-V-ronique-Bilingual-School/'
+const URL = 'http://localhost:5173/'
 const browser = await puppeteer.launch({ headless: true, executablePath: await chromium.executablePath(), args: [...chromium.args, '--no-sandbox'] })
 fs.mkdirSync('/tmp/shots', { recursive: true })
 

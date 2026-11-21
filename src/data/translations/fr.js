@@ -18,9 +18,9 @@ const fr = {
   },
   hero: {
     eyebrow: 'Préinscriptions ouvertes pour {year}',
-    title: 'Grandir en deux langues, à Ouêdo.',
+    title: 'Grandir en deux langues, à Ouèdo.',
     lead: 'Une école maternelle et primaire bilingue : chaque jour, vos enfants apprennent en français et en anglais, de la crèche au CM2.',
-    subtitle: 'Une école maternelle et primaire bilingue à Ouêdo, en français et en anglais chaque jour.',
+    subtitle: 'Une école maternelle et primaire bilingue à Ouèdo, en français et en anglais chaque jour.',
     enroll: 'Préinscrire mon enfant',
     talkToAdmissions: 'Parler aux admissions',
     factsLabel: 'L’essentiel',
@@ -49,7 +49,7 @@ const fr = {
     label: 'Notre école',
     title: 'Notre mission, au quotidien.',
     mission:
-      'L’École Maternelle et Primaire Bilingue Jules et Véronique se situe à Ouêdo, dans la commune d’Abomey-Calavi. Elle accueille les enfants de la crèche au CM2 et leur apprend le français et l’anglais. L’excellence, la discipline et les valeurs rythment la vie de l’école.',
+      'L’École Maternelle et Primaire Bilingue Jules et Véronique se situe à Ouèdo, dans la commune d’Abomey-Calavi. Elle accueille les enfants de la crèche au CM2 et leur apprend le français et l’anglais. L’excellence, la discipline et les valeurs rythment la vie de l’école.',
     patronage:
       'Sous le patronage de Saint Augustin, notre mission est d’offrir une éducation bilingue de qualité et de former des apprenants curieux, responsables et ouverts sur le monde.',
     schoolPhoto: 'Photo de l’école, à venir',
@@ -201,7 +201,7 @@ const fr = {
     talk: 'Parler aux admissions',
   },
   footer: {
-    description: 'Une école maternelle et primaire bilingue à Ouêdo, en face de la Cité nouvelle. Chaque jour, le français et l’anglais, de la crèche au CM2.',
+    description: 'Une école maternelle et primaire bilingue à Ouèdo, en face de la Cité nouvelle. Chaque jour, le français et l’anglais, de la crèche au CM2.',
     enroll: 'Préinscrire mon enfant',
     whatsapp: 'WhatsApp',
     schoolHeading: 'L’école',

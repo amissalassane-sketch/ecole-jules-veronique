@@ -5,6 +5,7 @@ import { waLinkFor, phoneLink } from '../../utils/contact'
 import { useT } from '../../hooks/useT'
 import Eyebrow from '../ui/Eyebrow'
 import Button from '../ui/Button'
+import Logo from '../ui/Logo'
 import LanguageSwitcher from '../ui/LanguageSwitcher'
 import { cn } from '../../utils/cn'
 
@@ -67,12 +68,7 @@ export default function Footer() {
               className="inline-flex items-center gap-3 min-h-11 -ml-1 pl-1 pr-2 rounded-sm"
               aria-label={`${school.shortName}, ${t.nav.home}`}
             >
-              <span
-                aria-hidden="true"
-                className="flex items-center justify-center w-9 h-9 rounded-sm bg-white text-primary font-display font-bold text-[20px] leading-none"
-              >
-                {school.shortName.charAt(0)}
-              </span>
+              <Logo size={56} />
               <span className="font-display font-semibold text-[18px] leading-none text-text-inverse">{school.shortName}</span>
             </Link>
             <p className="mt-4 text-body-sm text-text-inverse-2 max-w-[40ch] text-pretty">{t.footer.description}</p>

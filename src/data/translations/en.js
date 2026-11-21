@@ -1,4 +1,8 @@
 const en = {
+  meta: {
+    title: 'Jules & Véronique Bilingual School · Kindergarten and primary in Ouèdo, Abomey-Calavi',
+    description: 'French-English bilingual kindergarten and primary school in Ouèdo (Abomey-Calavi), from crèche to Primary 6. Programmes, admissions and 2026–2027 pre-registration.',
+  },
   nav: {
     school: 'The school',
     programs: 'Programs',
@@ -19,16 +23,17 @@ const en = {
   hero: {
     eyebrow: 'Pre-registration open for {year}',
     title: 'Growing up in two languages, in Ouèdo.',
-    lead: 'A bilingual kindergarten and primary school: every day, your children learn in French and English, from nursery to Grade 6.',
+    lead: 'A bilingual kindergarten and primary school: every day, your children learn in French and English, from crèche to Primary 6.',
     subtitle: 'A bilingual kindergarten and primary school in Ouèdo, in French and English every day.',
     enroll: 'Pre-register my child',
     talkToAdmissions: 'Talk to admissions',
     factsLabel: 'At a glance',
     levelsLabel: 'Levels',
-    levelsValue: 'Nursery to Grade 6',
+    levelsValue: 'Crèche to Primary 6',
     languagesLabel: 'Teaching',
     languagesValue: 'French and English',
     hoursLabel: 'Classes, Mon.–Fri.',
+    hoursValue: '8:00 a.m.–4:00 p.m.',
     yearLabel: 'School year',
     bilingual: '50% French / 50% English',
   },
@@ -49,7 +54,7 @@ const en = {
     label: 'Our school',
     title: 'Our mission, day by day.',
     mission:
-      'Jules & Véronique Bilingual Kindergarten and Primary School is in Ouèdo, in the Abomey-Calavi municipality. It welcomes children from nursery to Grade 6 and teaches them French and English. Excellence, discipline and values shape everyday life at school.',
+      'Jules & Véronique Bilingual Kindergarten and Primary School is in Ouèdo, in the Abomey-Calavi municipality. It welcomes children from crèche to Primary 6 and teaches them French and English. Excellence, discipline and values shape everyday life at school.',
     patronage:
       'Under the patronage of Saint Augustine, our mission is to provide a quality bilingual education and to nurture curious, responsible learners who are open to the world.',
     schoolPhoto: 'School photo, coming soon',
@@ -57,7 +62,7 @@ const en = {
     facts: {
       founded: 'School established',
       levels: 'Levels open',
-      levelsValue: 'Nursery to Grade 6',
+      levelsValue: 'Crèche to Primary 6',
       languages: 'Languages of instruction',
       systems: 'Education systems',
       systemsValue: 'Beninese and British',
@@ -107,10 +112,6 @@ const en = {
     subtitle: 'Explore the levels currently offered within the bilingual program.',
     languages: 'Languages',
     schedule: 'Schedule',
-    /* Phase 3.6: EN display variant of the single schedule fact held in
-       programs.js — day names translated, time format kept site-consistent
-       (24 h « h »-free colon pending school validation of the EN convention). */
-    scheduleEn: 'Monday–Friday, 8:00–16:00',
     grades: 'Classes',
     objectives: 'Objective',
     subjects: 'Learning',
@@ -205,7 +206,7 @@ const en = {
     talk: 'Talk to admissions',
   },
   footer: {
-    description: 'A bilingual kindergarten and primary school in Ouèdo, opposite Cité nouvelle. Every day brings French and English, from nursery to Grade 6.',
+    description: 'A bilingual kindergarten and primary school in Ouèdo, opposite Cité nouvelle. Every day brings French and English, from crèche to Primary 6.',
     enroll: 'Start an application',
     whatsapp: 'WhatsApp',
     schoolHeading: 'The school',

@@ -4,7 +4,7 @@ import Section from '../layout/Section'
 import Eyebrow from '../ui/Eyebrow'
 import Card from '../ui/Card'
 import ScrollReveal from '../animations/ScrollReveal'
-import { programs, getProgramName } from '../../data/programs'
+import { programs, getProgramName, getGradeLabel } from '../../data/programs'
 import { useT } from '../../hooks/useT'
 import { useLanguage } from '../../context/LanguageContext'
 
@@ -48,10 +48,10 @@ export default function Paths() {
                     <li key={grade}>
                       <Link
                         to={`/registration?classe=${encodeURIComponent(grade)}`}
-                        aria-label={t.paths.enrollIn.replace('{grade}', grade)}
+                        aria-label={t.paths.enrollIn.replace('{grade}', getGradeLabel(grade, language))}
                         className="inline-flex min-h-[44px] items-center rounded-sm border border-border bg-white px-3.5 text-body-sm font-medium text-text-1 transition-colors duration-[120ms] ease-out hover:border-primary hover:bg-primary-light hover:text-primary"
                       >
-                        {grade}
+                        {getGradeLabel(grade, language)}
                       </Link>
                     </li>
                   ))}

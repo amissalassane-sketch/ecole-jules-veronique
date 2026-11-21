@@ -3,13 +3,13 @@
 export const activities = {
   younger: {
     label: 'CI, CP et CE1',
-    labelEn: 'Grade 1, Grade 2 & Grade 3',
+    labelEn: 'Primary 1, 2 & 3 (CI, CP, CE1)',
     items: ['Dessin et coloriage', 'Chant et danse', 'Peinture'],
     itemsEn: ['Drawing and colouring', 'Singing and dancing', 'Painting'],
   },
   older: {
     label: 'CE2, CM1 et CM2',
-    labelEn: 'Grade 4, Grade 5 & Grade 6',
+    labelEn: 'Primary 4, 5 & 6 (CE2, CM1, CM2)',
     items: [
       'Danse et chorégraphie',
       'Théâtre',

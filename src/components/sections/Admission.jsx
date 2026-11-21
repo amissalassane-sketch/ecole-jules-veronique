@@ -104,9 +104,8 @@ export default function Admission() {
                 </p>
                 <p className="mt-3 font-semibold text-text-1">{t.pricing.requiredFeesTitle}</p>
                 <p className="mt-1 text-caption text-text-3">{t.pricing.requiredFeesNote}</p>
-                {/* admission.js has no EN variant for these labels → lang="fr" kept in EN */}
-                <ul className="mt-2 list-disc pl-4 space-y-0.5 text-body-sm text-text-2" lang="fr">
-                  {admission.requiredPayments.map((item) => (
+                <ul className="mt-2 list-disc pl-4 space-y-0.5 text-body-sm text-text-2">
+                  {(en ? admission.requiredPaymentsEn : admission.requiredPayments).map((item) => (
                     <li key={item}>{item}</li>
                   ))}
                 </ul>

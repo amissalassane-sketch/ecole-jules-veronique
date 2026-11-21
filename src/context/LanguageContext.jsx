@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useCallback, useEffect } from 'react'
+import translations from '../data/translations'
 
 const LanguageContext = createContext(null)
 const STORAGE_KEY = 'school-language-v2'
@@ -16,6 +17,12 @@ export function LanguageProvider({ children }) {
   useEffect(() => {
     document.documentElement.lang = language
     document.documentElement.dir = 'ltr'
+    // Tab title and search/share description follow the chosen language.
+    const meta = translations[language]?.meta
+    if (meta) {
+      document.title = meta.title
+      document.querySelector('meta[name="description"]')?.setAttribute('content', meta.description)
+    }
     try {
       localStorage.setItem(STORAGE_KEY, language)
     } catch {

@@ -4,7 +4,7 @@ import { createRequire } from 'node:module'
 const require = createRequire(process.cwd() + '/')
 const puppeteer = require('puppeteer-core')
 const chromiumMod = require('@sparticuz/chromium'); const chromium = chromiumMod.default ?? chromiumMod
-export const BASE = process.env.QA_BASE || 'http://localhost:5173/Official-website-of-Jul-and-V-ronique-Bilingual-School/'
+export const BASE = process.env.QA_BASE || 'http://localhost:5173/ecole-jules-veronique/'
 export const SHOTS = process.env.QA_SHOTS || '/tmp/shots'
 export const launch = async () => puppeteer.launch({ headless: true, executablePath: await chromium.executablePath(), args: [...chromium.args, '--no-sandbox'] })
 export const newPage = async (browser, w, h = 900) => { const page = await browser.newPage(); const errs = []

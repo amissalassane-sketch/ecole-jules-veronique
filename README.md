@@ -19,7 +19,7 @@ Site vitrine bilingue (français / anglais) de l’École bilingue Jules & Véro
 3. Ouvrir l’URL affichée dans le terminal. Avec la configuration actuelle, elle ressemble à :
 
    ```text
-   http://localhost:5173/Official-website-of-Jul-and-V-ronique-Bilingual-School/
+   http://localhost:5173/ecole-jules-veronique/
    ```
 
 Le site est responsive : redimensionnez la fenêtre pour vérifier les vues mobile, tablette et desktop. Le bouton **EN / FR** permet de tester la version anglaise et française.

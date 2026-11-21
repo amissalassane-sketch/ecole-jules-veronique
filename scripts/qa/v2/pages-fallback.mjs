@@ -10,7 +10,7 @@ import { launch, newPage, sleep } from './lib.mjs'
 
 const REPO = resolve(new URL('.', import.meta.url).pathname, '../../..')
 const DIST = join(REPO, 'dist')
-const BASE = '/Official-website-of-Jul-and-V-ronique-Bilingual-School/'
+const BASE = '/ecole-jules-veronique/'
 const PORT = 4173
 const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml' }
 

@@ -27,7 +27,7 @@ function githubPagesSpaFallback() {
 }
 
 export default defineConfig({
-  base: '/Official-website-of-Jul-and-V-ronique-Bilingual-School/',
+  base: '/ecole-jules-veronique/',
   plugins: [react(), tailwindcss(), githubPagesSpaFallback()],
   server: {
     host: '0.0.0.0',

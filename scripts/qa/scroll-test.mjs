@@ -1,7 +1,7 @@
 import puppeteer from 'puppeteer-core'
 import chromium from '@sparticuz/chromium'
 
-const URL = 'http://localhost:5173/Official-website-of-Jul-and-V-ronique-Bilingual-School/'
+const URL = 'http://localhost:5173/ecole-jules-veronique/'
 const browser = await puppeteer.launch({ headless: true, executablePath: await chromium.executablePath(), args: [...chromium.args, '--no-sandbox'] })
 
 async function diag(page, label) {

@@ -69,7 +69,7 @@ export default function Footer() {
             >
               <span
                 aria-hidden="true"
-                className="flex items-center justify-center w-9 h-9 rounded-sm bg-gold-light text-ink font-display font-bold text-[20px] leading-none"
+                className="flex items-center justify-center w-9 h-9 rounded-sm bg-white text-primary font-display font-bold text-[20px] leading-none"
               >
                 {school.shortName.charAt(0)}
               </span>

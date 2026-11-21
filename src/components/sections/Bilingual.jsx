@@ -1,4 +1,5 @@
-import { BookOpen, GraduationCap, Languages, Users } from 'lucide-react'
+import { useState } from 'react'
+import { BookOpen, Languages } from 'lucide-react'
 import Section from '../layout/Section'
 import Eyebrow from '../ui/Eyebrow'
 import Quote from '../ui/Quote'
@@ -7,20 +8,19 @@ import ScrollReveal from '../animations/ScrollReveal'
 import { bilingualSchedule } from '../../data/schedule'
 import { useT } from '../../hooks/useT'
 import { useLanguage } from '../../context/LanguageContext'
+import { cn } from '../../utils/cn'
 
 /**
- * Le bilinguisme au quotidien — DS V2 §08 type S6 "Statement Ink"
- * (blueprint §17 row 5). Second strong beat of the page.
+ * Le bilinguisme au quotidien — DS V2 §08 type S6 "Statement Ink".
  *
- *  ink · Eyebrow gold-light → H2 white (8 col) → Quote italic on gold rule
- *  → lead inverse-2 → timetable: 2 groups on ink-2, one accent colour
- *  (English = gold-light, French = white) → 4 benefits 2×2 on hairlines.
- *  < 480 px the table becomes a <dl> per day. Target height ≤ 1200 px desktop.
- *
- * Removed: blobs, macOS window, pulsing quote, glass cards, 2nd header.
- * Data: schedule.js + t.bilingual.* — nothing invented.
+ *  ink · Eyebrow → H2 → Quote (the single place that says 50/50) → lead
+ *  → « Exemple de semaine »: ONE compact table (Jour / Matin / Après-midi)
+ *    with a group selector, instead of two 8-row cards (≈ 3 phone screens)
+ *  → 2 benefits that no other section says (two teachers and the two
+ *    systems already live in « Nos engagements »).
+ * English = gold-light, French = white. Data: schedule.js — nothing invented.
  */
-const BENEFIT_ICONS = [Languages, BookOpen, Users, GraduationCap]
+const BENEFIT_ICONS = [Languages, BookOpen]
 
 function langLabel(value, language) {
   if (language !== 'en') return value
@@ -33,13 +33,16 @@ export default function Bilingual() {
   const t = useT()
   const { language } = useLanguage()
   const b = t.bilingual
+  const [groupId, setGroupId] = useState(bilingualSchedule[0].id)
+  const group = bilingualSchedule.find((g) => g.id === groupId) || bilingualSchedule[0]
 
   const benefits = [
     { title: b.cognitiveTitle, desc: b.cognitiveDesc },
     { title: b.culturalTitle, desc: b.culturalDesc },
-    { title: b.communicationTitle, desc: b.communicationDesc },
-    { title: b.futureTitle, desc: b.futureDesc },
   ]
+  const cell = (v) => (
+    <span className={v === 'Anglais' ? 'text-gold-light' : 'text-text-inverse'}>{langLabel(v, language)}</span>
+  )
 
   return (
     <Section id="bilingual" tone="ink" aria-labelledby="bilingual-title">
@@ -57,18 +60,55 @@ export default function Bilingual() {
         <p className="mt-6 md:mt-8 text-lead text-text-inverse-2 max-w-[60ch] text-pretty">{b.howItWorksDesc}</p>
       </ScrollReveal>
 
-      {/* ── Timetable ── */}
-      <ScrollReveal delay={0.08} className="mt-10 md:mt-12 lg:mt-16">
-        <h3 className="font-display font-semibold text-h3 text-text-inverse">{b.balanceTitle}</h3>
-        <div className="mt-6 grid gap-4 md:gap-5 lg:grid-cols-2 lg:gap-6">
-          {bilingualSchedule.map((group) => (
-            <ScheduleGroup key={group.id} group={group} t={b} language={language} />
-          ))}
+      {/* ── Sample week: one table, one group at a time ── */}
+      <ScrollReveal delay={0.08} className="mt-10 md:mt-12 lg:mt-14">
+        <div className="max-w-[40rem] rounded-md border border-border-inverse bg-ink-2 p-4 sm:p-6">
+          <h3 className="font-display font-semibold text-h4 text-text-inverse">{b.balanceTitle}</h3>
+
+          <div role="group" aria-label={b.balanceTitle} className="mt-4 grid grid-cols-2 gap-1 rounded-sm border border-border-inverse p-1">
+            {bilingualSchedule.map((g) => {
+              const active = g.id === group.id
+              return (
+                <button
+                  key={g.id}
+                  type="button"
+                  aria-pressed={active}
+                  onClick={() => setGroupId(g.id)}
+                  className={cn(
+                    'min-h-11 rounded-xs px-2 text-caption sm:text-body-sm font-medium leading-tight transition-colors duration-(--duration-fast)',
+                    active ? 'bg-white text-ink' : 'text-text-inverse-2 hover:text-text-inverse'
+                  )}
+                >
+                  {language === 'en' ? g.groupEn : g.group}
+                </button>
+              )
+            })}
+          </div>
+
+          <table className="mt-4 w-full text-body-sm">
+            <caption className="sr-only">{`${b.balanceTitle} : ${language === 'en' ? group.groupEn : group.group}`}</caption>
+            <thead>
+              <tr className="text-left text-eyebrow font-semibold uppercase text-text-inverse-3">
+                <th scope="col" className="py-2 pr-3 font-semibold">{b.day}</th>
+                <th scope="col" className="py-2 pr-3 font-semibold">{b.morning}</th>
+                <th scope="col" className="py-2 font-semibold">{b.afternoon}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {group.rows.map((row) => (
+                <tr key={row.day} className="border-t border-border-inverse">
+                  <th scope="row" className="py-2.5 pr-3 text-left font-medium text-text-inverse-2">{language === 'en' ? row.dayEn : row.day}</th>
+                  <td className="py-2.5 pr-3">{cell(row.morning)}</td>
+                  <td className="py-2.5">{cell(row.afternoon)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
         <p className="mt-4 text-caption text-text-inverse-3 max-w-[70ch]">{b.scheduleNote}</p>
       </ScrollReveal>
 
-      {/* ── 4 benefits on hairlines (no cards) ── */}
+      {/* ── 2 benefits on hairlines (no cards) ── */}
       <ScrollReveal delay={0.08} className="mt-12 md:mt-14 lg:mt-16">
         <Divider tone="ink" />
         <ul className="grid sm:grid-cols-2 gap-x-8 lg:gap-x-12">
@@ -87,51 +127,5 @@ export default function Bilingual() {
         </ul>
       </ScrollReveal>
     </Section>
-  )
-}
-
-/** One group: <table> ≥ 480 px, <dl> per day below (§08 S6). */
-function ScheduleGroup({ group, t, language }) {
-  const name = language === 'en' ? group.groupEn : group.group
-  const cell = (v) => (
-    <span className={v === 'Anglais' ? 'text-gold-light' : 'text-text-inverse'}>{langLabel(v, language)}</span>
-  )
-  return (
-    <div className="rounded-md border border-border-inverse bg-ink-2 p-5 md:p-6">
-      <h4 className="text-text-inverse">{name}</h4>
-
-      {/* ≥ xs : table */}
-      <table className="hidden xs:table mt-4 w-full text-body-sm">
-        <thead>
-          <tr className="text-left text-eyebrow font-semibold uppercase text-text-inverse-3">
-            <th scope="col" className="py-2 pr-4 font-semibold">{t.day}</th>
-            <th scope="col" className="py-2 pr-4 font-semibold">{t.morning}</th>
-            <th scope="col" className="py-2 font-semibold">{t.afternoon}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {group.rows.map((row) => (
-            <tr key={row.day} className="border-t border-border-inverse">
-              <th scope="row" className="py-3 pr-4 text-left font-medium text-text-inverse-2">{language === 'en' ? row.dayEn : row.day}</th>
-              <td className="py-3 pr-4">{cell(row.morning)}</td>
-              <td className="py-3">{cell(row.afternoon)}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      {/* < xs : one <dl> per day */}
-      <dl className="xs:hidden mt-4 text-body-sm">
-        {group.rows.map((row) => (
-          <div key={row.day} className="border-t border-border-inverse py-3 grid grid-cols-[1fr_auto] gap-x-4 gap-y-1">
-            <dt className="col-span-2 font-medium text-text-inverse-2">{language === 'en' ? row.dayEn : row.day}</dt>
-            <dd className="text-caption text-text-inverse-3">{t.morning}</dd>
-            <dd className="text-right">{cell(row.morning)}</dd>
-            <dd className="text-caption text-text-inverse-3">{t.afternoon}</dd>
-            <dd className="text-right">{cell(row.afternoon)}</dd>
-          </div>
-        ))}
-      </dl>
-    </div>
   )
 }

@@ -1,7 +1,6 @@
 import { MapPin } from 'lucide-react'
 import Section from '../layout/Section'
 import Eyebrow from '../ui/Eyebrow'
-import MediaPlaceholder from '../ui/MediaPlaceholder'
 import Divider from '../ui/Divider'
 import ScrollReveal from '../animations/ScrollReveal'
 import { school } from '../../data/school'
@@ -33,17 +32,10 @@ export default function Introduction() {
   return (
     <Section id="school" tone="paper" aria-labelledby="school-title">
       <div className="lg:grid lg:grid-cols-12 lg:gap-x-(--grid-gutter) lg:items-start">
-        {/* ── Media (future photo, §13 "Split 4:5") ── */}
-        <ScrollReveal className="lg:col-span-5">
-          <MediaPlaceholder
-            ratio={null}
-            label={t.intro.schoolPhoto}
-            className="aspect-[3/2] lg:aspect-[4/5]"
-          />
-        </ScrollReveal>
-
+        {/* The photo column returns when the school sends its photos: an empty
+            frame took half a phone screen (mobile review). */}
         {/* ── Editorial column ── */}
-        <ScrollReveal delay={0.08} className="mt-10 lg:mt-0 lg:col-span-7 lg:pl-6 xl:pl-12">
+        <ScrollReveal className="lg:col-span-10 xl:col-span-9">
           <Eyebrow>{t.intro.label}</Eyebrow>
           <h2
             id="school-title"

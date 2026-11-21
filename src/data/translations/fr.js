@@ -89,10 +89,6 @@ const fr = {
         title: 'Un cadre sécurisé',
         desc: 'L’école dispose d’une guérite, d’un service de sécurité et d’un environnement propre et propice à l’apprentissage.',
       },
-      {
-        title: 'Des examens nationaux et internationaux',
-        desc: 'L’école prépare les apprenants au CEP béninois et au Common Entrance britannique.',
-      },
     ],
     staffTitle: 'Un encadrement autorisé',
     staff: [
@@ -111,6 +107,7 @@ const fr = {
     title: 'Un parcours de la crèche au primaire',
     subtitle: 'Découvrez les niveaux actuellement proposés et leur cadre bilingue.',
     languages: 'Langues',
+    languagesValue: 'Français et anglais, chaque jour',
     schedule: 'Horaires',
     grades: 'Classes',
     objectives: 'Objectif',
@@ -138,10 +135,6 @@ const fr = {
     cognitiveDesc: 'L’exposition quotidienne aux deux langues permet aux apprenants de pratiquer le français et l’anglais dans un cadre scolaire structuré.',
     culturalTitle: 'Une ouverture sur le monde',
     culturalDesc: 'Le bilinguisme accompagne la formation d’apprenants ouverts sur le monde et capables d’évoluer dans plusieurs contextes.',
-    communicationTitle: 'Des enseignants dédiés',
-    communicationDesc: 'Chaque classe est accompagnée par un enseignant de français et un enseignant d’anglais.',
-    futureTitle: 'Deux systèmes éducatifs',
-    futureDesc: 'L’école combine les systèmes béninois et britannique, et prépare au CEP comme au Common Entrance.',
   },
   studentLife: {
     label: 'Vie scolaire',

@@ -1,10 +1,9 @@
 import { Link } from 'react-router-dom'
 import { Phone, Mail, MapPin, Clock, MessageCircle } from 'lucide-react'
 import { school } from '../../data/school'
-import { waLinkFor, phoneLink } from '../../utils/contact'
+import { waLinkFor, phoneLink, mapsLink } from '../../utils/contact'
 import { useT } from '../../hooks/useT'
 import Eyebrow from '../ui/Eyebrow'
-import Button from '../ui/Button'
 import Logo from '../ui/Logo'
 import SectionLink from '../ui/SectionLink'
 import LanguageSwitcher from '../ui/LanguageSwitcher'
@@ -39,10 +38,10 @@ export default function Footer() {
     { label: t.nav.contact, href: '#contact' },
   ]
   const contactItems = [
-    { icon: Phone, label: t.footer.phoneLabel, value: school.phone, href: phoneLink },
-    { icon: MessageCircle, label: t.nav.whatsapp, value: school.whatsapp, href: waLinkFor('general'), external: true },
+    { icon: Phone, label: t.footer.phoneLabel, tag: t.footer.callsTag, value: school.phone, href: phoneLink },
+    { icon: MessageCircle, label: t.nav.whatsapp, tag: t.footer.whatsappTag, value: school.whatsapp, href: waLinkFor('general'), external: true },
     { icon: Mail, label: t.footer.emailLabel, value: school.email, href: `mailto:${school.email}` },
-    { icon: MapPin, label: t.footer.addressLabel, value: school.address },
+    { icon: MapPin, label: t.footer.addressLabel, value: school.address, href: mapsLink, external: true },
     { icon: Clock, label: t.footer.openHoursLabel, value: t.footer.openHours },
   ]
   const legalLinks = [{ label: t.footer.legal, to: school.legalInfo.page }]
@@ -70,9 +69,6 @@ export default function Footer() {
               <span className="font-display font-semibold text-[18px] leading-none text-text-inverse">{school.shortName}</span>
             </Link>
             <p className="mt-4 text-body-sm text-text-inverse-2 max-w-[40ch] text-pretty">{t.footer.description}</p>
-            <Button variant="secondaryOnInk" size="md" to="/registration" className="mt-6 w-full xs:w-auto whitespace-nowrap">
-              {t.nav.enroll}
-            </Button>
           </div>
 
           {/* ── Contact · 4 col (2nd on mobile per §19, last on desktop) ── */}
@@ -87,9 +83,9 @@ export default function Footer() {
                       href={item.href}
                       target={item.external ? '_blank' : undefined}
                       rel={item.external ? 'noopener noreferrer' : undefined}
-                      className={cn(LINK, 'break-all tabular-nums')}
+                      className={cn(LINK, 'tabular-nums', item.icon === MapPin ? 'break-words' : 'break-all')}
                     >
-                      <span className="sr-only">{item.label}{'\u00a0: '}</span>
+                      {item.tag ? <span className="mr-1.5 text-text-inverse-3">{item.tag}</span> : <span className="sr-only">{item.label}{'\u00a0: '}</span>}
                       {item.value}
                     </a>
                   ) : (

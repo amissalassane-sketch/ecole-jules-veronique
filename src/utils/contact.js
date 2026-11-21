@@ -26,3 +26,5 @@ export function waLinkFor(context = 'general') {
 
 export const waLink = waLinkFor('general')
 export const phoneLink = phoneClean ? `tel:${phoneClean}` : '#'
+/* Directions on Google Maps, on the official letterhead GPS coordinates. */
+export const mapsLink = `https://www.google.com/maps/search/?api=1&query=${school.geo.lat},${school.geo.lng}`

@@ -21,7 +21,7 @@ const en = {
     menuTitle: 'Menu',
   },
   hero: {
-    eyebrow: 'Pre-registration open for {year}',
+    eyebrow: '{year} school year',
     title: 'Growing up in two languages, in Ouèdo.',
     lead: 'A bilingual kindergarten and primary school: every day, your children learn in French and English, from crèche to Primary 6.',
     subtitle: 'A bilingual kindergarten and primary school in Ouèdo, in French and English every day.',
@@ -147,6 +147,7 @@ const en = {
     planned: 'In progress',
   },
   contactStrip: {
+    directions: 'Directions',
     email: 'Send an email',
     title: 'Have a question or want to visit the school?',
     subtitle: 'The team can explain the levels, admission test, required documents, and school fees.',
@@ -211,6 +212,8 @@ const en = {
     language: 'Language',
     openHours: 'Open 7:00 a.m.–6:30 p.m.',
     openHoursLabel: 'Opening hours',
+    callsTag: 'Calls',
+    whatsappTag: 'WhatsApp',
     contactHeading: 'Contact',
     legal: 'Legal notice and privacy',
     allRights: 'All rights reserved.',

@@ -21,7 +21,7 @@ const fr = {
     menuTitle: 'Menu',
   },
   hero: {
-    eyebrow: 'Préinscriptions ouvertes pour {year}',
+    eyebrow: 'Rentrée {year}',
     title: 'Grandir en deux langues, à Ouèdo.',
     lead: 'Une école maternelle et primaire bilingue : chaque jour, vos enfants apprennent en français et en anglais, de la crèche au CM2.',
     subtitle: 'Une école maternelle et primaire bilingue à Ouèdo, en français et en anglais chaque jour.',
@@ -147,6 +147,7 @@ const fr = {
     planned: 'En cours',
   },
   contactStrip: {
+    directions: 'Itinéraire',
     email: 'Écrire un email',
     title: 'Une question ou une envie de visiter l’école ?',
     subtitle: 'L’équipe vous renseigne sur les niveaux, le test d’admission, les pièces à fournir et les frais scolaires.',
@@ -211,6 +212,8 @@ const fr = {
     language: 'Langue',
     openHours: 'Ouvert 7h00–18h30',
     openHoursLabel: 'Horaires d’ouverture',
+    callsTag: 'Appels',
+    whatsappTag: 'WhatsApp',
     contactHeading: 'Contact',
     legal: 'Mentions légales et confidentialité',
     allRights: 'Tous droits réservés.',

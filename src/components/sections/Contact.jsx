@@ -5,7 +5,7 @@ import IconTile from '../ui/IconTile'
 import Button from '../ui/Button'
 import ScrollReveal from '../animations/ScrollReveal'
 import { school } from '../../data/school'
-import { waLinkFor, phoneLink } from '../../utils/contact'
+import { waLinkFor, phoneLink, mapsLink } from '../../utils/contact'
 import { useT } from '../../hooks/useT'
 
 /**
@@ -86,7 +86,12 @@ export default function Contact() {
             <div className="flex items-start gap-2">
               <dt className="sr-only">{t.footer.addressLabel}</dt>
               <MapPin size={16} strokeWidth={1.75} className="mt-1 shrink-0 text-text-3" aria-hidden="true" />
-              <dd>{school.address}</dd>
+              <dd>
+                {school.address}{' '}
+                <a href={mapsLink} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center font-semibold text-primary underline underline-offset-4 hover:decoration-2">
+                  {t.contactStrip.directions}
+                </a>
+              </dd>
             </div>
             <div className="flex items-start gap-2">
               <dt className="sr-only">{t.footer.openHoursLabel}</dt>

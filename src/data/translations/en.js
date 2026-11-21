@@ -31,6 +31,19 @@ const en = {
     yearLabel: 'School year',
     bilingual: '50% French / 50% English',
   },
+  paths: {
+    label: 'Where to start?',
+    title: 'Which class is your child starting?',
+    subtitle: 'Choose the class: the pre-registration opens with that class already selected.',
+    situations: {
+      'creche-garderie': 'My child is starting nursery or daycare',
+      maternelle: 'My child is starting kindergarten',
+      primaire: 'My child is starting primary school',
+    },
+    classesLabel: 'Pre-register for',
+    enrollIn: 'Pre-register my child for {grade}',
+    seeProgram: 'See the programme',
+  },
   intro: {
     label: 'Our school',
     title: 'Our mission, day by day.',

@@ -31,6 +31,19 @@ const fr = {
     yearLabel: 'Année scolaire',
     bilingual: '50 % français / 50 % anglais',
   },
+  paths: {
+    label: 'Par où commencer ?',
+    title: 'Dans quelle classe entre votre enfant ?',
+    subtitle: 'Choisissez sa classe : la préinscription s’ouvre avec cette classe déjà sélectionnée.',
+    situations: {
+      'creche-garderie': 'Mon enfant entre à la crèche ou à la garderie',
+      maternelle: 'Mon enfant entre en maternelle',
+      primaire: 'Mon enfant entre en primaire',
+    },
+    classesLabel: 'Préinscrire en',
+    enrollIn: 'Préinscrire mon enfant en {grade}',
+    seeProgram: 'Voir le programme',
+  },
   intro: {
     label: 'Notre école',
     title: 'Notre mission, au quotidien.',

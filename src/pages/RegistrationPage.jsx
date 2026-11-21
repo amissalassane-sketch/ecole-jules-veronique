@@ -1,4 +1,5 @@
 import { useState, useCallback, useMemo, useRef, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowLeft, ArrowRight, Check, MapPin, Phone, Mail, Info, MessageCircle, Clock, Banknote, ExternalLink } from 'lucide-react'
 import Navbar from '../components/layout/Navbar'
@@ -71,7 +72,11 @@ export default function RegistrationPage() {
   const { language } = useLanguage()
   const [step, setStep] = useState(0)
   const [editingStep, setEditingStep] = useState(null)
-  const [formData, setFormData] = useState({
+  /* ?classe=<grade> (from the home « Par où commencer » cards) pre-selects the
+     class; ignored unless it exists in programs.js. The program is derived. */
+  const [searchParams] = useSearchParams()
+  const presetGrade = programForGrade(searchParams.get('classe')) ? searchParams.get('classe') : ''
+  const [formData, setFormData] = useState(() => ({
     parentFirstName: '',
     parentLastName: '',
     parentPhone: '',
@@ -80,10 +85,10 @@ export default function RegistrationPage() {
     childFirstName: '',
     childLastName: '',
     childDob: '',
-    childGrade: '',
+    childGrade: presetGrade,
     childPreviousSchool: '',
-    selectedProgram: '',
-  })
+    selectedProgram: programForGrade(presetGrade)?.id || '',
+  }))
   const [errors, setErrors] = useState({})
 
   /* Phase 3.2 (P0-04) — deterministic arrival on step change. The anchor is the

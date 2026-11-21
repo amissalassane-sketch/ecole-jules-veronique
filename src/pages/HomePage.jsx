@@ -1,6 +1,7 @@
 import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
 import Hero from '../components/sections/Hero'
+import Paths from '../components/sections/Paths'
 import Introduction from '../components/sections/Introduction'
 import Commitments from '../components/sections/Commitments'
 import Programs from '../components/sections/Programs'
@@ -20,6 +21,8 @@ export default function HomePage() {
       <main>
         {/* STAGE 1 — Attention */}
         <Hero />
+        {/* Par où commencer — one card per programme, class chips pre-fill the registration */}
+        <Paths />
 
         {/* STAGE 2 — Understanding */}
         {/* L'école (S2 Editorial Split) — merges the former Introduction + Statistics (DS V2 §17, row 2) */}

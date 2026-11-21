@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowRight, BookOpen, Clock, FileText, Languages, Target } from 'lucide-react'
 import Section from '../layout/Section'
@@ -35,6 +35,20 @@ export default function Programs() {
   const isDesktop = useMediaQuery('(min-width: 64rem)')
   const [activeId, setActiveId] = useState(programs[0].id)
   const active = programs.find((p) => p.id === activeId) || programs[0]
+
+  /* #programs-<id> (from the Paths cards) opens that programme's tab, then
+     scrolls to the section — the hash itself matches no element. */
+  useEffect(() => {
+    const openFromHash = () => {
+      const id = window.location.hash.replace('#programs-', '')
+      if (!window.location.hash.startsWith('#programs-') || !programs.some((p) => p.id === id)) return
+      setActiveId(id)
+      document.getElementById('programs')?.scrollIntoView({ behavior: 'smooth' })
+    }
+    openFromHash()
+    window.addEventListener('hashchange', openFromHash)
+    return () => window.removeEventListener('hashchange', openFromHash)
+  }, [])
 
   const tabItems = programs.map((p) => ({ id: p.id, label: getProgramName(p, language) }))
 

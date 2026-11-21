@@ -8,7 +8,7 @@ import Button from '../components/ui/Button'
 import Badge from '../components/ui/Badge'
 import Logo from '../components/ui/Logo'
 import FormField from '../components/registration/FormField'
-import { programs, getProgramName } from '../data/programs'
+import { programs, getProgramName, getGradeLabel } from '../data/programs'
 import { school } from '../data/school'
 import { waLinkFor, phoneLink } from '../utils/contact'
 import { cn } from '../utils/cn'
@@ -106,7 +106,7 @@ export default function RegistrationPage() {
 
   const program = programForGrade(formData.childGrade)
   const gradeOptions = useMemo(
-    () => programs.flatMap((p) => p.grades.map((grade) => ({ value: grade, label: `${grade}, ${getProgramName(p, language)}` }))),
+    () => programs.flatMap((p) => p.grades.map((grade) => ({ value: grade, label: `${getGradeLabel(grade, language)}, ${getProgramName(p, language)}` }))),
     [language]
   )
 
@@ -171,7 +171,7 @@ export default function RegistrationPage() {
     const values = {
       YEAR: school.schoolYear,
       CHILD_NAME: `${formData.childFirstName} ${formData.childLastName}`.trim(),
-      GRADE: formData.childGrade,
+      GRADE: getGradeLabel(formData.childGrade, language),
       PROGRAM: program ? getProgramName(program, language) : '',
       CHILD_DOB: formatDate(formData.childDob, language),
       CHILD_PREV_SCHOOL: formData.childPreviousSchool.trim(),
@@ -385,7 +385,7 @@ function SendStep({ t, formData, program, language, onEdit, waLink, onSend }) {
         <ReviewGroup title={t.reviewChild} onEdit={() => onEdit(1)} editLabel={t.reviewEdit}>
           <ReviewRow label={t.reviewChildName} value={`${formData.childFirstName} ${formData.childLastName}`} />
           <ReviewRow label={t.reviewDob} value={formatDate(formData.childDob, language)} />
-          <ReviewRow label={t.reviewGrade} value={program ? `${formData.childGrade}, ${getProgramName(program, language)}` : formData.childGrade} />
+          <ReviewRow label={t.reviewGrade} value={program ? `${getGradeLabel(formData.childGrade, language)}, ${getProgramName(program, language)}` : formData.childGrade} />
           <ReviewRow label={t.reviewYear} value={school.schoolYear} secondary />
           {formData.childPreviousSchool && <ReviewRow label={t.reviewPrevSchool} value={formData.childPreviousSchool} secondary />}
         </ReviewGroup>

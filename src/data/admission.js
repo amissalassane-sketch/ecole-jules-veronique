@@ -21,6 +21,14 @@ export const admission = {
     'Fournitures d’anglais',
     'Première tranche de la scolarité',
   ],
+  requiredPaymentsEn: [
+    'Registration fee',
+    'Uniform',
+    'Friday outfit',
+    'Insurance',
+    'English supplies',
+    'First instalment of tuition',
+  ],
   paymentNote:
     'L’ensemble des frais se règle à la banque.',
 }

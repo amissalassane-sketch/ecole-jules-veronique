@@ -1,4 +1,8 @@
 const fr = {
+  meta: {
+    title: 'École bilingue Jules & Véronique · Maternelle et primaire à Ouèdo, Abomey-Calavi',
+    description: 'École maternelle et primaire bilingue français-anglais à Ouèdo (Abomey-Calavi), de la crèche au CM2. Programmes, admission et préinscription 2026–2027.',
+  },
   nav: {
     school: 'L’école',
     programs: 'Programmes',
@@ -29,6 +33,7 @@ const fr = {
     languagesLabel: 'Enseignement',
     languagesValue: 'Français et anglais',
     hoursLabel: 'Classes, lun.–ven.',
+    hoursValue: '8h00–16h00',
     yearLabel: 'Année scolaire',
     bilingual: '50 % français / 50 % anglais',
   },

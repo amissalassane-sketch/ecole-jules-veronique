@@ -11,7 +11,7 @@ import MediaPlaceholder from '../ui/MediaPlaceholder'
 import ScrollReveal from '../animations/ScrollReveal'
 import { useMediaQuery } from '../../hooks/useMediaQuery'
 import { school } from '../../data/school'
-import { programs, getProgramDescription, getProgramObjectives, getProgramSubjects, getProgramName } from '../../data/programs'
+import { programs, getProgramDescription, getProgramObjectives, getProgramSubjects, getProgramName, getProgramSchedule, getGradeLabel } from '../../data/programs'
 import { useT } from '../../hooks/useT'
 import { useLanguage } from '../../context/LanguageContext'
 
@@ -106,7 +106,7 @@ function ProgramCard({ program, language, t, withMedia = false, as }) {
   const name = getProgramName(program, language)
   const meta = [
     { icon: Languages, label: t.programs.languages, value: program.languages.join(' · ') },
-    { icon: Clock, label: t.programs.schedule, value: program.schedule },
+    { icon: Clock, label: t.programs.schedule, value: getProgramSchedule(program, language) },
     { icon: BookOpen, label: t.programs.subjects, value: getProgramSubjects(program, language).join(', ') },
     { icon: Target, label: t.programs.objectives, value: getProgramObjectives(program, language) },
   ]
@@ -139,7 +139,7 @@ function ProgramCard({ program, language, t, withMedia = false, as }) {
           <ul className="mt-2 flex flex-wrap gap-2" aria-label={`${t.programs.grades}, ${name}`}>
             {program.grades.map((g) => (
               <li key={g} className="rounded-xs bg-primary-light px-2 py-0.5 text-caption font-medium text-primary">
-                {g}
+                {getGradeLabel(g, language)}
               </li>
             ))}
           </ul>

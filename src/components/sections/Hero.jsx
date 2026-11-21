@@ -24,11 +24,10 @@ export default function Hero() {
   const t = useT()
 
   // Every value comes from school.js — nothing invented.
-  const classHours = (school.classHours || '').split(',')[0].trim()
   const facts = [
     { label: t.hero.levelsLabel, value: t.hero.levelsValue },
     { label: t.hero.languagesLabel, value: t.hero.languagesValue },
-    { label: t.hero.hoursLabel, value: classHours },
+    { label: t.hero.hoursLabel, value: t.hero.hoursValue },
     { label: t.hero.yearLabel, value: school.schoolYear },
   ]
 

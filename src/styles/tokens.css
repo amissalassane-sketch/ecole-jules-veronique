@@ -29,25 +29,27 @@
   /* ------------------------------------------------------------------
      COLOR · brand  (§04)
      ------------------------------------------------------------------ */
-  --color-primary: #0F4C5C;        /* Teal EBJV — the school's voice */
-  --color-primary-dark: #0A3542;   /* hover / active */
-  --color-primary-light: #E3EFF2;  /* tinted surface: chips, info, icon tiles */
-  --color-ink: #081F29;            /* dark section background */
-  --color-ink-2: #0C2A36;          /* surface ON ink (replaces white/5) */
+  /* School colours, read from the founder's photos (uniform + crest, Nov 2026).
+     Approximate until the HD crest is supplied: only these hex values change. */
+  --color-primary: #7D1D3A;        /* Bordeaux — uniform polo (10:1 with white) */
+  --color-primary-dark: #5E1229;   /* hover / active */
+  --color-primary-light: #F6E7EC;  /* tinted surface: chips, icon tiles (8.4:1 with primary) */
+  --color-ink: #1B2440;            /* Marine — uniform tartan; dark section background */
+  --color-ink-2: #26325A;          /* surface ON ink (replaces white/5) */
   --color-gold: #B8862E;           /* accent: hairlines, numerals ≥ 24px */
   --color-gold-light: #D9B36A;     /* accent ON ink; CTA-on-ink bg (text = ink) */
   --color-gold-deep: #7F5B1C;      /* accent text ON light (5.84:1 on paper) */
 
   /* COLOR · neutrals (warm, ink-tinted) */
-  --color-paper: #FAF9F6;          /* page background */
-  --color-linen: #F2F0EA;          /* alternate light section / calm block */
+  --color-paper: #FAF7F0;          /* page background — cream, like the school walls */
+  --color-linen: #F2ECE0;          /* alternate light section / calm block */
   --color-white: #FFFFFF;          /* elevated surface: cards, inputs, solid header */
-  --color-border: #E2DED5;
-  --color-border-strong: #B9B2A4;  /* inputs, hover */
+  --color-border: #E5DDCF;
+  --color-border-strong: #B8AE9C;  /* inputs, hover */
   --color-border-inverse: rgb(255 255 255 / 0.14);
-  --color-text-1: #111C24;
-  --color-text-2: #44515B;
-  --color-text-3: #5A666F;         /* muted — minimum on light (≥ 5.17:1) */
+  --color-text-1: #161B2E;         /* marine-tinted */
+  --color-text-2: #464B5C;
+  --color-text-3: #5C6170;         /* muted — minimum on light (≥ 5.2:1 on linen) */
   --color-text-inverse: #FFFFFF;
   --color-text-inverse-2: #BFC5C7;
   --color-text-inverse-3: #97A1A5; /* muted — minimum on ink (≥ 5.68:1) */
@@ -56,7 +58,7 @@
   --color-success: #1F7A4D;  --color-success-light: #E6F2EC;
   --color-warning: #7A520C;  --color-warning-light: #FBF3E1;
   --color-error:   #B42318;  --color-error-light:   #FBEAE8;
-  --color-info:    #0F4C5C;  --color-info-bg:    #E3EFF2;
+  --color-info:    #1B2440;  --color-info-bg:    #E8EAF2;  /* marine, so info never reads as bordeaux/error */
 
   /* ------------------------------------------------------------------
      TYPE  (§05)  — `text-h2` etc. carry size + line-height + tracking
@@ -119,9 +121,9 @@
   /* ------------------------------------------------------------------
      SHADOW  (§11) — only for things that FLOAT (header, menu, modal)
      ------------------------------------------------------------------ */
-  --shadow-subtle: 0 1px 2px rgb(8 31 41 / 0.06), 0 1px 3px rgb(8 31 41 / 0.04);
-  --shadow-medium: 0 4px 12px rgb(8 31 41 / 0.08), 0 2px 4px rgb(8 31 41 / 0.04);
-  --shadow-strong: 0 16px 40px rgb(8 31 41 / 0.16);
+  --shadow-subtle: 0 1px 2px rgb(27 36 64 / 0.06), 0 1px 3px rgb(27 36 64 / 0.04);
+  --shadow-medium: 0 4px 12px rgb(27 36 64 / 0.08), 0 2px 4px rgb(27 36 64 / 0.04);
+  --shadow-strong: 0 16px 40px rgb(27 36 64 / 0.16);
 
   /* ------------------------------------------------------------------
      CONTAINER  (§07)

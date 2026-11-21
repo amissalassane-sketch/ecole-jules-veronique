@@ -3,6 +3,7 @@
 
 export const school = {
   name: 'École bilingue Jules & Véronique',
+  officialName: 'École Bilingue Jules & Véronique International School',
   shortName: 'Jules & Véronique',
   tagline: 'Français et anglais à parts égales.',
   foundingYear: '2025–2026',
@@ -78,7 +79,6 @@ export const school = {
 
   legalInfo: {
     registrationNumber: null,
-    privacyPolicy: '#',
-    termsOfService: '#',
+    page: '/mentions-legales',
   },
 }

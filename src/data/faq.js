@@ -21,8 +21,8 @@ export const faqItems = {
       answer: 'La fiche d’inscription, l’acte de naissance sécurisé, deux photos d’identité, le certificat de scolarité, les bulletins de l’année antérieure, le carnet de vaccination, une chemise à rabat et une rame de papier A4.',
     },
     {
-      question: 'Les tarifs sont-ils publiés sur le site ?',
-      answer: 'Non. L’administration communique les montants à jour sur simple demande, par WhatsApp ou par téléphone.',
+      question: 'Comment connaître les frais de scolarité ?',
+      answer: 'L’école communique les frais sur demande, selon la classe de votre enfant. Écrivez-lui sur WhatsApp ou appelez l’administration.',
     },
     {
       question: 'Quels moyens de paiement sont acceptés ?',
@@ -55,8 +55,8 @@ export const faqItems = {
       answer: 'The registration form, a secure birth certificate, two ID photos, a school certificate, the previous year’s report cards, vaccination record, a flap folder and a ream of A4 paper.',
     },
     {
-      question: 'Are fees published on the website?',
-      answer: 'No. The administration shares current amounts on request, by WhatsApp or phone.',
+      question: 'How can I find out the school fees?',
+      answer: 'The school shares its fees on request, according to your child’s class. Message it on WhatsApp or call the administration.',
     },
     {
       question: 'Which payment methods are accepted?',

@@ -162,7 +162,7 @@ const en = {
   pricing: {
     optionalTitle: 'Available services',
     cta: 'Request fee information',
-    notPublished: 'The school shares its fees with you',
+    notPublished: 'Fees shared on request',
     bankPayment: 'All fees are paid at the bank.',
     cafeteria: 'The cafeteria provides lunch and an afternoon snack for enrolled learners.',
     transport: 'The school does not provide transportation.',

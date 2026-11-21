@@ -97,7 +97,7 @@ export default function Admission() {
               static wrapper (outside the animated reveal) so the anchor offset is exact. */}
           <div id="pricing" className="mt-4">
             <ScrollReveal delay={0.2}>
-              <NoticeCard tone="warning" icon={Banknote} title={t.pricing.notPublished} role="note">
+              <NoticeCard tone="info" icon={Banknote} title={t.pricing.notPublished} role="note">
                 <p>{en ? pricing.noteEn : pricing.note}</p>
                 <p className="mt-2">
                   {t.pricing.bankPayment}

@@ -1,4 +1,4 @@
-// Tuition amounts were explicitly not authorised for publication yet.
+// The school's decision (Nov 2026): fees are shared on request, not published on the site.
 
 export const pricing = {
   isPublished: false,

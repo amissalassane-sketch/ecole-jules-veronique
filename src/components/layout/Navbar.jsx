@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { Menu } from 'lucide-react'
 import { cn } from '../../utils/cn'
 import Button from '../ui/Button'
+import Logo from '../ui/Logo'
 import LanguageSwitcher from '../ui/LanguageSwitcher'
 import MobileMenu from './MobileMenu'
 import MobileCtaBar from './MobileCtaBar'
@@ -151,16 +152,7 @@ export default function Navbar() {
             className="flex items-center gap-3 shrink-0 min-h-11 -ml-1 pl-1 pr-2 rounded-sm"
             aria-label={`${school.shortName}, ${t.nav.home}`}
           >
-            <span
-              aria-hidden="true"
-              className={cn(
-                'flex items-center justify-center w-9 h-9 rounded-sm font-display font-bold text-[20px] leading-none',
-                'transition-colors duration-(--duration-base)',
-                transparent ? 'bg-white text-primary' : 'bg-primary text-text-inverse'
-              )}
-            >
-              {school.shortName.charAt(0)}
-            </span>
+            <Logo size={44} />
             <span
               className={cn(
                 // < 480 px (switcher + hamburger) and 1024–1279 px (5 French links +

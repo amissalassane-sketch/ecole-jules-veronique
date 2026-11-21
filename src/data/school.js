@@ -11,8 +11,10 @@ export const school = {
   description:
     'L’École Maternelle et Primaire Bilingue Jules et Véronique accueille les enfants de la maternelle au CM2. Elle propose une éducation bilingue français-anglais fondée sur l’excellence, la discipline et les valeurs, sous le patronage de Saint Augustin.',
 
-  address: 'Ouêdo, en face de la Cité nouvelle, BP 387 Abomey-Calavi, Atlantique, Bénin',
-  city: 'Ouêdo',
+  address: 'Ouèdo, en face de la Cité nouvelle, BP 387 Abomey-Calavi, Atlantique, Bénin',
+  city: 'Ouèdo',
+  // Official letterhead: 6°26'40.9"N 2°16'21.6"E
+  geo: { lat: 6.444694, lng: 2.272667 },
   region: 'Atlantique',
   country: 'Bénin',
   countryCode: '+229',

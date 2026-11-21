@@ -18,9 +18,9 @@ const en = {
   },
   hero: {
     eyebrow: 'Pre-registration open for {year}',
-    title: 'Growing up in two languages, in Ouêdo.',
+    title: 'Growing up in two languages, in Ouèdo.',
     lead: 'A bilingual kindergarten and primary school: every day, your children learn in French and English, from nursery to Grade 6.',
-    subtitle: 'A bilingual kindergarten and primary school in Ouêdo, in French and English every day.',
+    subtitle: 'A bilingual kindergarten and primary school in Ouèdo, in French and English every day.',
     enroll: 'Pre-register my child',
     talkToAdmissions: 'Talk to admissions',
     factsLabel: 'At a glance',
@@ -49,7 +49,7 @@ const en = {
     label: 'Our school',
     title: 'Our mission, day by day.',
     mission:
-      'Jules & Véronique Bilingual Kindergarten and Primary School is in Ouêdo, in the Abomey-Calavi municipality. It welcomes children from nursery to Grade 6 and teaches them French and English. Excellence, discipline and values shape everyday life at school.',
+      'Jules & Véronique Bilingual Kindergarten and Primary School is in Ouèdo, in the Abomey-Calavi municipality. It welcomes children from nursery to Grade 6 and teaches them French and English. Excellence, discipline and values shape everyday life at school.',
     patronage:
       'Under the patronage of Saint Augustine, our mission is to provide a quality bilingual education and to nurture curious, responsible learners who are open to the world.',
     schoolPhoto: 'School photo, coming soon',
@@ -205,7 +205,7 @@ const en = {
     talk: 'Talk to admissions',
   },
   footer: {
-    description: 'A bilingual kindergarten and primary school in Ouêdo, opposite Cité nouvelle. Every day brings French and English, from nursery to Grade 6.',
+    description: 'A bilingual kindergarten and primary school in Ouèdo, opposite Cité nouvelle. Every day brings French and English, from nursery to Grade 6.',
     enroll: 'Start an application',
     whatsapp: 'WhatsApp',
     schoolHeading: 'The school',

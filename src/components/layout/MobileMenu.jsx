@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Phone, MessageCircle } from 'lucide-react'
 import Button from '../ui/Button'
+import Logo from '../ui/Logo'
 import { school } from '../../data/school'
 import { waLink, phoneLink } from '../../utils/contact'
 import { useT } from '../../hooks/useT'
@@ -83,7 +84,10 @@ export default function MobileMenu({ open, onClose, links, isHome, triggerRef, i
           >
             {/* Top row: same height as the header, close button aligned with the hamburger */}
             <div className="container-page flex items-center justify-between h-[60px] shrink-0 border-b border-border">
-              <span className="font-display font-semibold text-[18px] text-text-1">{school.shortName}</span>
+              <span className="flex items-center gap-2.5 font-display font-semibold text-[18px] text-text-1">
+                <Logo size={36} />
+                {school.shortName}
+              </span>
               <Button variant="icon" size="md" onClick={onClose} aria-label={t.nav.closeMenu} className="-mr-2">
                 <X size={24} aria-hidden="true" />
               </Button>

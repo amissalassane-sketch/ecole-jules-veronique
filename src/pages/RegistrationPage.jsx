@@ -514,7 +514,7 @@ function ReviewRow({ label, value, secondary = false }) {
    « Contacter les admissions » button only advanced the step and contacted
    nobody: removed. Advancing to the prepared message stays the nav Primary. */
 function ContactStep({ t, school }) {
-  const mapQuery = encodeURIComponent(school.address)
+  const mapQuery = `${school.geo.lat},${school.geo.lng}`
   const mapLink = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`
   return (
     <div className="space-y-6">
@@ -570,7 +570,7 @@ function ContactStep({ t, school }) {
      administrative file that does not exist. */
 function FinalStep({ t, formData, program, language, school, waPreReg }) {
   const [waOpened, setWaOpened] = useState(false)
-  const mapQuery = encodeURIComponent(school.address)
+  const mapQuery = `${school.geo.lat},${school.geo.lng}`
   const mapLink = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`
   const date = new Date().toLocaleDateString(language === 'en' ? 'en-GB' : 'fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })
   const nextSteps = [

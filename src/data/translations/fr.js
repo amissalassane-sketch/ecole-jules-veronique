@@ -258,7 +258,7 @@ const fr = {
         body: [
           'Le site n’utilise ni cookies publicitaires ni outil de mesure d’audience.',
           'Il enregistre seulement la langue choisie (français ou anglais) dans votre navigateur, pour la garder à votre prochaine visite.',
-          'Les polices de caractères sont chargées depuis Google Fonts : votre navigateur contacte donc les serveurs de Google, qui reçoivent votre adresse IP.',
+          'Les polices de caractères sont hébergées avec le site : aucune requête n’est envoyée à un service tiers comme Google.',
         ],
       },
     ],

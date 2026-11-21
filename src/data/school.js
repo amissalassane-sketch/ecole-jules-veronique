@@ -30,6 +30,7 @@ export const school = {
   classHours: '8h00–16h00, du lundi au vendredi',
 
   languages: ['Français', 'English'],
+  languagesEn: ['French', 'English'],
   languageBalance: '50 % français / 50 % anglais',
   levels: ['Crèche & Garderie', 'Maternelle : Niveaux 1 et 2', 'Primaire : CI au CM2'],
   educationSystems: ['Système béninois', 'Système britannique'],

@@ -9,9 +9,9 @@ export const programs = [
     ages: 'Âges à confirmer',
     grades: ['Crèche', 'Garderie'],
     description:
-      'Un accueil adapté aux tout-petits dans un cadre bilingue et bienveillant. Les modalités précises sont communiquées par l’administration.',
+      'Un accueil adapté aux tout-petits dans un cadre bilingue et bienveillant.',
     descriptionEn:
-      'A caring setting for young children within a bilingual environment. The administration can provide the detailed arrangements.',
+      'A caring setting for young children within a bilingual environment.',
     subjects: ['Éveil et activités adaptées à l’âge'],
     subjectsEn: ['Age-appropriate discovery activities'],
     languages: ['Français', 'English'],

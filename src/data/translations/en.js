@@ -258,7 +258,7 @@ const en = {
         body: [
           'The site uses no advertising cookies and no audience-measurement tool.',
           'It only saves the language you chose (French or English) in your browser, to keep it for your next visit.',
-          'Fonts are loaded from Google Fonts: your browser therefore contacts Google’s servers, which receive your IP address.',
+          'Fonts are hosted with the site: no request is sent to a third-party service such as Google.',
         ],
       },
     ],

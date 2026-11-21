@@ -7,7 +7,8 @@ import HomePage from './pages/HomePage'
 const RegistrationPage = lazy(() => import('./pages/RegistrationPage'))
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
 const LegalPage = lazy(() => import('./pages/LegalPage'))
-import GridOverlay from './components/dev/GridOverlay'
+/* Dev-only layout grid: loaded on demand in development, absent from the production build. */
+const GridOverlay = import.meta.env.DEV ? lazy(() => import('./components/dev/GridOverlay')) : null
 
 function ScrollToTop() {
   const { pathname, hash } = useLocation()
@@ -75,7 +76,7 @@ export default function App() {
         <BrowserRouter basename={import.meta.env.BASE_URL}>
           <ScrollToTop />
           <AnimatedRoutes />
-          {import.meta.env.DEV && <GridOverlay />}
+          {GridOverlay && <Suspense fallback={null}><GridOverlay /></Suspense>}
         </BrowserRouter>
       </MotionConfig>
     </LanguageProvider>

@@ -249,24 +249,17 @@
   /* Safe-area helpers */
   .pb-safe { padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px)); }
 
-  /* ── Scroll reveal (§14): CSS-only, driven by useScrollReveal / <Reveal>.
-     opacity + 12px rise, 400ms, once. Reduced motion → opacity only. ── */
+  /* ── Scroll reveal: content is always visible (opacity never drops), so a
+     slow phone or a JavaScript failure never hides text. The block only rises
+     10 px into place when it enters the viewport (<ScrollReveal>). ── */
   .reveal {
-    opacity: 0;
-    transform: translateY(12px);
-    transition:
-      opacity var(--duration-reveal) var(--ease-out),
-      transform var(--duration-reveal) var(--ease-out);
-    transition-delay: var(--reveal-delay, 0ms);
-    will-change: opacity, transform;
+    transition: transform var(--duration-reveal) var(--ease-out);
   }
-  .reveal.is-visible {
-    opacity: 1;
-    transform: none;
-    will-change: auto;
+  .reveal:not([data-shown]) {
+    transform: translateY(10px);
   }
   @media (prefers-reduced-motion: reduce) {
-    .reveal { transform: none; }
+    .reveal, .reveal:not([data-shown]) { transform: none; transition: none; }
   }
 }
 

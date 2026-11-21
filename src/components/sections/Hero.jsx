@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion'
 import { MessageCircle } from 'lucide-react'
 import Button from '../ui/Button'
 import Eyebrow from '../ui/Eyebrow'
@@ -12,14 +11,8 @@ import { useT } from '../../hooks/useT'
  * Plain ink background, one vertical gold hairline on the left margin.
  * The facts block (ink-2, 4:5 on desktop) is the future photo slot (§13).
  * No blobs, gradients, dot grids, trust badges, scroll arrows or loops.
+ * No entrance animation: the first screen is visible as soon as it is painted.
  */
-const EASE = [0.2, 0.8, 0.2, 1]
-const rise = (delay) => ({
-  initial: { opacity: 0, y: 12 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.4, delay, ease: EASE },
-})
-
 export default function Hero() {
   const t = useT()
 
@@ -48,23 +41,22 @@ export default function Hero() {
 
           {/* ── Editorial column ── */}
           <div className="lg:col-span-6 max-w-[40rem]">
-            <motion.div {...rise(0)}>
+            <div>
               <Eyebrow tone="ink">{t.hero.eyebrow.replace('{year}', school.schoolYear)}</Eyebrow>
-            </motion.div>
+            </div>
 
-            <motion.h1
+            <h1
               id="hero-title"
-              {...rise(0.06)}
               className="mt-6 font-display font-bold text-display text-text-inverse text-balance"
             >
               {t.hero.title}
-            </motion.h1>
+            </h1>
 
-            <motion.p {...rise(0.12)} className="mt-6 text-lead text-text-inverse-2 max-w-[34rem] text-pretty">
+            <p className="mt-6 text-lead text-text-inverse-2 max-w-[34rem] text-pretty">
               {t.hero.lead}
-            </motion.p>
+            </p>
 
-            <motion.div {...rise(0.18)} className="mt-10 flex flex-col sm:flex-row gap-3">
+            <div className="mt-10 flex flex-col sm:flex-row gap-3">
               <Button variant="primaryOnInk" size="lg" to="/registration" className="w-full sm:w-auto whitespace-nowrap">
                 {t.hero.enroll}
               </Button>
@@ -79,12 +71,11 @@ export default function Hero() {
                 <MessageCircle size={20} aria-hidden="true" />
                 {t.hero.talkToAdmissions}
               </Button>
-            </motion.div>
+            </div>
           </div>
 
           {/* ── Facts block = future photo slot (4:5 desktop) ── */}
-          <motion.div
-            {...rise(0.24)}
+          <div
             className="mt-14 lg:mt-0 lg:col-span-5 lg:col-start-8"
           >
             <dl
@@ -100,7 +91,7 @@ export default function Hero() {
                 </div>
               ))}
             </dl>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

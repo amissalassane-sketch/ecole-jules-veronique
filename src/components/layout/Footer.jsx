@@ -41,7 +41,7 @@ export default function Footer() {
     { icon: MessageCircle, label: t.nav.whatsapp, value: school.whatsapp, href: waLinkFor('general'), external: true },
     { icon: Mail, label: t.footer.emailLabel, value: school.email, href: `mailto:${school.email}` },
     { icon: MapPin, label: t.footer.addressLabel, value: school.address },
-    { icon: Clock, label: t.footer.openHours, value: t.footer.openHours },
+    { icon: Clock, label: t.footer.openHoursLabel, value: t.footer.openHours },
   ]
   const legalLinks = [
     { label: t.footer.privacyPolicy, href: school.legalInfo.privacyPolicy },

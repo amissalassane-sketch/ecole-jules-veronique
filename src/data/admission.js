@@ -22,5 +22,5 @@ export const admission = {
     'Première tranche de la scolarité',
   ],
   paymentNote:
-    'Pour le moment, l’ensemble des frais est payé à la banque. Le mobile money et la carte bancaire sont envisagés dans un proche avenir.',
+    'L’ensemble des frais se règle à la banque.',
 }

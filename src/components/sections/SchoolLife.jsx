@@ -72,7 +72,7 @@ export default function SchoolLife() {
       <Divider className="mt-12 md:mt-14 lg:mt-16" />
 
       {/* ── Facilities: H3 + Card/Default grid ── */}
-      {/* Grid: 1 col <640 · 2 col 640–1279 · 4 col ≥1280. Deviation from DS S4
+      {/* Grid: 1 col <640 · 2 col 640–1023 · 3 col ≥1024 (6 available facilities). Deviation from DS S4
           "2 ≥480" documented: at 480–639 two 172 px-wide cards forced 4-line H4s
           ("Salles de classes spacieuses et aérées"); at 1024 four columns did the
           same — mobile designed, not compressed. */}
@@ -81,7 +81,7 @@ export default function SchoolLife() {
       <div id="facilities" className="mt-10 md:mt-12">
         <ScrollReveal delay={0.08}>
           <h3 className="font-display font-semibold text-h3 text-text-1">{t.facilities.label}</h3>
-          <ul className="mt-6 md:mt-8 grid gap-4 md:gap-5 lg:gap-6 sm:grid-cols-2 xl:grid-cols-4">
+          <ul className="mt-6 md:mt-8 grid gap-4 md:gap-5 lg:gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {facilities.map((f) => {
               const Icon = ICONS[f.icon] || Building2
               const planned = f.status === 'planned'

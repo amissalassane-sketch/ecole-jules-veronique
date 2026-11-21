@@ -20,15 +20,6 @@ export const facilities = [
     icon: 'book',
   },
   {
-    id: 'computer-lab',
-    name: 'Laboratoire informatique',
-    nameEn: 'Computer laboratory',
-    description: 'Initiation au numérique. L’équipement est en cours d’installation.',
-    descriptionEn: 'Digital literacy. The equipment is being installed.',
-    status: 'planned',
-    icon: 'computer',
-  },
-  {
     id: 'playground',
     name: 'Cour de récréation et aire de jeux',
     nameEn: 'Playground and recreation area',
@@ -36,15 +27,6 @@ export const facilities = [
     descriptionEn: 'Spaces for children to play, relax, and socialise.',
     status: 'confirmed',
     icon: 'play',
-  },
-  {
-    id: 'sports',
-    name: 'Terrain multisport',
-    nameEn: 'Multisport field',
-    description: 'Équipement sportif en cours de mise en place pour l’EPS.',
-    descriptionEn: 'Sports facility in progress for physical education.',
-    status: 'planned',
-    icon: 'sport',
   },
   {
     id: 'cafeteria',

@@ -8,7 +8,7 @@ import { useT } from '../../hooks/useT'
 
 /**
  * Hero — DS V2 §08 type S1 "Hero Ink".
- * Eyebrow (tagline) → Display H1 (descriptive) → Lead → 2 CTA ‖ facts block.
+ * Eyebrow (open year) → Display H1 (descriptive) → Lead → 2 CTA ‖ facts block.
  * Plain ink background, one vertical gold hairline on the left margin.
  * The facts block (ink-2, 4:5 on desktop) is the future photo slot (§13).
  * No blobs, gradients, dot grids, trust badges, scroll arrows or loops.
@@ -50,7 +50,7 @@ export default function Hero() {
           {/* ── Editorial column ── */}
           <div className="lg:col-span-6 max-w-[40rem]">
             <motion.div {...rise(0)}>
-              <Eyebrow tone="ink">{school.tagline}</Eyebrow>
+              <Eyebrow tone="ink">{t.hero.eyebrow.replace('{year}', school.schoolYear)}</Eyebrow>
             </motion.div>
 
             <motion.h1
@@ -90,7 +90,7 @@ export default function Hero() {
           >
             <dl
               aria-label={t.hero.factsLabel}
-              className="grid grid-cols-2 gap-x-6 gap-y-8 md:grid-cols-4 lg:grid-cols-2 lg:gap-y-10 lg:rounded-lg lg:bg-ink-2 lg:p-8 xl:p-10 lg:aspect-[4/5] lg:content-center"
+              className="grid grid-cols-2 gap-x-6 gap-y-8 md:grid-cols-4 lg:grid-cols-2 lg:gap-y-10 lg:rounded-lg lg:bg-ink-2 lg:p-8 xl:p-10"
             >
               {facts.map((f) => (
                 <div key={f.label} className="border-t border-gold pt-4 min-w-0">

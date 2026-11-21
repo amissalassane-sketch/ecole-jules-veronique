@@ -100,7 +100,7 @@ export default function Admission() {
               <NoticeCard tone="warning" icon={Banknote} title={t.pricing.notPublished} role="note">
                 <p>{en ? pricing.noteEn : pricing.note}</p>
                 <p className="mt-2">
-                  {t.pricing.bankPayment} {t.pricing.futurePayment}
+                  {t.pricing.bankPayment}
                 </p>
                 <p className="mt-3 font-semibold text-text-1">{t.pricing.requiredFeesTitle}</p>
                 <p className="mt-1 text-caption text-text-3">{t.pricing.requiredFeesNote}</p>

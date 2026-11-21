@@ -45,10 +45,7 @@ export default function Footer() {
     { icon: MapPin, label: t.footer.addressLabel, value: school.address },
     { icon: Clock, label: t.footer.openHoursLabel, value: t.footer.openHours },
   ]
-  const legalLinks = [
-    { label: t.footer.privacyPolicy, href: school.legalInfo.privacyPolicy },
-    { label: t.footer.termsConditions, href: school.legalInfo.termsOfService },
-  ].filter((l) => l.href && l.href !== '#')
+  const legalLinks = [{ label: t.footer.legal, to: school.legalInfo.page }]
   const socials = [
     { label: 'Facebook', href: school.socialMedia.facebook },
     { label: 'Instagram', href: school.socialMedia.instagram },
@@ -150,7 +147,7 @@ export default function Footer() {
           </p>
           <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
             {legalLinks.map((l) => (
-              <a key={l.label} href={l.href} className={cn(LINK, 'text-caption')}>{l.label}</a>
+              <Link key={l.label} to={l.to} className={cn(LINK, 'text-caption')}>{l.label}</Link>
             ))}
             <LanguageSwitcher tone="ink" />
           </div>

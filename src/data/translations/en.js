@@ -219,12 +219,49 @@ const en = {
     openHours: 'Open 7:00 a.m.–6:30 p.m.',
     openHoursLabel: 'Opening hours',
     contactHeading: 'Contact',
-    privacyPolicy: 'Privacy',
-    termsConditions: 'Terms',
+    legal: 'Legal notice and privacy',
     allRights: 'All rights reserved.',
     addressLabel: 'Address',
     phoneLabel: 'Phone',
     emailLabel: 'Email',
+  },
+  legal: {
+    title: 'Legal notice and privacy',
+    updated: 'Last updated: November 2026.',
+    sections: [
+      {
+        title: 'Publisher',
+        body: [
+          '{name}, {address}.',
+          'Phone and WhatsApp: {whatsapp}. Email: {email}.',
+          'Publication manager: the school’s leadership.',
+        ],
+      },
+      {
+        title: 'Hosting',
+        body: ['The site is hosted by Hostinger (hostinger.com).'],
+      },
+      {
+        title: 'Ownership',
+        body: ['The logo, texts and photographs on this site belong to the school. Any reproduction requires its permission.'],
+      },
+      {
+        title: 'Pre-registration form',
+        body: [
+          'The information entered in the form (parent’s details, the child’s name, date of birth and class) stays in your browser: the site does not store it and does not send it to any server.',
+          'When you tap « Send my request on WhatsApp », WhatsApp opens with a message already written. You are the one who sends it to the school. This information is intended for the school, to process your pre-registration request.',
+          'To have a request you have already sent changed or deleted, message the school on WhatsApp or write to {email}.',
+        ],
+      },
+      {
+        title: 'Cookies and analytics',
+        body: [
+          'The site uses no advertising cookies and no audience-measurement tool.',
+          'It only saves the language you chose (French or English) in your browser, to keep it for your next visit.',
+          'Fonts are loaded from Google Fonts: your browser therefore contacts Google’s servers, which receive your IP address.',
+        ],
+      },
+    ],
   },
   notFound: {
     title: 'This page does not exist',

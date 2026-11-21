@@ -219,12 +219,49 @@ const fr = {
     openHours: 'Ouvert 7h00–18h30',
     openHoursLabel: 'Horaires d’ouverture',
     contactHeading: 'Contact',
-    privacyPolicy: 'Confidentialité',
-    termsConditions: 'Conditions générales',
+    legal: 'Mentions légales et confidentialité',
     allRights: 'Tous droits réservés.',
     addressLabel: 'Adresse',
     phoneLabel: 'Téléphone',
     emailLabel: 'Email',
+  },
+  legal: {
+    title: 'Mentions légales et confidentialité',
+    updated: 'Dernière mise à jour : novembre 2026.',
+    sections: [
+      {
+        title: 'Éditeur du site',
+        body: [
+          '{name}, {address}.',
+          'Téléphone et WhatsApp : {whatsapp}. Email : {email}.',
+          'Responsable de la publication : la direction de l’école.',
+        ],
+      },
+      {
+        title: 'Hébergement',
+        body: ['Le site est hébergé par Hostinger (hostinger.com).'],
+      },
+      {
+        title: 'Propriété',
+        body: ['Le logo, les textes et les photographies de ce site appartiennent à l’école. Toute reproduction demande son accord.'],
+      },
+      {
+        title: 'Formulaire de préinscription',
+        body: [
+          'Les informations saisies dans le formulaire (coordonnées du parent, nom, date de naissance et classe de l’enfant) restent dans votre navigateur : le site ne les enregistre pas et ne les transmet à aucun serveur.',
+          'Quand vous appuyez sur « Envoyer ma demande sur WhatsApp », WhatsApp s’ouvre avec un message déjà rédigé. C’est vous qui l’envoyez à l’école. Ces informations sont destinées à l’école, pour traiter votre demande de préinscription.',
+          'Pour faire modifier ou supprimer une demande déjà envoyée, écrivez à l’école sur WhatsApp ou à {email}.',
+        ],
+      },
+      {
+        title: 'Cookies et mesure d’audience',
+        body: [
+          'Le site n’utilise ni cookies publicitaires ni outil de mesure d’audience.',
+          'Il enregistre seulement la langue choisie (français ou anglais) dans votre navigateur, pour la garder à votre prochaine visite.',
+          'Les polices de caractères sont chargées depuis Google Fonts : votre navigateur contacte donc les serveurs de Google, qui reçoivent votre adresse IP.',
+        ],
+      },
+    ],
   },
   notFound: {
     title: 'Cette page n’existe pas',

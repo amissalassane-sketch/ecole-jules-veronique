@@ -1,7 +1,7 @@
 import { useState, useCallback, useMemo, useRef, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowLeft, ArrowRight, Check, MessageCircle, Phone, RotateCcw } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Check, Info, MessageCircle, Phone, RotateCcw } from 'lucide-react'
 import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
 import Button from '../components/ui/Button'
@@ -45,12 +45,47 @@ function programForGrade(grade) {
 /* Benin numbers: 10 digits starting with 01 since 2024 (8 digits before), with
    or without +229. A number with another country code (parent abroad) only
    needs a plausible length. */
-function isValidPhone(value) {
+function beninDigits(value) {
+  const digits = value.replace(/\D/g, '')
+  return digits.startsWith('229') && digits.length > 10 ? digits.slice(3) : digits
+}
+
+/* '' when valid, otherwise which problem: 'prefix' (10 digits not starting
+   with 01) or 'incomplete'. */
+function phoneProblem(value) {
   const raw = value.trim()
-  let digits = raw.replace(/\D/g, '')
-  if (raw.startsWith('+') && !digits.startsWith('229')) return digits.length >= 8 && digits.length <= 15
-  if (digits.startsWith('229') && digits.length > 10) digits = digits.slice(3)
-  return (digits.length === 10 && digits.startsWith('01')) || digits.length === 8
+  if (raw.startsWith('+') && !raw.replace(/\D/g, '').startsWith('229')) {
+    const n = raw.replace(/\D/g, '').length
+    return n >= 8 && n <= 15 ? '' : 'incomplete'
+  }
+  const digits = beninDigits(raw)
+  if (digits.length === 10) return digits.startsWith('01') ? '' : 'prefix'
+  return digits.length === 8 ? '' : 'incomplete'
+}
+
+/* « +229 01 97 00 00 00 » for display: Benin numbers grouped by two. */
+function formatPhone(value) {
+  const raw = value.trim()
+  if (raw.startsWith('+') && !raw.replace(/\D/g, '').startsWith('229')) return raw
+  const digits = beninDigits(raw)
+  if (digits.length !== 10 && digits.length !== 8) return raw
+  const grouped = digits.match(/.{1,2}/g).join(' ')
+  return raw.startsWith('+') || raw.replace(/\D/g, '').startsWith('229') ? `+229 ${grouped}` : grouped
+}
+
+/* Usual age at the start of the school year (Benin). Only used for a gentle,
+   non-blocking hint when the gap is 2 years or more — repeats and early
+   starts are real, so it never stops the request. */
+const USUAL_AGE = { 'Niveau 1': 4, 'Niveau 2': 5, CI: 6, CP: 7, CE1: 8, CE2: 9, CM1: 10, CM2: 11 }
+
+function ageAtSchoolStart(iso, schoolYear) {
+  const birth = new Date(`${iso}T00:00:00`)
+  const startYear = parseInt(schoolYear, 10)
+  if (Number.isNaN(birth.getTime()) || Number.isNaN(startYear)) return null
+  const start = new Date(startYear, 8, 1)
+  let age = start.getFullYear() - birth.getFullYear()
+  if (start < new Date(start.getFullYear(), birth.getMonth(), birth.getDate())) age -= 1
+  return age
 }
 
 /* A child of the school is born in the past and is at most 15. */
@@ -122,7 +157,7 @@ export default function RegistrationPage() {
       if (!formData.parentFirstName.trim()) e.parentFirstName = t.required
       if (!formData.parentLastName.trim()) e.parentLastName = t.required
       if (!formData.parentPhone.trim()) e.parentPhone = t.required
-      else if (!isValidPhone(formData.parentPhone)) e.parentPhone = t.invalidPhone
+      else if (phoneProblem(formData.parentPhone)) e.parentPhone = phoneProblem(formData.parentPhone) === 'prefix' ? t.invalidPhonePrefix : t.invalidPhone
       if (formData.parentEmail.trim() && !/\S+@\S+\.\S+/.test(formData.parentEmail)) e.parentEmail = t.invalidEmail
     }
     if (target === 1) {
@@ -176,7 +211,7 @@ export default function RegistrationPage() {
       CHILD_DOB: formatDate(formData.childDob, language),
       CHILD_PREV_SCHOOL: formData.childPreviousSchool.trim(),
       PARENT_NAME: `${formData.parentFirstName} ${formData.parentLastName}`.trim(),
-      PARENT_PHONE: formData.parentPhone.trim(),
+      PARENT_PHONE: formatPhone(formData.parentPhone),
       PARENT_EMAIL: formData.parentEmail.trim(),
       PARENT_ADDRESS: formData.parentAddress.trim(),
     }
@@ -265,7 +300,7 @@ export default function RegistrationPage() {
 function JourneyPanel({ t, step, labels }) {
   return (
     <aside
-      className="relative overflow-hidden rounded-[14px] md:rounded-[20px] bg-ink text-text-inverse on-ink p-5 sm:p-6 lg:p-10 lg:min-h-[36rem] flex flex-col"
+      className="relative overflow-hidden rounded-[14px] md:rounded-[20px] bg-ink text-text-inverse on-ink p-5 sm:p-6 lg:p-10 lg:h-[38rem] lg:self-start lg:sticky lg:top-[calc(var(--header-h)+1.5rem)] flex flex-col"
       style={{
         backgroundImage:
           'radial-gradient(60% 45% at 85% 10%, rgb(227 176 53 / 0.28), transparent 70%), radial-gradient(80% 60% at 0% 100%, rgb(20 83 45 / 0.9), transparent 70%)',
@@ -359,6 +394,7 @@ function ChildStep({ t, formData, onChange, errors, options, program, language, 
         <FormField label={t.childDob} name="childDob" type="date" value={formData.childDob} onChange={onChange} required error={errors.childDob} />
         <div>
           <FormField label={t.childGrade} name="childGrade" type="select" value={formData.childGrade} onChange={onChange} options={options} placeholder={t.selectGrade} required error={errors.childGrade} />
+          <AgeHint t={t} formData={formData} language={language} />
           {program && (
             <p className="mt-2 text-body-sm text-text-2" aria-live="polite">
               {t.programLabel}{language === 'en' ? ': ' : ' : '}<span className="font-medium text-text-1">{getProgramName(program, language)}</span>
@@ -371,6 +407,19 @@ function ChildStep({ t, formData, onChange, errors, options, program, language, 
   )
 }
 
+function AgeHint({ t, formData, language }) {
+  const usual = USUAL_AGE[formData.childGrade]
+  if (!usual || !formData.childDob || !isPlausibleDob(formData.childDob)) return null
+  const age = ageAtSchoolStart(formData.childDob, school.schoolYear)
+  if (age === null || Math.abs(age - usual) < 2) return null
+  return (
+    <p className="mt-2 flex items-start gap-2 text-body-sm text-warning" role="status">
+      <Info size={16} strokeWidth={1.75} className="mt-1 shrink-0" aria-hidden="true" />
+      <span>{t.ageHint.replace('{age}', age).replace('{grade}', getGradeLabel(formData.childGrade, language))}</span>
+    </p>
+  )
+}
+
 function SendStep({ t, formData, program, language, onEdit, waLink, onSend }) {
   return (
     <div className="space-y-6">
@@ -378,7 +427,7 @@ function SendStep({ t, formData, program, language, onEdit, waLink, onSend }) {
       <div className="divide-y divide-border border-y border-border">
         <ReviewGroup title={t.reviewParent} onEdit={() => onEdit(0)} editLabel={t.reviewEdit}>
           <ReviewRow label={t.reviewParentName} value={`${formData.parentFirstName} ${formData.parentLastName}`} />
-          <ReviewRow label={t.reviewPhone} value={formData.parentPhone} />
+          <ReviewRow label={t.reviewPhone} value={formatPhone(formData.parentPhone)} />
           {formData.parentEmail && <ReviewRow label={t.reviewEmail} value={formData.parentEmail} secondary />}
           {formData.parentAddress && <ReviewRow label={t.reviewAddress} value={formData.parentAddress} secondary />}
         </ReviewGroup>

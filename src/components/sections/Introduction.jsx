@@ -6,6 +6,7 @@ import Divider from '../ui/Divider'
 import ScrollReveal from '../animations/ScrollReveal'
 import { school } from '../../data/school'
 import { useT } from '../../hooks/useT'
+import { useLanguage } from '../../context/LanguageContext'
 
 /**
  * L'école — DS V2 §08 type S2 "Editorial Split" (blueprint §17 row 2).
@@ -20,11 +21,12 @@ import { useT } from '../../hooks/useT'
  */
 export default function Introduction() {
   const t = useT()
+  const { language } = useLanguage()
 
   const facts = [
     { label: t.intro.facts.founded, value: school.foundingYear },
     { label: t.intro.facts.levels, value: t.intro.facts.levelsValue },
-    { label: t.intro.facts.languages, value: school.languages.join(' · ') },
+    { label: t.intro.facts.languages, value: (language === 'en' ? school.languagesEn : school.languages).join(' · ') },
     { label: t.intro.facts.systems, value: t.intro.facts.systemsValue },
   ]
 

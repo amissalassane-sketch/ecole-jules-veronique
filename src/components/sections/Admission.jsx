@@ -133,7 +133,6 @@ export default function Admission() {
                   <ExternalLink size={16} strokeWidth={2} aria-hidden="true" />
                 </Button>
               </div>
-              <p className="mt-4 text-caption text-text-3 max-w-[44ch] text-pretty">{r.ready}</p>
             </ScrollReveal>
           </div>
         </div>

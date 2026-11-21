@@ -5,6 +5,7 @@ import { LanguageProvider } from './context/LanguageContext'
 import HomePage from './pages/HomePage'
 /* DS V2 §16 P2 — the registration flow is code-split out of the initial bundle. */
 const RegistrationPage = lazy(() => import('./pages/RegistrationPage'))
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
 import GridOverlay from './components/dev/GridOverlay'
 
 function ScrollToTop() {
@@ -56,6 +57,7 @@ function AnimatedRoutes() {
             <Route path="/" element={<HomePage />} />
             <Route path="/registration" element={<RegistrationPage />} />
             <Route path="/confirmation" element={<RegistrationPage />} />
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Suspense>
       </motion.div>

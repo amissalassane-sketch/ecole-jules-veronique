@@ -227,6 +227,12 @@ const fr = {
     phoneLabel: 'Téléphone',
     emailLabel: 'Email',
   },
+  notFound: {
+    title: 'Cette page n’existe pas',
+    body: 'Le lien est peut-être ancien ou incomplet. Retrouvez l’essentiel depuis l’accueil.',
+    home: 'Retour à l’accueil',
+    enroll: 'Préinscrire mon enfant',
+  },
   registration: {
     eyebrow: 'Rentrée {year}',
     title: 'Préinscrire votre enfant',

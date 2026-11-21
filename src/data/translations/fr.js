@@ -259,6 +259,8 @@ const fr = {
     reviewProgram: 'Programme et classe',
     reviewEdit: 'Modifier',
     reviewName: 'Nom :',
+    reviewParentName: 'Parent :',
+    reviewChildName: 'Enfant :',
     reviewPhone: 'Téléphone :',
     reviewEmail: 'Email :',
     reviewAddress: 'Adresse :',
@@ -302,7 +304,7 @@ const fr = {
     schoolConfirmDesc: 'Votre demande pour',
     statusPreReg: 'Demande préparée',
     required: 'Ce champ est obligatoire.',
-    invalidEmail: 'Saisissez une adresse email valide.',
+    invalidEmail: 'Saisissez une adresse email valide, par exemple nom@gmail.com.',
     lang: { en: 'English', fr: 'Français' },
   },
 }

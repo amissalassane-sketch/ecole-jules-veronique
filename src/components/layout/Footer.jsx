@@ -6,6 +6,7 @@ import { useT } from '../../hooks/useT'
 import Eyebrow from '../ui/Eyebrow'
 import Button from '../ui/Button'
 import Logo from '../ui/Logo'
+import SectionLink from '../ui/SectionLink'
 import LanguageSwitcher from '../ui/LanguageSwitcher'
 import { cn } from '../../utils/cn'
 
@@ -121,7 +122,7 @@ export default function Footer() {
             <Eyebrow tone="ink" rule={false} as="h2" id="footer-school" className="font-body">{t.footer.schoolHeading}</Eyebrow>
             <ul className="mt-4 space-y-1">
               {schoolLinks.map((l) => (
-                <li key={l.href}><a href={l.href} className={LINK}>{l.label}</a></li>
+                <li key={l.href}><SectionLink hash={l.href} className={LINK}>{l.label}</SectionLink></li>
               ))}
             </ul>
           </nav>
@@ -131,7 +132,7 @@ export default function Footer() {
             <Eyebrow tone="ink" rule={false} as="h2" id="footer-admission" className="font-body">{t.nav.admission}</Eyebrow>
             <ul className="mt-4 space-y-1">
               {admissionLinks.map((l) => (
-                <li key={l.href}><a href={l.href} className={LINK}>{l.label}</a></li>
+                <li key={l.href}><SectionLink hash={l.href} className={LINK}>{l.label}</SectionLink></li>
               ))}
             </ul>
           </nav>

@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
-import { useEffect, lazy, Suspense } from 'react'
+import { useEffect, useRef, lazy, Suspense } from 'react'
 import { AnimatePresence, MotionConfig, motion } from 'framer-motion'
 import { LanguageProvider } from './context/LanguageContext'
 import HomePage from './pages/HomePage'
@@ -8,10 +8,41 @@ const RegistrationPage = lazy(() => import('./pages/RegistrationPage'))
 import GridOverlay from './components/dev/GridOverlay'
 
 function ScrollToTop() {
-  const { pathname } = useLocation()
+  const { pathname, hash } = useLocation()
+  const previousPath = useRef(null) // null → the first render counts as a route change (direct /#faq links)
   // 'instant' overrides html{scroll-behavior:smooth}, which would otherwise
   // animate a long scroll back to the top on every route change.
-  useEffect(() => { window.scrollTo({ top: 0, left: 0, behavior: 'instant' }) }, [pathname])
+  useEffect(() => {
+    const routeChanged = previousPath.current !== pathname
+    previousPath.current = pathname
+    // Same-page anchors (#school on the home page) keep the browser's smooth scroll.
+    if (!routeChanged && hash) return
+    if (!hash) {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+      return
+    }
+    // A SectionLink from another route (/#school): the home page mounts after
+    // the 200 ms route transition, so wait for the section before scrolling.
+    const id = hash.slice(1)
+    const scrollTo = (el) => el.scrollIntoView({ behavior: 'instant' })
+    const ready = document.getElementById(id)
+    if (ready) {
+      scrollTo(ready)
+      return
+    }
+    const observer = new MutationObserver(() => {
+      const el = document.getElementById(id)
+      if (!el) return
+      observer.disconnect()
+      scrollTo(el)
+    })
+    observer.observe(document.body, { childList: true, subtree: true })
+    const giveUp = setTimeout(() => observer.disconnect(), 5000)
+    return () => {
+      observer.disconnect()
+      clearTimeout(giveUp)
+    }
+  }, [pathname, hash])
   return null
 }
 

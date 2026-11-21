@@ -1,17 +1,14 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowRight, BookOpen, Clock, FileText, Languages, Target } from 'lucide-react'
+import { ArrowRight, Clock, FileText, Languages, Target } from 'lucide-react'
 import Section from '../layout/Section'
 import Eyebrow from '../ui/Eyebrow'
-import Badge from '../ui/Badge'
 import Button from '../ui/Button'
 import Card, { NoticeCard } from '../ui/Card'
 import Tabs, { TabPanel } from '../ui/Tabs'
-import MediaPlaceholder from '../ui/MediaPlaceholder'
 import ScrollReveal from '../animations/ScrollReveal'
 import { useMediaQuery } from '../../hooks/useMediaQuery'
-import { school } from '../../data/school'
-import { programs, getProgramDescription, getProgramObjectives, getProgramSubjects, getProgramName, getProgramSchedule, getGradeLabel } from '../../data/programs'
+import { programs, getProgramDescription, getProgramObjectives, getProgramName, getProgramSchedule, getGradeLabel } from '../../data/programs'
 import { useT } from '../../hooks/useT'
 import { useLanguage } from '../../context/LanguageContext'
 
@@ -19,7 +16,7 @@ import { useLanguage } from '../../context/LanguageContext'
  * Programmes — DS V2 §08 type S5 "Program Showcase" (blueprint §17 row 4).
  *
  *  linen · Eyebrow → H2 → lead
- *  ≥ lg : Tabs (underline) → one Card/Program 4/8 (MediaPlaceholder 3:2 ‖ content)
+ *  ≥ lg : Tabs (underline) → one Card/Program (photo slot hidden until the school sends photos)
  *  < lg : no tabs — the 3 Card/Program stacked (nothing hidden behind a swipe)
  *  then ONE Notice info « Parcours et examens » (secondary note said once).
  *
@@ -61,6 +58,19 @@ export default function Programs() {
             {t.programs.title}
           </h2>
           <p className="mt-4 lg:mt-5 text-lead text-text-2 max-w-[60ch] text-pretty">{t.programs.subtitle}</p>
+          {/* Said once for all programmes (they share languages and hours). */}
+          <dl className="mt-5 flex flex-wrap gap-x-8 gap-y-3 text-body-sm">
+            <div className="flex items-center gap-2">
+              <Languages size={16} strokeWidth={1.75} className="shrink-0 text-primary" aria-hidden="true" />
+              <dt className="sr-only">{t.programs.languages}</dt>
+              <dd className="text-text-1">{t.programs.languagesValue}</dd>
+            </div>
+            <div className="flex items-center gap-2">
+              <Clock size={16} strokeWidth={1.75} className="shrink-0 text-primary" aria-hidden="true" />
+              <dt className="sr-only">{t.programs.schedule}</dt>
+              <dd className="text-text-1">{getProgramSchedule(programs[0], language)}</dd>
+            </div>
+          </dl>
         </div>
       </ScrollReveal>
 
@@ -105,24 +115,16 @@ export default function Programs() {
 function ProgramCard({ program, language, t, withMedia = false, as }) {
   const name = getProgramName(program, language)
   const meta = [
-    { icon: Languages, label: t.programs.languages, value: program.languages.join(' · ') },
-    { icon: Clock, label: t.programs.schedule, value: getProgramSchedule(program, language) },
-    { icon: BookOpen, label: t.programs.subjects, value: getProgramSubjects(program, language).join(', ') },
     { icon: Target, label: t.programs.objectives, value: getProgramObjectives(program, language) },
   ]
 
   return (
-    <Card as={as} type="program" className={withMedia ? 'lg:grid lg:grid-cols-12 lg:gap-x-8 lg:p-8' : undefined}>
-      {withMedia && (
-        <MediaPlaceholder ratio="3/2" label={t.programs.programPhoto} className="lg:col-span-4 lg:self-start" />
-      )}
-      <div className={withMedia ? 'mt-6 lg:mt-0 lg:col-span-8' : undefined}>
-        {/* Phase 3.6: single source of truth for the year — school.schoolYear. */}
-        <Badge variant="available">{t.programs.availability.replace('{year}', school.schoolYear)}</Badge>
-        <h3 className="mt-3 font-display font-semibold text-h3 text-text-1 text-balance">{name}</h3>
+    <Card as={as} type="program" className={withMedia ? 'lg:p-8' : undefined}>
+      <div>
+        <h3 className="font-display font-semibold text-h3 text-text-1 text-balance">{name}</h3>
         <p className="mt-3 text-body text-text-2 max-w-[60ch] text-pretty">{getProgramDescription(program, language)}</p>
 
-        <dl className="mt-6 grid gap-x-6 gap-y-4 sm:grid-cols-2">
+        <dl className="mt-5">
           {meta.map(({ icon: Icon, label, value }) => (
             <div key={label} className="flex items-start gap-3 min-w-0">
               <Icon size={16} strokeWidth={1.75} className="mt-[3px] shrink-0 text-primary" aria-hidden="true" />

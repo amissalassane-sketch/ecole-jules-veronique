@@ -1,11 +1,9 @@
 import { Building2, BookOpen, Computer, Dumbbell, Utensils, ShieldCheck, Gamepad2 } from 'lucide-react'
 import Section from '../layout/Section'
 import Eyebrow from '../ui/Eyebrow'
-import Badge from '../ui/Badge'
 import Card from '../ui/Card'
 import IconTile from '../ui/IconTile'
 import Divider from '../ui/Divider'
-import MediaPlaceholder from '../ui/MediaPlaceholder'
 import ScrollReveal from '../animations/ScrollReveal'
 import { activities } from '../../data/activities'
 import { facilities } from '../../data/facilities'
@@ -16,10 +14,10 @@ import { useLanguage } from '../../context/LanguageContext'
  * Vie scolaire & cadre — DS V2 §08 S2 + S4 (blueprint §17 row 6).
  * Merges the former StudentLife + Facilities sections.
  *
- *  paper · Eyebrow → H2 · MediaPlaceholder band 4:3 → 16:9 → 21:9 ≥ lg (future courtyard/class photo)
+ *  paper · Eyebrow → H2 (the courtyard/class photo band returns with real photos)
  *  · 2 columns: cycle label (h3, styled H4 — no heading level skipped) + bulleted list (no cards)
  *  · Divider · H3 « Installations » + Card/Default grid (IconTile → H4 →
- *    Body Small, Badge available / planned). Status = badge, never a card colour.
+ *    Body Small on ≥ 640 px). No status badge: every listed facility is available.
  *
  * Data: activities.js, facilities.js — nothing invented.
  */
@@ -40,11 +38,6 @@ export default function SchoolLife() {
             {t.studentLife.title}
           </h2>
         </div>
-      </ScrollReveal>
-
-      {/* ── Band: future photo of the courtyard / a classroom (§13, 16:9) ── */}
-      <ScrollReveal delay={0.08} className="mt-10 md:mt-12 lg:mt-16">
-        <MediaPlaceholder ratio={null} label={t.studentLife.photo} className="aspect-[4/3] sm:aspect-[16/9] lg:aspect-[21/9]" />
       </ScrollReveal>
 
       {/* ── Activities by cycle: 2 columns, H4 + list, no cards ── */}
@@ -71,28 +64,19 @@ export default function SchoolLife() {
 
       <Divider className="mt-12 md:mt-14 lg:mt-16" />
 
-      {/* ── Facilities: H3 + Card/Default grid ── */}
-      {/* Grid: 1 col <640 · 2 col 640–1023 · 3 col ≥1024 (6 available facilities). Deviation from DS S4
-          "2 ≥480" documented: at 480–639 two 172 px-wide cards forced 4-line H4s
-          ("Salles de classes spacieuses et aérées"); at 1024 four columns did the
-          same — mobile designed, not compressed. */}
-      {/* id on the static wrapper (not inside the animated motion.div) so the
-          anchor offset is not shifted by the 12 px reveal rise. */}
+      {/* ── Facilities: compact 2-column grid, icon + name (+ short line from
+          640 px). No status badge: every listed facility is available. ── */}
       <div id="facilities" className="mt-10 md:mt-12">
         <ScrollReveal delay={0.08}>
           <h3 className="font-display font-semibold text-h3 text-text-1">{t.facilities.label}</h3>
-          <ul className="mt-6 md:mt-8 grid gap-4 md:gap-5 lg:gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="mt-6 md:mt-8 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 lg:gap-6">
             {facilities.map((f) => {
               const Icon = ICONS[f.icon] || Building2
-              const planned = f.status === 'planned'
               return (
-                <Card as="li" key={f.id} className="flex flex-col p-5 md:p-6">
-                  <div className="flex items-start justify-between gap-3">
-                    <IconTile icon={Icon} size="sm" />
-                    <Badge variant={planned ? 'planned' : 'available'}>{planned ? t.facilities.planned : t.facilities.confirmed}</Badge>
-                  </div>
-                  <h4 className="mt-5 text-text-1 text-balance">{en ? f.nameEn : f.name}</h4>
-                  <p className="mt-2 text-body-sm text-text-2 text-pretty">{en ? f.descriptionEn : f.description}</p>
+                <Card as="li" key={f.id} className="flex flex-col p-4 sm:p-5 md:p-6">
+                  <IconTile icon={Icon} size="sm" />
+                  <h4 className="mt-3 sm:mt-4 text-body-sm sm:text-h4 font-semibold text-text-1 text-balance">{en ? f.nameEn : f.name}</h4>
+                  <p className="mt-2 hidden sm:block text-body-sm text-text-2 text-pretty">{en ? f.descriptionEn : f.description}</p>
                 </Card>
               )
             })}

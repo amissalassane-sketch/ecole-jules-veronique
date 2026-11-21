@@ -89,10 +89,6 @@ const en = {
         title: 'A secure environment',
         desc: 'The school has a guardhouse, a security service, and a clean environment that supports learning.',
       },
-      {
-        title: 'National and international examinations',
-        desc: 'The school prepares learners for the Beninese CEP and the British Common Entrance.',
-      },
     ],
     staffTitle: 'An authorised team',
     staff: [
@@ -111,6 +107,7 @@ const en = {
     title: 'A pathway from nursery to primary school',
     subtitle: 'Explore the levels currently offered within the bilingual programme.',
     languages: 'Languages',
+    languagesValue: 'French and English, every day',
     schedule: 'Schedule',
     grades: 'Classes',
     objectives: 'Objective',
@@ -138,10 +135,6 @@ const en = {
     cognitiveDesc: 'Daily exposure to both languages gives learners structured practice in French and English.',
     culturalTitle: 'A wider outlook',
     culturalDesc: 'Bilingual learning supports learners who are open to the world and able to navigate different contexts.',
-    communicationTitle: 'Dedicated teachers',
-    communicationDesc: 'Each class is supported by a French teacher and an English teacher.',
-    futureTitle: 'Two education systems',
-    futureDesc: 'The school combines the Beninese and British systems, and prepares learners for both the CEP and the Common Entrance.',
   },
   studentLife: {
     label: 'School life',

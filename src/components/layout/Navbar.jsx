@@ -156,7 +156,7 @@ export default function Navbar() {
               className={cn(
                 'flex items-center justify-center w-9 h-9 rounded-sm font-display font-bold text-[20px] leading-none',
                 'transition-colors duration-(--duration-base)',
-                transparent ? 'bg-gold-light text-ink' : 'bg-primary text-text-inverse'
+                transparent ? 'bg-white text-primary' : 'bg-primary text-text-inverse'
               )}
             >
               {school.shortName.charAt(0)}

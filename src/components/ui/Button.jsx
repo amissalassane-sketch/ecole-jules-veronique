@@ -28,7 +28,8 @@ const variants = {
   primary:
     'bg-primary text-text-inverse hover:bg-primary-dark active:bg-primary-dark active:translate-y-px',
   primaryOnInk:
-    'bg-gold-light text-ink hover:bg-[#E2C384] active:bg-[#E2C384] active:translate-y-px',
+    /* One brand accent: bordeaux on white over dark sections (gold stays for hairlines). */
+    'bg-white text-primary hover:bg-primary-light active:bg-primary-light active:translate-y-px',
   secondary:
     'bg-transparent text-primary border-[1.5px] border-primary hover:bg-primary-light active:bg-primary-light active:border-primary-dark',
   secondaryOnInk:

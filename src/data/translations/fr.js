@@ -162,7 +162,7 @@ const fr = {
   pricing: {
     optionalTitle: 'Services disponibles',
     cta: 'Demander les tarifs',
-    notPublished: 'Les frais vous sont communiqués par l’école',
+    notPublished: 'Frais communiqués sur demande',
     bankPayment: 'L’ensemble des frais se règle à la banque.',
     cafeteria: 'La cantine propose le repas de midi et le goûter de l’après-midi aux apprenants inscrits.',
     transport: 'L’école n’assure pas le transport scolaire.',
